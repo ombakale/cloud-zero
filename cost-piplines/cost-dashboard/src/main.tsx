@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import { ConnectCloudPage } from './pages/ConnectCloudPage.tsx'
 import { MultiCloudOverviewPage } from './pages/MultiCloudOverviewPage.tsx'
-import { NewRequestPage } from './pages/NewRequestPage.tsx'
 import { LinkedAccountsPage } from './pages/LinkedAccountsPage.tsx'
 import { LinkedAccountDetailPage } from './pages/LinkedAccountDetailPage.tsx'
 import { AzureSubscriptionsPage } from './pages/AzureSubscriptionsPage.tsx'
@@ -27,8 +27,11 @@ createRoot(document.getElementById('root')!).render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Multi-Cloud Landing Command Center (AWS + Azure Combined) */}
-          <Route path="/" element={<MultiCloudOverviewPage />} />
+          {/* Landing Onboarding Screen: Select AWS or Azure & Input Credentials */}
+          <Route path="/" element={<ConnectCloudPage />} />
+          <Route path="/connect" element={<ConnectCloudPage />} />
+
+          {/* Multi-Cloud Command Center Overview */}
           <Route path="/overview" element={<MultiCloudOverviewPage />} />
 
           {/* Full AWS & Azure Analytics Dashboards */}
@@ -49,13 +52,11 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/azure/linked-accounts/:subscriptionId/*" element={<AzureSubscriptionDetailPage />} />
           <Route path="/azure/linked-accounts/:subscriptionId" element={<AzureSubscriptionDetailPage />} />
 
-          {/* Account & Budget Request Portal */}
-          <Route path="/newrequest" element={<NewRequestPage />} />
-
-          {/* Login redirect: No login barrier, redirect directly to dashboard */}
+          {/* Redirect /login and /newrequest directly to connect landing page */}
+          <Route path="/newrequest" element={<Navigate to="/connect" replace />} />
           <Route path="/login" element={<Navigate to="/" replace />} />
 
-          {/* Fallback Catch-all: redirect to dashboard root */}
+          {/* Fallback Catch-all: redirect to connect root */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

@@ -19,7 +19,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableHeader,
@@ -101,15 +100,13 @@ const formatCompactCurrency = (value: unknown) => {
   return `$${num}`;
 };
 
-const PROFESSIONAL_COLORS = [
-  "#4f46e5", // Indigo 600
-  "#6366f1", // Indigo 500
-  "#7c3aed", // Violet 600
-  "#0284c7", // Sky 700
-  "#0d9488", // Teal 600
-  "#059669", // Emerald 600
-  "#f59e0b", // Amber 500
-  "#64748b", // Slate 500
+const VISION_COLORS = [
+  "#0075ff", // Electric Blue
+  "#00c5ff", // Cyan Neon
+  "#7928ca", // Purple
+  "#01b574", // Emerald Glow
+  "#ffb547", // Amber
+  "#e31a1a", // Red Coral
 ];
 
 export function LinkedAccountDetailPage() {
@@ -169,13 +166,13 @@ export function LinkedAccountDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 flex flex-col items-center justify-center space-y-3 font-sans">
-        <RefreshCw className="w-8 h-8 text-indigo-500 animate-spin" />
-        <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+      <div className="min-h-screen bg-[#060b26] flex flex-col items-center justify-center space-y-3 font-sans text-white">
+        <RefreshCw className="w-8 h-8 text-[#0075ff] animate-spin" />
+        <p className="text-sm font-semibold text-white">
           Loading 360° Account Analytics & Live AWS Cost Explorer...
         </p>
-        <p className="text-xs text-muted-foreground">
-          Querying SQL Server database and AWS Organizations for account {linkedAccountId}
+        <p className="text-xs text-[#a0aec0]">
+          Querying cloud store and AWS Organizations for account {linkedAccountId}
         </p>
       </div>
     );
@@ -183,20 +180,20 @@ export function LinkedAccountDetailPage() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 flex flex-col items-center justify-center p-6 space-y-4 font-sans">
-        <AlertTriangle className="w-10 h-10 text-rose-500" />
-        <h2 className="text-xl font-bold tracking-tight text-foreground">Failed to Load Account Profile</h2>
-        <p className="text-xs text-rose-600 max-w-md text-center">{error}</p>
+      <div className="min-h-screen bg-[#060b26] flex flex-col items-center justify-center p-6 space-y-4 font-sans text-white">
+        <AlertTriangle className="w-10 h-10 text-[#e31a1a]" />
+        <h2 className="text-xl font-bold tracking-tight text-white">Failed to Load Account Profile</h2>
+        <p className="text-xs text-[#e31a1a] max-w-md text-center">{error}</p>
         <div className="flex gap-2.5 pt-2">
           <Link
             to="/linked-accounts"
-            className="px-3 py-1.5 text-xs font-semibold rounded-md border border-input bg-background hover:bg-muted text-foreground transition-colors"
+            className="px-3 py-1.5 text-xs font-semibold rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] text-white transition-all"
           >
             ← Back to Directory
           </Link>
           <button
             onClick={fetchDetails}
-            className="px-3 py-1.5 text-xs font-semibold rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+            className="vision-button-primary px-3 py-1.5 text-xs font-semibold rounded-xl text-white cursor-pointer"
           >
             Retry
           </button>
@@ -215,23 +212,23 @@ export function LinkedAccountDetailPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased pb-12">
+    <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased pb-12 selection:bg-[#0075ff] selection:text-white">
       {/* Top Breadcrumb Header Bar */}
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-6 py-3 backdrop-blur shadow-xs flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#060b26]/85 backdrop-blur-xl border-b border-white/10 px-6 py-3 shadow-sm flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link
             to={`/linked-accounts?account=${rootAccount}`}
-            className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground px-2.5 py-1 rounded-md border border-input bg-background hover:bg-muted transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#a0aec0] hover:text-white px-3 py-1.5 rounded-xl border border-white/10 bg-[#080d28]/90 hover:bg-white/10 transition-all cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Accounts Directory</span>
           </Link>
-          <span className="text-muted-foreground/40">/</span>
+          <span className="text-white/20">/</span>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-foreground">
+            <span className="text-sm font-bold text-white">
               {account.accountName}
             </span>
-            <span className="font-mono text-xs text-muted-foreground bg-muted/40 px-2 py-0.5 rounded border border-muted/50">
+            <span className="font-mono text-xs text-[#a0aec0] bg-[#080d28] px-2 py-0.5 rounded-lg border border-white/10">
               {account.linkedAccountId}
             </span>
           </div>
@@ -240,71 +237,59 @@ export function LinkedAccountDetailPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={fetchDetails}
-            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md border border-input bg-background hover:bg-muted text-foreground transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] text-white transition-all cursor-pointer"
           >
-            <RefreshCw className="w-3 h-3 text-indigo-500" />
+            <RefreshCw className="w-3 h-3 text-[#0075ff]" />
             <span>Refresh Live AWS</span>
           </button>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6">
+      <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-8 sm:px-6">
         {/* Account Identity & Ownership Card */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
-          <div className="p-5 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div className="space-y-1.5">
+        <Card className="vision-card border-none">
+          <div className="p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2.5">
-                <h1 className="text-xl font-bold tracking-tight text-foreground">
+                <h1 className="text-xl font-bold tracking-tight text-white">
                   {account.accountName}
                 </h1>
                 {account.status === "ACTIVE" ? (
-                  <Badge
-                    variant="outline"
-                    className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800 text-[10px] font-semibold"
-                  >
+                  <span className="vision-badge-green text-[10px] font-semibold py-0.5 px-2">
                     ACTIVE
-                  </Badge>
+                  </span>
                 ) : (
-                  <Badge
-                    variant="outline"
-                    className="bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400 border-rose-300 dark:border-rose-800 text-[10px] font-semibold"
-                  >
+                  <span className="vision-badge-red text-[10px] font-semibold py-0.5 px-2">
                     {account.status}
-                  </Badge>
+                  </span>
                 )}
                 {governance.hasBudget ? (
-                  <Badge
-                    variant="outline"
-                    className="bg-sky-50 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300 border-sky-300 dark:border-sky-800 text-[10px] font-semibold"
-                  >
-                    <ShieldCheck className="w-3 h-3 mr-1" />
+                  <span className="vision-badge-green text-[10px] font-semibold py-0.5 px-2 flex items-center gap-1">
+                    <ShieldCheck className="w-3 h-3" />
                     Budgeted
-                  </Badge>
+                  </span>
                 ) : (
-                  <Badge
-                    variant="outline"
-                    className="bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400 border-amber-300 dark:border-amber-800 text-[10px] font-semibold"
-                  >
-                    <AlertTriangle className="w-3 h-3 mr-1" />
+                  <span className="vision-badge-red text-[10px] font-semibold py-0.5 px-2 flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3" />
                     Unbudgeted
-                  </Badge>
+                  </span>
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground pt-1">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-[#a0aec0] pt-1">
                 {/* 12-digit Account ID */}
-                <div className="flex items-center gap-1.5 font-mono bg-muted/40 px-2.5 py-0.5 rounded border border-muted/50">
-                  <span className="text-muted-foreground">ID:</span>
-                  <span className="font-semibold text-foreground">
+                <div className="flex items-center gap-1.5 font-mono bg-[#080d28] px-2.5 py-1 rounded-lg border border-white/10">
+                  <span className="text-[#a0aec0]">ID:</span>
+                  <span className="font-semibold text-white">
                     {account.linkedAccountId}
                   </span>
                   <button
                     onClick={() => copyToClipboard(account.linkedAccountId)}
                     title="Copy Account ID"
-                    className="hover:text-foreground transition-colors cursor-pointer"
+                    className="hover:text-white transition-colors cursor-pointer"
                   >
                     {copiedId === account.linkedAccountId ? (
-                      <Check className="w-3 h-3 text-emerald-500" />
+                      <Check className="w-3 h-3 text-[#01b574]" />
                     ) : (
                       <Copy className="w-3 h-3" />
                     )}
@@ -313,8 +298,8 @@ export function LinkedAccountDetailPage() {
 
                 {/* Parent Root Payer */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-muted-foreground">Payer Org:</span>
-                  <span className="font-semibold text-foreground">
+                  <span className="text-[#a0aec0]">Payer Org:</span>
+                  <span className="font-semibold text-white">
                     {account.rootAccount.name}
                   </span>
                 </div>
@@ -322,9 +307,9 @@ export function LinkedAccountDetailPage() {
                 {/* Owner Email from Organizations */}
                 {liveAws?.orgDetails?.email && (
                   <div className="flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-indigo-500" />
-                    <span className="text-muted-foreground">Owner:</span>
-                    <span className="font-medium text-foreground font-mono">
+                    <Mail className="w-3.5 h-3.5 text-[#0075ff]" />
+                    <span className="text-[#a0aec0]">Owner:</span>
+                    <span className="font-medium text-white font-mono">
                       {liveAws.orgDetails.email}
                     </span>
                   </div>
@@ -333,9 +318,9 @@ export function LinkedAccountDetailPage() {
                 {/* Joined Date */}
                 {liveAws?.orgDetails?.joinedTimestamp && (
                   <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
-                    <span className="text-muted-foreground">Created:</span>
-                    <span className="font-medium text-foreground">
+                    <Calendar className="w-3.5 h-3.5 text-[#a0aec0]" />
+                    <span className="text-[#a0aec0]">Created:</span>
+                    <span className="font-medium text-white">
                       {new Date(liveAws.orgDetails.joinedTimestamp).toLocaleDateString(undefined, {
                         year: "numeric",
                         month: "short",
@@ -348,22 +333,22 @@ export function LinkedAccountDetailPage() {
             </div>
 
             {/* Live AWS Sync Status Pill */}
-            <div className="flex items-center gap-2 bg-muted/40 px-3 py-1.5 rounded-lg border border-muted/50 text-xs self-start">
+            <div className="flex items-center gap-2 bg-[#080d28] px-3 py-1.5 rounded-xl border border-white/10 text-xs self-start">
               {liveAws?.available ? (
                 <>
                   <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#01b574] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#01b574]"></span>
                   </span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span className="font-semibold text-[#01b574]">
                     Live AWS Data Synced
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                  <span className="font-medium text-amber-600 dark:text-amber-400">
-                    SQL Database Mode
+                  <span className="h-2 w-2 rounded-full bg-[#ffb547]"></span>
+                  <span className="font-medium text-[#ffb547]">
+                    Live Cloud Store Mode
                   </span>
                 </>
               )}
@@ -373,43 +358,43 @@ export function LinkedAccountDetailPage() {
 
         {/* 4 Financial KPI Cards */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                   PERIOD SPEND ({formatMonthName(financials.currentMonth).toUpperCase()})
                 </p>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   {fmt(financials.currentSpend)}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 pt-0.5">
+                <p className="text-xs text-[#a0aec0] pt-0.5">
                   Billed in active billing cycle
                 </p>
               </div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+              <div className="vision-icon-box h-10 w-10 text-white">
                 <DollarSign className="h-5 w-5" />
               </div>
             </div>
           </Card>
 
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                   PREVIOUS PERIOD SPEND
                 </p>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   {financials.previousSpend ? fmt(financials.previousSpend) : "—"}
                 </h3>
                 <div className="flex items-center gap-1.5 text-xs pt-0.5">
                   {financials.previousSpend > 0 ? (
                     <span
-                      className={`inline-flex items-center gap-1 font-semibold ${
+                      className={`inline-flex items-center gap-1 font-bold ${
                         isPositiveMoM
-                          ? "text-rose-600 dark:text-rose-500"
+                          ? "text-[#e31a1a]"
                           : isNegativeMoM
-                          ? "text-emerald-600 dark:text-emerald-500"
-                          : "text-muted-foreground"
+                          ? "text-[#01b574]"
+                          : "text-[#a0aec0]"
                       }`}
                     >
                       {isPositiveMoM && <TrendingUp className="h-3.5 w-3.5" />}
@@ -418,52 +403,52 @@ export function LinkedAccountDetailPage() {
                       {financials.momChangePercent}% MoM
                     </span>
                   ) : (
-                    <span className="text-muted-foreground">Prior month total</span>
+                    <span className="text-[#a0aec0]">Prior month total</span>
                   )}
                 </div>
               </div>
-              <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${isPositiveMoM ? "bg-rose-50 text-rose-600 dark:bg-rose-950/50 dark:text-rose-400" : "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"}`}>
+              <div className="vision-icon-box h-10 w-10 text-white">
                 <TrendingUp className="h-5 w-5" />
               </div>
             </div>
           </Card>
 
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                   6-MONTH AVERAGE SPEND
                 </p>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   {fmt(variance?.mean || financials.currentSpend)}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 pt-0.5">
+                <p className="text-xs text-[#a0aec0] pt-0.5">
                   Volatility:{" "}
-                  <span className="font-semibold text-foreground">
+                  <span className="font-semibold text-white">
                     {variance?.volatilityCategory || "Stable"}
                   </span>
                 </p>
               </div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-600 dark:bg-sky-950/50 dark:text-sky-400">
+              <div className="vision-icon-box h-10 w-10 text-white">
                 <Building2 className="h-5 w-5" />
               </div>
             </div>
           </Card>
 
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1 min-w-0 pr-2">
-                <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                   PRIMARY COST DRIVER
                 </p>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate" title={governance.topCostDriver}>
+                <h3 className="text-lg font-bold text-white tracking-tight truncate" title={governance.topCostDriver}>
                   {governance.topCostDriver}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 pt-0.5">
+                <p className="text-xs text-[#a0aec0] pt-0.5">
                   Dominant service inside account
                 </p>
               </div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400 shrink-0">
+              <div className="vision-icon-box h-10 w-10 text-white shrink-0">
                 <Sparkles className="h-5 w-5" />
               </div>
             </div>
@@ -473,20 +458,20 @@ export function LinkedAccountDetailPage() {
         {/* Visual Charts Grid: 6-Month Spend Trend & Live Service Breakdown */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Chart 1: 6-Month Historical Spend Trajectory */}
-          <Card className="border border-muted/50 shadow-sm transition-all duration-300 hover:shadow-md bg-card/60 backdrop-blur-md">
+          <Card className="vision-card border-none">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+                  <CardTitle className="text-base font-bold tracking-tight text-white">
                     Historical Monthly Spend Trend
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    6-month billing history from SQL Server database
+                  <p className="text-xs text-[#a0aec0] mt-0.5">
+                    6-month billing history
                   </p>
                 </div>
-                <Badge variant="outline" className="text-xs font-semibold px-2 py-0.5">
+                <span className="vision-badge-blue text-xs font-semibold py-0.5 px-2">
                   {financials.historicalMonthlySpend.length} Months
-                </Badge>
+                </span>
               </div>
             </CardHeader>
             <CardContent>
@@ -497,17 +482,17 @@ export function LinkedAccountDetailPage() {
                       data={financials.historicalMonthlySpend}
                       margin={{ top: 10, right: 20, left: 10, bottom: 5 }}
                     >
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
                       <XAxis
                         dataKey="month"
-                        stroke="#94a3b8"
-                        fontSize={12}
+                        stroke="#a0aec0"
+                        fontSize={11}
                         tickLine={false}
                         axisLine={false}
                       />
                       <YAxis
-                        stroke="#94a3b8"
-                        fontSize={12}
+                        stroke="#a0aec0"
+                        fontSize={11}
                         tickLine={false}
                         axisLine={false}
                         tickFormatter={formatCompactCurrency}
@@ -519,19 +504,20 @@ export function LinkedAccountDetailPage() {
                           "Total Spend",
                         ]}
                         contentStyle={{
-                          backgroundColor: "#1e293b",
-                          borderColor: "#334155",
-                          borderRadius: "0.5rem",
+                          backgroundColor: "rgba(6, 11, 40, 0.95)",
+                          borderColor: "rgba(255, 255, 255, 0.12)",
+                          borderRadius: "0.75rem",
                           color: "#fff",
                           fontSize: "12px",
+                          boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
                         }}
                       />
-                      <Bar dataKey="cost" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="cost" fill="#0075ff" radius={[6, 6, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <div className="h-[280px] flex items-center justify-center text-muted-foreground text-xs">
+                <div className="h-[280px] flex items-center justify-center text-[#a0aec0] text-xs">
                   No historical cost data recorded for this account.
                 </div>
               )}
@@ -539,22 +525,22 @@ export function LinkedAccountDetailPage() {
           </Card>
 
           {/* Chart 2: Top AWS Services inside this account */}
-          <Card className="border border-muted/50 shadow-sm transition-all duration-300 hover:shadow-md bg-card/60 backdrop-blur-md">
+          <Card className="vision-card border-none">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">
-                    <Server className="w-4 h-4 text-indigo-500" />
+                  <CardTitle className="text-base font-bold tracking-tight text-white flex items-center gap-2">
+                    <Server className="w-4 h-4 text-[#0075ff]" />
                     Services Inside This Account
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-xs text-[#a0aec0] mt-0.5">
                     Live AWS Cost Explorer breakdown ({financials.currentMonth})
                   </p>
                 </div>
                 {liveAws?.services && (
-                  <Badge variant="outline" className="text-xs font-semibold px-2 py-0.5">
+                  <span className="vision-badge-blue text-xs font-semibold py-0.5 px-2">
                     {liveAws.services.length} Services
-                  </Badge>
+                  </span>
                 )}
               </div>
             </CardHeader>
@@ -577,7 +563,7 @@ export function LinkedAccountDetailPage() {
                           {pieData.map((_, index) => (
                             <Cell
                               key={`cell-${index}`}
-                              fill={PROFESSIONAL_COLORS[index % PROFESSIONAL_COLORS.length]}
+                              fill={VISION_COLORS[index % VISION_COLORS.length]}
                             />
                           ))}
                         </Pie>
@@ -587,11 +573,12 @@ export function LinkedAccountDetailPage() {
                             "Cost",
                           ]}
                           contentStyle={{
-                            backgroundColor: "#1e293b",
-                            borderColor: "#334155",
-                            borderRadius: "0.5rem",
+                            backgroundColor: "rgba(6, 11, 40, 0.95)",
+                            borderColor: "rgba(255, 255, 255, 0.12)",
+                            borderRadius: "0.75rem",
                             color: "#fff",
                             fontSize: "12px",
+                            boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
                           }}
                         />
                       </PieChart>
@@ -607,14 +594,14 @@ export function LinkedAccountDetailPage() {
                             className="w-2.5 h-2.5 rounded-full shrink-0"
                             style={{
                               backgroundColor:
-                                PROFESSIONAL_COLORS[idx % PROFESSIONAL_COLORS.length],
+                                VISION_COLORS[idx % VISION_COLORS.length],
                             }}
                           />
-                          <span className="font-medium text-foreground truncate">
+                          <span className="font-medium text-white truncate">
                             {s.name}
                           </span>
                         </div>
-                        <span className="font-mono font-semibold text-foreground shrink-0">
+                        <span className="font-mono font-bold text-white shrink-0">
                           {fmt(s.value)}
                         </span>
                       </div>
@@ -622,7 +609,7 @@ export function LinkedAccountDetailPage() {
                   </div>
                 </div>
               ) : (
-                <div className="h-[280px] flex items-center justify-center text-muted-foreground text-xs">
+                <div className="h-[280px] flex items-center justify-center text-[#a0aec0] text-xs">
                   {liveAws?.error ? `Live AWS Notice: ${liveAws.error}` : "No live service breakdown available."}
                 </div>
               )}
@@ -632,13 +619,13 @@ export function LinkedAccountDetailPage() {
 
         {/* Section 3: Live Services Table & Regional Distribution */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Detailed Services Table (2 Cols) using Shadcn Table */}
-          <Card className="lg:col-span-2 border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-muted/30">
-              <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+          {/* Detailed Services Table (2 Cols) */}
+          <Card className="lg:col-span-2 vision-card border-none">
+            <CardHeader className="pb-3 border-b border-white/10">
+              <CardTitle className="text-base font-bold tracking-tight text-white">
                 Granular Service Consumption
               </CardTitle>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[#a0aec0]">
                 All AWS service charges billed to account {account.linkedAccountId}
               </p>
             </CardHeader>
@@ -646,28 +633,28 @@ export function LinkedAccountDetailPage() {
               {liveAws?.services && liveAws.services.length > 0 ? (
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-b border-muted/30 bg-muted/20 hover:bg-transparent">
-                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <TableRow className="border-b border-white/10 hover:bg-transparent">
+                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
                         AWS Service
                       </TableHead>
-                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[140px]">
+                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[140px]">
                         Cost
                       </TableHead>
-                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[110px]">
+                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[110px]">
                         Share %
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {liveAws.services.map((s, idx) => (
-                      <TableRow key={idx} className="hover:bg-muted/30">
-                        <TableCell className="py-2.5 px-4 font-medium text-xs text-foreground">
+                      <TableRow key={idx} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors">
+                        <TableCell className="py-2.5 px-4 font-medium text-xs text-white">
                           {s.service}
                         </TableCell>
-                        <TableCell className="py-2.5 px-4 text-right font-mono font-semibold text-xs text-foreground">
+                        <TableCell className="py-2.5 px-4 text-right font-mono font-bold text-xs text-white">
                           {fmt(s.cost)}
                         </TableCell>
-                        <TableCell className="py-2.5 px-4 text-right font-medium text-xs text-indigo-600 dark:text-indigo-400">
+                        <TableCell className="py-2.5 px-4 text-right font-bold text-xs text-[#00c5ff]">
                           {s.sharePct}%
                         </TableCell>
                       </TableRow>
@@ -675,7 +662,7 @@ export function LinkedAccountDetailPage() {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-xs text-muted-foreground py-8 text-center">
+                <p className="text-xs text-[#a0aec0] py-8 text-center">
                   Service-level details could not be retrieved from AWS Cost Explorer.
                 </p>
               )}
@@ -683,15 +670,15 @@ export function LinkedAccountDetailPage() {
           </Card>
 
           {/* Regional Footprint (1 Col) */}
-          <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-muted/30">
+          <Card className="vision-card border-none">
+            <CardHeader className="pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-indigo-500" />
+                <Globe className="w-4 h-4 text-[#0075ff]" />
                 <div>
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+                  <CardTitle className="text-base font-bold tracking-tight text-white">
                     Regional Footprint
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[#a0aec0]">
                     Geographic distribution of spend
                   </p>
                 </div>
@@ -703,16 +690,16 @@ export function LinkedAccountDetailPage() {
                   {liveAws.regions.slice(0, 6).map((r, idx) => (
                     <div key={idx} className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-foreground font-mono">
+                        <span className="font-semibold text-white font-mono">
                           {r.region}
                         </span>
-                        <span className="font-mono text-muted-foreground">
+                        <span className="font-mono text-[#a0aec0]">
                           {fmt(r.cost)} ({r.sharePct}%)
                         </span>
                       </div>
-                      <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-indigo-500 rounded-full"
+                          className="h-full bg-gradient-to-r from-[#0075ff] to-[#00c5ff] rounded-full"
                           style={{ width: `${Math.min(r.sharePct, 100)}%` }}
                         />
                       </div>
@@ -720,7 +707,7 @@ export function LinkedAccountDetailPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-muted-foreground py-8 text-center">
+                <p className="text-xs text-[#a0aec0] py-8 text-center">
                   No regional data available.
                 </p>
               )}

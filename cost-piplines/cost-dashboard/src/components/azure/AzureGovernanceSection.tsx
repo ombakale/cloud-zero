@@ -173,7 +173,7 @@ export function AzureGovernanceSection({
             <ShieldCheck className="h-5 w-5 text-blue-600" />
             Azure Budgets & Governance
           </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-[#a0aec0] mt-0.5">
             Management-configured Azure budgets, spending thresholds, and RBAC permission checks
           </p>
         </div>
@@ -193,12 +193,12 @@ export function AzureGovernanceSection({
         <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">Budget Coverage</span>
+              <span className="text-xs font-medium text-[#a0aec0]">Budget Coverage</span>
               <PieChart className="h-4 w-4 text-blue-600" />
             </div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">{coveragePct}%</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[#a0aec0]">
                 ({budgetedAccounts} of {totalAccounts} subs)
               </span>
             </div>
@@ -209,7 +209,7 @@ export function AzureGovernanceSection({
         <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">Total Budget Allocated</span>
+              <span className="text-xs font-medium text-[#a0aec0]">Total Budget Allocated</span>
               <Wallet className="h-4 w-4 text-emerald-600" />
             </div>
             <div className="mt-2">
@@ -224,7 +224,7 @@ export function AzureGovernanceSection({
         <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">Active Month Spend</span>
+              <span className="text-xs font-medium text-[#a0aec0]">Active Month Spend</span>
               <Building2 className="h-4 w-4 text-indigo-600" />
             </div>
             <div className="mt-2">
@@ -239,14 +239,14 @@ export function AzureGovernanceSection({
         <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">Permission Restricted</span>
+              <span className="text-xs font-medium text-[#a0aec0]">Permission Restricted</span>
               <Lock className="h-4 w-4 text-purple-600" />
             </div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className={`text-2xl font-bold tracking-tight ${permissionDeniedCount > 0 ? "text-purple-600" : "text-slate-900 dark:text-slate-100"}`}>
                 {permissionDeniedCount}
               </span>
-              <span className="text-xs text-muted-foreground">subs missing RBAC</span>
+              <span className="text-xs text-[#a0aec0]">subs missing RBAC</span>
             </div>
           </CardContent>
         </Card>
@@ -260,12 +260,12 @@ export function AzureGovernanceSection({
               <Wallet className="h-4 w-4 text-blue-600" />
               Azure Subscriptions Budget Tracking
             </CardTitle>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-[#a0aec0] mt-0.5">
               Live consumption against budgets configured in Azure Portal
             </p>
           </div>
           <div className="relative w-64">
-            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#a0aec0]" />
             <input
               type="text"
               placeholder="Search subscription or budget..."
@@ -294,7 +294,7 @@ export function AzureGovernanceSection({
               <TableBody>
                 {paginatedBudgets.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="py-8 text-center text-xs text-muted-foreground">
+                    <TableCell colSpan={6} className="py-8 text-center text-xs text-[#a0aec0]">
                       No budget entries found. Run "Sync Azure Budgets" to pull from Azure.
                     </TableCell>
                   </TableRow>
@@ -308,9 +308,9 @@ export function AzureGovernanceSection({
                       <TableRow key={idx} className="border-b border-slate-100/60 dark:border-slate-800/40 text-xs hover:bg-slate-50/50 dark:hover:bg-slate-900/30">
                         <TableCell className="font-medium">
                           <div>{b["Linked Account"]}</div>
-                          <div className="text-[10px] text-muted-foreground font-mono">{b["Account ID"]}</div>
+                          <div className="text-[10px] text-[#a0aec0] font-mono">{b["Account ID"]}</div>
                         </TableCell>
-                        <TableCell className="text-muted-foreground">{b["Budget Name"]}</TableCell>
+                        <TableCell className="text-[#a0aec0]">{b["Budget Name"]}</TableCell>
                         <TableCell className="text-right font-semibold">
                           {b["Budget Limit"] ? `₹${b["Budget Limit"].toLocaleString()}` : "—"}
                         </TableCell>
@@ -331,7 +331,7 @@ export function AzureGovernanceSection({
                               <span className="text-[11px] font-medium">{b["% Utilized"]}%</span>
                             </div>
                           ) : (
-                            <span className="text-muted-foreground">—</span>
+                            <span className="text-[#a0aec0]">—</span>
                           )}
                         </TableCell>
                         <TableCell className="text-center">
@@ -371,7 +371,7 @@ export function AzureGovernanceSection({
 
           {/* Pagination */}
           {totalBudgetPages > 1 && (
-            <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-muted-foreground">
+            <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-[#a0aec0]">
               <span>
                 Page {pageBudgets} of {totalBudgetPages}
               </span>
@@ -405,12 +405,12 @@ export function AzureGovernanceSection({
                 <AlertTriangle className="h-4 w-4 text-amber-500" />
                 Unbudgeted & Permission Restricted Subscriptions
               </CardTitle>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-xs text-[#a0aec0] mt-0.5">
                 Active spending subscriptions lacking an allocated budget or requiring Azure RBAC permissions
               </p>
             </div>
             <div className="relative w-64">
-              <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+              <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#a0aec0]" />
               <input
                 type="text"
                 placeholder="Search..."
@@ -451,7 +451,7 @@ export function AzureGovernanceSection({
                           </Badge>
                         )}
                       </TableCell>
-                      <TableCell className="text-muted-foreground text-[11px]">
+                      <TableCell className="text-[#a0aec0] text-[11px]">
                         {u["Error Message"] || "Configure budget in Azure Portal > Cost Management > Budgets."}
                       </TableCell>
                     </TableRow>
@@ -461,7 +461,7 @@ export function AzureGovernanceSection({
             </div>
 
             {totalUnbudgetedPages > 1 && (
-              <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-muted-foreground">
+              <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-[#a0aec0]">
                 <span>
                   Page {pageUnbudgeted} of {totalUnbudgetedPages}
                 </span>

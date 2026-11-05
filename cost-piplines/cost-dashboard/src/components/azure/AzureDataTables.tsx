@@ -344,25 +344,25 @@ export function AzureDataTables({
                                 Top Meter Details
                             </CardTitle>
 
-                            <p className="mt-1 text-xs text-muted-foreground">
+                            <p className="mt-1 text-xs text-[#a0aec0]">
                                 Meter-level Azure costs for{" "}
                                 {activeMonthName}
                             </p>
                         </div>
 
                         <div className="text-left sm:text-right">
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs text-[#a0aec0]">
                                 Filtered total
                             </p>
 
-                            <p className="text-sm font-semibold text-foreground">
+                            <p className="text-sm font-semibold text-white">
                                 {formatCurrency(totalCost)}
                             </p>
                         </div>
                     </div>
 
                     <div className="relative w-full sm:max-w-md">
-                        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a0aec0]" />
 
                         <input
                             type="search"
@@ -374,7 +374,7 @@ export function AzureDataTables({
                             }
                             placeholder="Search meter, category, service, or resource group..."
                             aria-label="Search Azure meter details"
-                            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                            className="h-9 w-full rounded-md border border-white/10 bg-[#080d28]/90 text-white border-white/10 pl-9 pr-3 text-sm outline-none transition-colors placeholder:text-[#a0aec0] focus-visible:ring-2 focus-visible:ring-blue-500/40"
                         />
                     </div>
                 </CardHeader>
@@ -473,7 +473,7 @@ export function AzureDataTables({
                                         ) => (
                                             <TableRow
                                                 key={`${meter.Month}-${getMeterName(meter)}-${getResourceGroup(meter)}-${index}`}
-                                                className="hover:bg-muted/30"
+                                                className="hover:bg-white/[0.04]"
                                             >
                                                 <TableCell
                                                     className="max-w-[280px] truncate py-3 font-medium"
@@ -486,7 +486,7 @@ export function AzureDataTables({
                                                 </TableCell>
 
                                                 <TableCell
-                                                    className="max-w-[200px] truncate py-3 text-muted-foreground"
+                                                    className="max-w-[200px] truncate py-3 text-[#a0aec0]"
                                                     title={
                                                         getCategory(meter)
                                                     }
@@ -496,7 +496,7 @@ export function AzureDataTables({
                                                 </TableCell>
 
                                                 <TableCell
-                                                    className="max-w-[230px] truncate py-3 text-muted-foreground"
+                                                    className="max-w-[230px] truncate py-3 text-[#a0aec0]"
                                                     title={
                                                         meter.Service
                                                     }
@@ -506,7 +506,7 @@ export function AzureDataTables({
                                                 </TableCell>
 
                                                 <TableCell
-                                                    className="max-w-[230px] truncate py-3 text-muted-foreground"
+                                                    className="max-w-[230px] truncate py-3 text-[#a0aec0]"
                                                     title={
                                                         getResourceGroup(meter)
                                                     }
@@ -530,14 +530,14 @@ export function AzureDataTables({
                                             className="h-48 text-center"
                                         >
                                             <div className="space-y-1">
-                                                <p className="text-sm font-medium text-foreground">
+                                                <p className="text-sm font-medium text-white">
                                                     No
                                                     meter
                                                     data
                                                     found
                                                 </p>
 
-                                                <p className="text-xs text-muted-foreground">
+                                                <p className="text-xs text-[#a0aec0]">
                                                     No
                                                     meter
                                                     costs
@@ -556,8 +556,8 @@ export function AzureDataTables({
                         </Table>
                     </div>
 
-                    <div className="mt-4 flex flex-col gap-3 border-t border-muted/30 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs text-muted-foreground">
+                    <div className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-xs text-[#a0aec0]">
                             Showing {startRow}-
                             {endRow} of{" "}
                             {filteredMeters.length}{" "}
@@ -572,7 +572,7 @@ export function AzureDataTables({
                                 }
                                 disabled={page <= 1}
                                 aria-label="Previous page"
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-background transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-[#080d28]/90 text-white border-white/10 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 <ChevronLeft className="h-4 w-4" />
                             </button>
@@ -592,7 +592,7 @@ export function AzureDataTables({
                                     totalPages
                                 }
                                 aria-label="Next page"
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-background transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-[#080d28]/90 text-white border-white/10 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 <ChevronRight className="h-4 w-4" />
                             </button>

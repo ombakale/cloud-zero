@@ -3,8 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Navbar, type AccountOption } from "@/components/Navbar";
-import { AdminRequestsModal } from "@/components/AdminRequestsModal";
-import { useAccountRequests } from "@/lib/useAccountRequests";
 import { useCsv } from "@/lib/useCsv";
 import type {
   MonthTotal,
@@ -156,9 +154,7 @@ function CoverageGauge({
 
 export function MultiCloudOverviewPage() {
   const navigate = useNavigate();
-  const { records } = useAccountRequests();
-  const [isAdminRequestsOpen, setIsAdminRequestsOpen] = useState(false);
-
+    
   // AWS Account State
   const [awsAccounts, setAwsAccounts] = useState<AccountOption[]>(DEFAULT_AWS_ACCOUNTS);
   const [selectedAwsAccount, setSelectedAwsAccount] = useState<string>("account-1");
@@ -456,13 +452,15 @@ export function MultiCloudOverviewPage() {
                   <ArrowRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
 
+                
                 <Link
-                  to="/newrequest"
+                  to="/connect"
                   className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 text-xs font-bold shadow-xs transition-all"
                 >
-                  <Plus className="w-4 h-4" />
-                  <span>New Request</span>
+                  <Sparkles className="w-4 h-4" />
+                  <span>Connect Account</span>
                 </Link>
+
               </div>
             </div>
 
@@ -1092,11 +1090,7 @@ export function MultiCloudOverviewPage() {
           </div>
         </main>
 
-        {/* Requests Modal */}
-        <AdminRequestsModal
-          isOpen={isAdminRequestsOpen}
-          onClose={() => setIsAdminRequestsOpen(false)}
-        />
+        
       </div>
     </TooltipProvider>
   );

@@ -15,7 +15,6 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import {
   Search,
   ArrowRight,
@@ -242,7 +241,7 @@ export function LinkedAccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased">
+    <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased selection:bg-[#0075ff] selection:text-white">
       {/* Top Navbar */}
       <Navbar
         activeProvider="aws"
@@ -251,18 +250,18 @@ export function LinkedAccountsPage() {
         onAwsAccountChange={setSelectedAwsAccount}
       />
 
-      <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6">
+      <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-8 sm:px-6">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-muted/30 pb-3">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+          <div className="flex items-center gap-3">
+            <div className="vision-icon-box h-10 w-10 shrink-0 text-white">
               <Layers className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-foreground">
+              <h2 className="text-lg font-bold tracking-tight text-white">
                 AWS Linked Accounts Directory
               </h2>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[#a0aec0]">
                 Member account inventory, billing trajectory, and budget enforcement
               </p>
             </div>
@@ -270,15 +269,15 @@ export function LinkedAccountsPage() {
 
           {/* Account and Month Selectors */}
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-muted-foreground">Payer:</span>
+            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#a0aec0]">Payer:</span>
               <select
                 value={selectedAwsAccount}
                 onChange={(e) => setSelectedAwsAccount(e.target.value)}
-                className="text-xs font-medium bg-background border border-input rounded-md px-2.5 py-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50 cursor-pointer"
+                className="text-xs font-bold bg-transparent text-white focus:outline-none cursor-pointer"
               >
                 {awsAccounts.map((acc) => (
-                  <option key={acc.id} value={acc.id}>
+                  <option key={acc.id} value={acc.id} className="bg-[#060b26] text-white">
                     {acc.name}
                   </option>
                 ))}
@@ -286,18 +285,18 @@ export function LinkedAccountsPage() {
             </div>
 
             {availableMonths.length > 0 && (
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-muted-foreground">Month:</span>
+              <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#a0aec0]">Month:</span>
                 <select
                   value={selectedMonth}
                   onChange={(e) => {
                     setSelectedMonth(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="text-xs font-medium bg-background border border-input rounded-md px-2.5 py-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50 cursor-pointer"
+                  className="text-xs font-bold bg-transparent text-white focus:outline-none cursor-pointer"
                 >
                   {availableMonths.map((m) => (
-                    <option key={m} value={m}>
+                    <option key={m} value={m} className="bg-[#060b26] text-white">
                       {m}
                     </option>
                   ))}
@@ -309,7 +308,7 @@ export function LinkedAccountsPage() {
               onClick={fetchLinkedAccounts}
               disabled={loading}
               title="Refresh Accounts"
-              className="p-1.5 rounded-md border border-input bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              className="p-2 rounded-xl border border-white/10 bg-[#080d28] hover:bg-white/10 text-[#a0aec0] hover:text-white transition-colors cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             </button>
@@ -320,94 +319,94 @@ export function LinkedAccountsPage() {
         {data && (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
             {/* Card 1: Org Accounts */}
-            <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+            <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                     ORG ACCOUNTS
                   </p>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {data.totalLinkedAccounts}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground pt-0.5">
-                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                  <div className="flex items-center gap-2 text-xs text-[#a0aec0] pt-0.5">
+                    <span className="text-[#01b574] font-medium">
                       {data.activeAccountsCount} active
                     </span>
                     <span>•</span>
-                    <span className="text-slate-500">
+                    <span className="text-[#a0aec0]">
                       {data.suspendedAccountsCount} closed
                     </span>
                   </div>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+                <div className="vision-icon-box h-10 w-10 text-white">
                   <Building2 className="h-5 w-5" />
                 </div>
               </div>
             </Card>
 
             {/* Card 2: Total Month Spend */}
-            <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+            <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                     {formatMonthName(data.selectedMonth).toUpperCase()} SPEND
                   </p>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {fmt(data.totalSpend)}
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 pt-0.5">
+                  <p className="text-xs text-[#a0aec0] pt-0.5">
                     Across {data.activeAccountsCount} member accounts
                   </p>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+                <div className="vision-icon-box h-10 w-10 text-white">
                   <DollarSign className="h-5 w-5" />
                 </div>
               </div>
             </Card>
 
             {/* Card 3: Budget Coverage */}
-            <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+            <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                     BUDGET COVERAGE
                   </p>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {data.activeAccountsCount > 0
                       ? `${Math.min(100, (data.budgetedCount / data.activeAccountsCount) * 100).toFixed(1)}%`
                       : "0%"}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground pt-0.5">
-                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                  <div className="flex items-center gap-2 text-xs pt-0.5">
+                    <span className="text-[#01b574] font-medium">
                       {data.budgetedCount} budgeted
                     </span>
                     <span>•</span>
-                    <span className="text-amber-600 dark:text-amber-400 font-medium">
+                    <span className="text-[#e31a1a] font-medium">
                       {data.unbudgetedCount} unbudgeted
                     </span>
                   </div>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-600 dark:bg-sky-950/50 dark:text-sky-400">
+                <div className="vision-icon-box h-10 w-10 text-white">
                   <PieChart className="h-5 w-5" />
                 </div>
               </div>
             </Card>
 
             {/* Card 4: Top Cost Account */}
-            <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+            <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1 min-w-0 pr-2">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
                     TOP CONTRIBUTOR
                   </p>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate" title={data.accounts[0]?.accountName}>
+                  <h3 className="text-lg font-bold text-white tracking-tight truncate" title={data.accounts[0]?.accountName}>
                     {data.accounts[0]?.accountName || "N/A"}
                   </h3>
-                  <p className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold pt-0.5">
+                  <p className="text-xs text-[#00c5ff] font-semibold pt-0.5">
                     {fmt(data.accounts[0]?.currentSpend || 0)}
                   </p>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400 shrink-0">
+                <div className="vision-icon-box h-10 w-10 text-white shrink-0">
                   <TrendingUp className="h-5 w-5" />
                 </div>
               </div>
@@ -415,15 +414,15 @@ export function LinkedAccountsPage() {
           </div>
         )}
 
-        {/* Directory Card with Search, Filter & Shadcn Table */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
-          <CardHeader className="pb-3 border-b border-muted/30">
+        {/* Directory Card with Search, Filter & Table */}
+        <Card className="vision-card border-none">
+          <CardHeader className="pb-3 border-b border-white/10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+                <CardTitle className="text-base font-bold text-white tracking-tight">
                   Member Accounts Inventory
                 </CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-xs text-[#a0aec0] mt-0.5">
                   Detailed billing, active governance status, and direct deep-dive analysis
                 </p>
               </div>
@@ -431,33 +430,33 @@ export function LinkedAccountsPage() {
               {/* Status & Budget Quick Filters */}
               <div className="flex flex-wrap items-center gap-2">
                 {/* Status Toggle */}
-                <div className="flex items-center bg-muted/40 p-0.5 rounded-lg border border-input text-xs">
+                <div className="flex items-center bg-[#080d28]/90 p-1 rounded-xl border border-white/10 text-xs">
                   <button
                     onClick={() => { setStatusFilter("ALL"); setCurrentPage(1); }}
-                    className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       statusFilter === "ALL"
-                        ? "bg-background text-indigo-600 dark:text-indigo-400 shadow-xs font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-[#0075ff] text-white shadow-sm"
+                        : "text-[#a0aec0] hover:text-white"
                     }`}
                   >
                     All
                   </button>
                   <button
                     onClick={() => { setStatusFilter("ACTIVE"); setCurrentPage(1); }}
-                    className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       statusFilter === "ACTIVE"
-                        ? "bg-background text-emerald-600 dark:text-emerald-400 shadow-xs font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-[#0075ff] text-white shadow-sm"
+                        : "text-[#a0aec0] hover:text-white"
                     }`}
                   >
                     Active
                   </button>
                   <button
                     onClick={() => { setStatusFilter("SUSPENDED"); setCurrentPage(1); }}
-                    className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       statusFilter === "SUSPENDED"
-                        ? "bg-background text-rose-600 dark:text-rose-400 shadow-xs font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-[#0075ff] text-white shadow-sm"
+                        : "text-[#a0aec0] hover:text-white"
                     }`}
                   >
                     Suspended
@@ -465,33 +464,33 @@ export function LinkedAccountsPage() {
                 </div>
 
                 {/* Budget Toggle */}
-                <div className="flex items-center bg-muted/40 p-0.5 rounded-lg border border-input text-xs">
+                <div className="flex items-center bg-[#080d28]/90 p-1 rounded-xl border border-white/10 text-xs">
                   <button
                     onClick={() => { setBudgetFilter("ALL"); setCurrentPage(1); }}
-                    className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       budgetFilter === "ALL"
-                        ? "bg-background text-indigo-600 dark:text-indigo-400 shadow-xs font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-[#0075ff] text-white shadow-sm"
+                        : "text-[#a0aec0] hover:text-white"
                     }`}
                   >
                     All
                   </button>
                   <button
                     onClick={() => { setBudgetFilter("BUDGETED"); setCurrentPage(1); }}
-                    className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       budgetFilter === "BUDGETED"
-                        ? "bg-background text-sky-600 dark:text-sky-400 shadow-xs font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-[#0075ff] text-white shadow-sm"
+                        : "text-[#a0aec0] hover:text-white"
                     }`}
                   >
                     Budgeted
                   </button>
                   <button
                     onClick={() => { setBudgetFilter("UNBUDGETED"); setCurrentPage(1); }}
-                    className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       budgetFilter === "UNBUDGETED"
-                        ? "bg-background text-amber-600 dark:text-amber-400 shadow-xs font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-[#0075ff] text-white shadow-sm"
+                        : "text-[#a0aec0] hover:text-white"
                     }`}
                   >
                     Unbudgeted
@@ -500,9 +499,9 @@ export function LinkedAccountsPage() {
               </div>
             </div>
 
-            {/* Search Input matching DataTables.tsx */}
+            {/* Search Input */}
             <div className="relative mt-3">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
               <input
                 type="text"
                 placeholder="Search by account name, 12-digit ID, or service driver..."
@@ -511,7 +510,7 @@ export function LinkedAccountsPage() {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-background pl-8 pr-3 py-1.5 text-xs rounded-md border border-input focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50"
+                className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
               />
             </div>
           </CardHeader>
@@ -519,24 +518,24 @@ export function LinkedAccountsPage() {
           <CardContent className="p-0">
             {loading ? (
               <div className="py-20 text-center space-y-3">
-                <RefreshCw className="w-6 h-6 text-indigo-500 animate-spin mx-auto" />
-                <p className="text-xs font-medium text-muted-foreground">
-                  Loading member accounts from database...
+                <RefreshCw className="w-6 h-6 text-[#0075ff] animate-spin mx-auto" />
+                <p className="text-xs font-medium text-[#a0aec0]">
+                  Loading member accounts from live telemetry...
                 </p>
               </div>
             ) : error ? (
               <div className="py-16 text-center space-y-3 px-4">
-                <AlertTriangle className="w-8 h-8 text-rose-500 mx-auto" />
-                <p className="text-xs font-semibold text-rose-600">{error}</p>
+                <AlertTriangle className="w-8 h-8 text-[#e31a1a] mx-auto" />
+                <p className="text-xs font-semibold text-[#e31a1a]">{error}</p>
                 <button
                   onClick={fetchLinkedAccounts}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+                  className="vision-button-primary px-3 py-1.5 text-xs font-semibold rounded-xl text-white cursor-pointer"
                 >
                   Retry
                 </button>
               </div>
             ) : paginatedAccounts.length === 0 ? (
-              <div className="py-16 text-center text-muted-foreground text-xs space-y-2">
+              <div className="py-16 text-center text-[#a0aec0] text-xs space-y-2">
                 <p>No member accounts found matching your filters.</p>
                 <button
                   onClick={() => {
@@ -544,7 +543,7 @@ export function LinkedAccountsPage() {
                     setStatusFilter("ALL");
                     setBudgetFilter("ALL");
                   }}
-                  className="text-xs text-indigo-600 dark:text-indigo-400 underline font-medium cursor-pointer"
+                  className="text-xs text-[#0075ff] underline font-medium cursor-pointer"
                 >
                   Reset filters
                 </button>
@@ -552,29 +551,29 @@ export function LinkedAccountsPage() {
             ) : (
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-muted/30 bg-muted/20 hover:bg-transparent">
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <TableRow className="border-b border-white/10 hover:bg-transparent">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
                       Account Name & ID
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider w-[100px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] w-[100px]">
                       Status
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[120px]">
                       Current Spend
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[120px]">
                       Prior Spend
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[110px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[110px]">
                       MoM Variance
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] w-[120px]">
                       Governance
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
                       Top Cost Driver
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-center w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-center w-[120px]">
                       Action
                     </TableHead>
                   </TableRow>
@@ -585,22 +584,22 @@ export function LinkedAccountsPage() {
                     const isNegativeMoM = acc.momChangePercent < 0;
 
                     return (
-                      <TableRow key={acc.linkedAccountId} className="hover:bg-muted/30">
+                      <TableRow key={acc.linkedAccountId} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors">
                         {/* Name and ID */}
                         <TableCell className="py-3 px-4">
                           <div className="flex flex-col">
-                            <span className="font-semibold text-xs text-foreground">
+                            <span className="font-semibold text-xs text-white">
                               {acc.accountName}
                             </span>
-                            <div className="flex items-center gap-1.5 mt-0.5 text-muted-foreground text-[11px] font-mono">
+                            <div className="flex items-center gap-1.5 mt-0.5 text-[#a0aec0] text-[11px] font-mono">
                               <span>{acc.linkedAccountId}</span>
                               <button
                                 onClick={() => copyToClipboard(acc.linkedAccountId)}
                                 title="Copy Account ID"
-                                className="hover:text-foreground transition-colors cursor-pointer"
+                                className="hover:text-white transition-colors cursor-pointer"
                               >
                                 {copiedId === acc.linkedAccountId ? (
-                                  <Check className="w-3 h-3 text-emerald-500" />
+                                  <Check className="w-3 h-3 text-[#01b574]" />
                                 ) : (
                                   <Copy className="w-3 h-3" />
                                 )}
@@ -612,29 +611,23 @@ export function LinkedAccountsPage() {
                         {/* Status */}
                         <TableCell className="py-3 px-4">
                           {acc.status === "ACTIVE" ? (
-                            <Badge
-                              variant="outline"
-                              className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800 text-[10px] font-semibold"
-                            >
+                            <span className="vision-badge-green text-[10px] font-semibold py-0.5 px-2">
                               ACTIVE
-                            </Badge>
+                            </span>
                           ) : (
-                            <Badge
-                              variant="outline"
-                              className="bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400 border-rose-300 dark:border-rose-800 text-[10px] font-semibold"
-                            >
+                            <span className="vision-badge-red text-[10px] font-semibold py-0.5 px-2">
                               {acc.status}
-                            </Badge>
+                            </span>
                           )}
                         </TableCell>
 
                         {/* Current Spend */}
-                        <TableCell className="py-3 px-4 text-right font-semibold whitespace-nowrap text-xs text-foreground font-mono">
+                        <TableCell className="py-3 px-4 text-right font-bold whitespace-nowrap text-xs text-white font-mono">
                           {fmt(acc.currentSpend)}
                         </TableCell>
 
                         {/* Previous Spend */}
-                        <TableCell className="py-3 px-4 text-right whitespace-nowrap text-muted-foreground text-xs font-medium font-mono">
+                        <TableCell className="py-3 px-4 text-right whitespace-nowrap text-[#a0aec0] text-xs font-medium font-mono">
                           {fmt(acc.previousSpend)}
                         </TableCell>
 
@@ -644,10 +637,10 @@ export function LinkedAccountsPage() {
                             <span
                               className={`inline-flex items-center gap-1 ${
                                 isPositiveMoM
-                                  ? "text-rose-600 dark:text-rose-400 font-semibold"
+                                  ? "text-[#e31a1a] font-bold"
                                   : isNegativeMoM
-                                  ? "text-emerald-600 dark:text-emerald-400 font-semibold"
-                                  : "text-muted-foreground"
+                                  ? "text-[#01b574] font-bold"
+                                  : "text-[#a0aec0]"
                               }`}
                             >
                               {isPositiveMoM && <TrendingUp className="w-3.5 h-3.5" />}
@@ -656,40 +649,31 @@ export function LinkedAccountsPage() {
                               {acc.momChangePercent}%
                             </span>
                           ) : (
-                            <span className="text-muted-foreground">—</span>
+                            <span className="text-[#a0aec0]">—</span>
                           )}
                         </TableCell>
 
                         {/* Budget Status */}
                         <TableCell className="py-3 px-4">
                           {acc.status.toUpperCase() !== "ACTIVE" ? (
-                            <Badge
-                              variant="outline"
-                              className="bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-slate-300 dark:border-slate-700 text-[10px] font-semibold"
-                            >
+                            <span className="vision-badge-blue text-[10px] font-semibold py-0.5 px-2">
                               Closed
-                            </Badge>
+                            </span>
                           ) : acc.hasBudget ? (
-                            <Badge
-                              variant="outline"
-                              className="bg-sky-50 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300 border-sky-300 dark:border-sky-800 text-[10px] font-semibold"
-                            >
-                              <ShieldCheck className="w-3 h-3 mr-1" />
+                            <span className="vision-badge-green text-[10px] font-semibold py-0.5 px-2 flex items-center gap-1 w-fit">
+                              <ShieldCheck className="w-3 h-3" />
                               Budgeted
-                            </Badge>
+                            </span>
                           ) : (
-                            <Badge
-                              variant="outline"
-                              className="bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400 border-amber-300 dark:border-amber-800 text-[10px] font-semibold"
-                            >
-                              <AlertTriangle className="w-3 h-3 mr-1" />
+                            <span className="vision-badge-red text-[10px] font-semibold py-0.5 px-2 flex items-center gap-1 w-fit">
+                              <AlertTriangle className="w-3 h-3" />
                               No Budget
-                            </Badge>
+                            </span>
                           )}
                         </TableCell>
 
                         {/* Top Cost Driver */}
-                        <TableCell className="py-3 px-4 text-muted-foreground text-xs font-medium truncate max-w-[160px]">
+                        <TableCell className="py-3 px-4 text-[#a0aec0] text-xs font-medium truncate max-w-[160px]">
                           {acc.topCostDriver}
                         </TableCell>
 
@@ -697,10 +681,10 @@ export function LinkedAccountsPage() {
                         <TableCell className="py-3 px-4 text-center">
                           <Link
                             to={`/linked-accounts/${encodeURIComponent(acc.linkedAccountId || "")}?account=${encodeURIComponent(selectedAwsAccount)}${selectedMonth ? `&month=${encodeURIComponent(selectedMonth)}` : ""}`}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-md border border-input bg-background hover:bg-muted text-foreground transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] hover:border-[#0075ff]/50 text-white transition-all cursor-pointer"
                           >
                             <span>Open</span>
-                            <ArrowRight className="w-3 h-3 text-muted-foreground" />
+                            <ArrowRight className="w-3 h-3 text-[#a0aec0]" />
                           </Link>
                         </TableCell>
                       </TableRow>
@@ -710,9 +694,9 @@ export function LinkedAccountsPage() {
               </Table>
             )}
 
-            {/* Pagination Controls matching DataTables.tsx */}
-            <div className="flex items-center justify-between p-4 border-t border-muted/30">
-              <div className="text-xs text-muted-foreground">
+            {/* Pagination Controls */}
+            <div className="flex items-center justify-between p-4 border-t border-white/10">
+              <div className="text-xs text-[#a0aec0]">
                 {filteredAccounts.length > 0 ? (
                   `Showing ${(currentPage - 1) * ITEMS_PER_PAGE + 1}-${Math.min(
                     currentPage * ITEMS_PER_PAGE,
@@ -722,23 +706,23 @@ export function LinkedAccountsPage() {
                   "0 of 0 accounts"
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronLeft size={16} />
+                  <ChevronLeft size={14} />
                 </button>
-                <span className="text-xs font-medium min-w-[32px] text-center">
+                <span className="text-xs font-medium min-w-[32px] text-center text-white">
                   {currentPage} / {totalPages || 1}
                 </span>
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages || totalPages === 0}
-                  className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronRight size={16} />
+                  <ChevronRight size={14} />
                 </button>
               </div>
             </div>

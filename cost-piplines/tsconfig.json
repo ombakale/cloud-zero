@@ -14,11 +14,10 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.js",
-    "prisma.config.js"
+    "drizzle.config.ts"
   ],
   "exclude": [
     "node_modules",
-    "prisma/migrations"
+    "cost-dashboard"
   ]
 }
-

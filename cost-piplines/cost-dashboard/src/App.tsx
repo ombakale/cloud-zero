@@ -14,9 +14,6 @@ import {
   Layers,
   ChevronDown,
   ArrowRight,
-  Sparkles,
-  RefreshCw,
-  TrendingUp,
 } from "lucide-react";
 
 interface ErrorBoundaryProps {
@@ -45,16 +42,16 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10 my-8 shadow-sm">
-          <h2 className="text-base font-bold text-rose-600 mb-2">
+        <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10 my-8 shadow-lg backdrop-blur-md">
+          <h2 className="text-base font-bold text-rose-400 mb-2">
             Something went wrong rendering this section
           </h2>
-          <p className="text-xs text-muted-foreground mb-4">
+          <p className="text-xs text-[#a0aec0] mb-4">
             {this.state.error?.message || "An unexpected error occurred."}
           </p>
           <button
             onClick={() => this.setState({ hasError: false, error: null })}
-            className="px-4 py-2 text-xs font-semibold rounded-xl bg-rose-600 text-white hover:bg-rose-700 transition-colors cursor-pointer shadow-xs"
+            className="vision-button-primary px-4 py-2 text-xs font-semibold rounded-xl text-white cursor-pointer"
           >
             Try Again
           </button>
@@ -244,7 +241,7 @@ export default function App() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-slate-50/80 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased">
+      <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased selection:bg-[#0075ff] selection:text-white">
         {/* Modern Top Navbar */}
         <Navbar
           activeProvider={activeProvider}
@@ -252,34 +249,28 @@ export default function App() {
         />
 
         {/* ================================================================= */}
-        {/* MODERN CONTROL RIBBON (Account + Billing Period + Quick Actions) */}
+        {/* VISION UI CONTROL RIBBON (Account + Billing Period + Quick Actions) */}
         {/* ================================================================= */}
-        <div className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 px-4 py-3 sm:px-6 lg:px-8 shadow-2xs">
+        <div className="border-b border-white/10 bg-[#060b26]/75 backdrop-blur-md px-4 py-3 sm:px-6 lg:px-8">
           <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4">
             {/* Left: Active Provider Badge & Context Title */}
             <div className="flex items-center gap-3">
-              <div
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-black text-sm shadow-2xs ${
-                  activeProvider === "aws"
-                    ? "bg-amber-500/10 text-amber-600 border border-amber-500/20"
-                    : "bg-sky-500/10 text-sky-600 border border-sky-500/20"
-                }`}
-              >
+              <div className="vision-icon-box h-10 w-10 shrink-0 font-black text-sm text-white">
                 {activeProvider === "aws" ? "AWS" : "AZ"}
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">
+                <div className="flex items-center gap-2.5">
+                  <h1 className="text-base font-bold tracking-tight text-white">
                     {activeProvider === "aws"
                       ? "Amazon Web Services FinOps"
                       : "Microsoft Azure FinOps"}
                   </h1>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="vision-badge-green text-[10px] font-semibold py-0.5 px-2 flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#01b574] animate-pulse" />
                     Live Telemetry
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-[#a0aec0]">
                   {activeProvider === "aws"
                     ? "Detailed cost breakdowns, utilization, MoM fluctuations & budgets"
                     : "Subscriptions, resource groups, meters & budget compliance"}
@@ -291,30 +282,30 @@ export default function App() {
             <div className="flex flex-wrap items-center gap-3">
               {/* Account Dropdown for AWS */}
               {activeProvider === "aws" && awsAccounts.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl border border-slate-200/90 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/50 px-3 py-1.5 shadow-2xs">
-                  <Layers className="h-4 w-4 text-amber-500 shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
+                  <Layers className="h-4 w-4 text-[#0075ff] shrink-0" />
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a0aec0]">
                       Root Account
                     </span>
                     <div className="relative">
                       <select
                         value={selectedAwsAccount}
                         onChange={(e) => setSelectedAwsAccount(e.target.value)}
-                        className="appearance-none bg-transparent pr-5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-none cursor-pointer"
+                        className="appearance-none bg-transparent pr-5 text-xs font-bold text-white focus:outline-none cursor-pointer"
                         title="Select AWS Account"
                       >
                         {awsAccounts.map((acc) => (
                           <option
                             key={acc.id}
                             value={acc.id}
-                            className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-medium"
+                            className="bg-[#060b26] text-white font-medium"
                           >
                             {acc.accountName || acc.name}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a0aec0]" />
                     </div>
                   </div>
                 </div>
@@ -322,30 +313,30 @@ export default function App() {
 
               {/* Account Dropdown for Azure */}
               {activeProvider === "azure" && azureAccounts.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl border border-slate-200/90 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/50 px-3 py-1.5 shadow-2xs">
-                  <Layers className="h-4 w-4 text-sky-500 shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
+                  <Layers className="h-4 w-4 text-[#00c5ff] shrink-0" />
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a0aec0]">
                       Billing Account
                     </span>
                     <div className="relative">
                       <select
                         value={selectedAzureAccount}
                         onChange={(e) => setSelectedAzureAccount(e.target.value)}
-                        className="appearance-none bg-transparent pr-5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-none cursor-pointer max-w-[200px] truncate"
+                        className="appearance-none bg-transparent pr-5 text-xs font-bold text-white focus:outline-none cursor-pointer max-w-[200px] truncate"
                         title="Select Azure Account"
                       >
                         {azureAccounts.map((acc) => (
                           <option
                             key={acc.id}
                             value={acc.id}
-                            className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-medium"
+                            className="bg-[#060b26] text-white font-medium"
                           >
                             {acc.accountName || acc.name}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a0aec0]" />
                     </div>
                   </div>
                 </div>
@@ -353,30 +344,30 @@ export default function App() {
 
               {/* Billing Period Selector */}
               {months.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl border border-slate-200/90 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/50 px-3 py-1.5 shadow-2xs">
-                  <CalendarDays className="h-4 w-4 text-indigo-500 shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
+                  <CalendarDays className="h-4 w-4 text-[#0075ff] shrink-0" />
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a0aec0]">
                       Billing Period
                     </span>
                     <div className="relative">
                       <select
                         value={selectedMonth}
                         onChange={(e) => setSelectedMonth(e.target.value)}
-                        className="appearance-none bg-transparent pr-5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-none cursor-pointer"
+                        className="appearance-none bg-transparent pr-5 text-xs font-bold text-white focus:outline-none cursor-pointer"
                         title="Select Billing Month"
                       >
                         {months.map((m) => (
                           <option
                             key={m}
                             value={m}
-                            className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-medium"
+                            className="bg-[#060b26] text-white font-medium"
                           >
                             {formatMonthName(m)}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a0aec0]" />
                     </div>
                   </div>
                 </div>
@@ -385,10 +376,10 @@ export default function App() {
               {/* Quick Jump Action Link */}
               <Link
                 to={activeProvider === "aws" ? "/linked-accounts" : "/azure/subscriptions"}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] hover:border-[#0075ff]/50 px-3 py-2 text-xs font-semibold text-white transition-all shadow-sm"
               >
                 <span>{activeProvider === "aws" ? "Linked Accounts" : "Subscriptions"}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-slate-400" />
+                <ArrowRight className="h-3.5 w-3.5 text-[#a0aec0]" />
               </Link>
             </div>
           </div>

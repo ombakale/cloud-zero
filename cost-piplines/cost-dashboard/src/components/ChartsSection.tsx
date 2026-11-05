@@ -1,4 +1,3 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useCsv } from "@/lib/useCsv";
 import type {
   MonthTotal,
@@ -32,25 +31,22 @@ const formatCompactCurrency = (value: unknown) => {
 };
 
 const formatFullCurrency = (value: unknown) => {
-  const num = typeof value === "number" ? value : Number(value ?? 0);
-  return `$${num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  const num = typeof value === "number" ? value : Number(value || 0);
+  return `$${(isNaN(num) ? 0 : num).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 };
 
-// 13 professional, harmonious shades from Indigo/Blue to Teal/Green to Slate-Gray
-const PROFESSIONAL_COLORS = [
-  "#4f46e5", // Indigo 600
-  "#6366f1", // Indigo 500
-  "#7c3aed", // Violet 600
-  "#8b5cf6", // Violet 500
-  "#0284c7", // Sky 700
-  "#0ea5e9", // Sky 600
-  "#0d9488", // Teal 600
-  "#14b8a6", // Teal 500
-  "#059669", // Emerald 600
-  "#10b981", // Emerald 500
-  "#64748b", // Slate 500
-  "#94a3b8", // Slate 400
-  "#cbd5e1", // Slate 300
+// Vision UI neon vibrant color palette
+const VISION_COLORS = [
+  "#0075ff", // Electric Blue
+  "#00c5ff", // Cyan
+  "#7551ff", // Purple
+  "#01b574", // Emerald
+  "#ffb547", // Amber
+  "#2cd9ff", // Ice
+  "#e31a1a", // Red
+  "#a0aec0", // Slate
+  "#38bdf8", // Sky
+  "#c084fc", // Lavender
 ];
 
 interface ChartsSectionProps {
@@ -68,7 +64,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
     `${basePath}/category_monthly_costs.csv`,
   );
 
-  // Filter AWS monthly totals strictly to the last 6 months (April to September 2026)
+  // Filter AWS monthly totals strictly to the last 6 months
   const monthlyLast6 = useMemo(() => {
     const sorted = [...(monthly || [])]
       .filter((m) => m && m.Month)
@@ -100,219 +96,192 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
         Cost: Number(s.Cost ?? (s as any)["Total Cost"] ?? 0),
       }))
       .sort((a, b) => b.Cost - a.Cost)
-      .slice(0, 10);
+      .slice(0, 8);
   }, [topServices]);
 
-  // Dynamically load categories matching selectedMonth, sorted by cost descending
-  const latestCategoryMonth = useMemo(() => {
-    if (!categories || categories.length === 0) return [];
-    
-    const availableMonths = [...new Set(categories.filter((c) => c && c.Month).map((c) => c.Month))].sort();
-    const targetMonth = (selectedMonth && availableMonths.includes(selectedMonth))
+  // Normalize and group category monthly costs
+  const { latestCategoryMonth, activeCategoryMonthName, totalCategoryCost } = useMemo(() => {
+    if (!categories || categories.length === 0) {
+      return { latestCategoryMonth: [], activeCategoryMonthName: "Latest Month", totalCategoryCost: 0 };
+    }
+
+    const availableMonths = [...new Set(categories.map((c) => c.Month).filter(Boolean))].sort();
+    const effectiveCategoryMonth = selectedMonth && availableMonths.includes(selectedMonth)
       ? selectedMonth
       : availableMonths[availableMonths.length - 1];
 
-    if (!targetMonth) return [];
+    const currentRows = categories.filter((c) => c.Month === effectiveCategoryMonth);
+    const total = currentRows.reduce((sum, c) => sum + (Number(c.Cost) || 0), 0);
 
-    const rawData = categories.filter((c) => c && c.Month === targetMonth);
-    return [...rawData]
-      .map((c) => ({ Category: c.Category || "Other", Cost: Number(c.Cost) || 0 }))
-      .sort((a, b) => b.Cost - a.Cost);
-  }, [categories, selectedMonth]);
+    const formatMonthName = (mStr: string) => {
+      if (!mStr) return "Latest Month";
+      const parts = mStr.split("-");
+      if (parts.length < 2) return mStr;
+      const [year, month] = parts;
+      const date = new Date(Number(year), Number(month) - 1, 1);
+      if (isNaN(date.getTime())) return mStr;
+      return date.toLocaleString("default", { month: "long", year: "numeric" });
+    };
 
-  const totalCategoryCost = useMemo(() => {
-    return latestCategoryMonth.reduce((sum, c) => sum + c.Cost, 0);
-  }, [latestCategoryMonth]);
-
-  // Format month name for title displaying
-  const formatMonthName = (mStr: string) => {
-    if (!mStr || typeof mStr !== "string") return "";
-    const parts = mStr.split("-");
-    if (parts.length < 2) return mStr;
-    const [year, month] = parts;
-    const date = new Date(Number(year), Number(month) - 1, 1);
-    if (isNaN(date.getTime())) return mStr;
-    return date.toLocaleString("default", { month: "long", year: "numeric" });
-  };
-
-  const activeCategoryMonthName = useMemo(() => {
-    if (!categories || categories.length === 0) return "Latest Month";
-    const availableMonths = [...new Set(categories.filter((c) => c && c.Month).map((c) => c.Month))].sort();
-    const targetMonth = (selectedMonth && availableMonths.includes(selectedMonth))
-      ? selectedMonth
-      : availableMonths[availableMonths.length - 1];
-    return targetMonth ? formatMonthName(targetMonth) : "Latest Month";
+    return {
+      latestCategoryMonth: currentRows.sort((a, b) => Number(b.Cost) - Number(a.Cost)),
+      activeCategoryMonthName: formatMonthName(effectiveCategoryMonth),
+      totalCategoryCost: total,
+    };
   }, [categories, selectedMonth]);
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      {/* 6 Months Cost Trend */}
-      <Card className="lg:col-span-2 border border-muted/50 shadow-sm transition-all duration-300 hover:shadow-md bg-card/60 backdrop-blur-md">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-semibold tracking-tight text-foreground">Last 6 Months Cost Trend</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            {/* Added generous right margin (35) to prevent label clipping, and left margin (15) to space out Y-axis */}
-            <AreaChart data={trendData} margin={{ top: 20, right: 35, left: 15, bottom: 5 }}>
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+      {/* 1. Monthly Spend Trend (Area Chart) */}
+      <div className="vision-card p-6 flex flex-col justify-between">
+        <div className="pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white tracking-tight">Monthly Spend Overview</h3>
+              <p className="text-xs text-[#a0aec0] mt-0.5">Historical trajectory over last 6 months</p>
+            </div>
+            <span className="text-xs font-bold text-[#01b574] px-2 py-0.5 rounded-full bg-[#01b574]/15 border border-[#01b574]/30">
+              Live
+            </span>
+          </div>
+        </div>
+        <div className="pt-2">
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={trendData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
               <defs>
-                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25}/>
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                <linearGradient id="visionAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#0075ff" stopOpacity={0.7} />
+                  <stop offset="95%" stopColor="#0075ff" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-              <XAxis 
-                dataKey="Month" 
-                stroke="#94a3b8" 
-                fontSize={12} 
-                tickLine={false} 
-                axisLine={false} 
-                dy={10}
-              />
-              <YAxis 
-                stroke="#94a3b8" 
-                fontSize={12} 
-                tickLine={false} 
-                axisLine={false} 
-                tickFormatter={formatCompactCurrency}
-                width={55} // Set width to ensure fully visible compact currency ticks
-                dx={-5}
-              />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.08)" vertical={false} />
+              <XAxis dataKey="Month" stroke="#a0aec0" fontSize={11} tickLine={false} axisLine={false} dy={8} />
+              <YAxis stroke="#a0aec0" fontSize={11} tickLine={false} axisLine={false} tickFormatter={formatCompactCurrency} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.96)",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "12px",
-                  boxShadow: "0 8px 30px rgb(0 0 0 / 0.08)",
+                  backgroundColor: "rgba(6, 11, 40, 0.95)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  borderRadius: "14px",
+                  backdropFilter: "blur(20px)",
                   fontSize: "12px",
-                  fontFamily: "inherit",
+                  color: "#ffffff",
                 }}
-                formatter={(value) => [formatFullCurrency(value), "Total Cost"]}
+                formatter={(value) => [formatFullCurrency(value), "Total Spend"]}
               />
-              {/* Vertical Reference Line to mark the selected month */}
-              {selectedMonth && isSelectedMonthInTrend && (
-                <ReferenceLine 
-                  x={selectedMonth} 
-                  stroke="#4f46e5" 
-                  strokeDasharray="4 4" 
+              {isSelectedMonthInTrend && (
+                <ReferenceLine
+                  x={selectedMonth}
+                  stroke="#00c5ff"
+                  strokeDasharray="3 3"
                   strokeWidth={2}
-                  label={{ 
-                    value: "Viewing", 
-                    fill: "#4f46e5", 
-                    fontSize: 10, 
-                    fontWeight: "bold",
-                    position: "top",
-                    offset: 10
-                  }} 
                 />
               )}
               <Area
                 type="monotone"
                 dataKey="Total Cost"
-                stroke="#6366f1"
-                fill="url(#areaGradient)"
-                strokeWidth={2.5}
-                activeDot={{ r: 6, strokeWidth: 0, fill: "#6366f1" }}
+                stroke="#0075ff"
+                fill="url(#visionAreaGradient)"
+                strokeWidth={3}
+                activeDot={{ r: 6, strokeWidth: 0, fill: "#00c5ff" }}
               />
             </AreaChart>
           </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Top 10 Services */}
-      <Card className="border border-muted/50 shadow-sm transition-all duration-300 hover:shadow-md bg-card/60 backdrop-blur-md">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-semibold tracking-tight text-foreground">Top 10 Services (Cumulative)</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={320}>
-            {/* Added standard margins to protect axis values */}
+      {/* 2. Top Services (Bar Chart) */}
+      <div className="vision-card p-6 flex flex-col justify-between">
+        <div className="pb-4">
+          <h3 className="text-base font-bold text-white tracking-tight">Top Services by Spend</h3>
+          <p className="text-xs text-[#a0aec0] mt-0.5">Highest cost drivers across accounts</p>
+        </div>
+        <div className="pt-2">
+          <ResponsiveContainer width="100%" height={260}>
             <BarChart
               data={normalizedTopServices}
               layout="vertical"
-              margin={{ top: 5, right: 20, left: 10, bottom: 10 }}
+              margin={{ top: 5, right: 15, left: 10, bottom: 5 }}
             >
               <defs>
-                <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.8}/>
-                  <stop offset="100%" stopColor="#c084fc" stopOpacity={1}/>
+                <linearGradient id="visionBarGradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#0075ff" stopOpacity={0.8} />
+                  <stop offset="100%" stopColor="#00c5ff" stopOpacity={1} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
-              <XAxis 
-                type="number" 
-                stroke="#94a3b8" 
-                fontSize={12} 
-                tickLine={false} 
-                axisLine={false} 
-                tickFormatter={formatCompactCurrency} // Make X axis compact to avoid overlapping
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.08)" horizontal={false} />
+              <XAxis
+                type="number"
+                stroke="#a0aec0"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={formatCompactCurrency}
                 dy={5}
               />
               <YAxis
                 type="category"
                 dataKey="Service"
-                width={130} // Generous width for service labels
-                stroke="#94a3b8"
+                width={110}
+                stroke="#a0aec0"
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(t) => (t && typeof t === "string" && t.length > 15) ? `${t.slice(0, 15)}...` : String(t || "")}
+                tickFormatter={(t) => (t && typeof t === "string" && t.length > 13) ? `${t.slice(0, 13)}...` : String(t || "")}
                 dx={-5}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.96)",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "12px",
-                  boxShadow: "0 8px 30px rgb(0 0 0 / 0.08)",
+                  backgroundColor: "rgba(6, 11, 40, 0.95)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  borderRadius: "14px",
+                  backdropFilter: "blur(20px)",
                   fontSize: "12px",
-                  fontFamily: "inherit",
+                  color: "#ffffff",
                 }}
-                formatter={(value) => [formatFullCurrency(value), "Total Cost"]}
+                formatter={(value) => [formatFullCurrency(value), "Cost"]}
               />
-              <Bar dataKey="Cost" fill="url(#barGradient)" radius={[0, 6, 6, 0]} barSize={16} />
+              <Bar dataKey="Cost" fill="url(#visionBarGradient)" radius={[0, 8, 8, 0]} barSize={14} />
             </BarChart>
           </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Cost by Category */}
-      <Card className="border border-muted/50 shadow-sm transition-all duration-300 hover:shadow-md bg-card/60 backdrop-blur-md flex flex-col justify-between">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+      {/* 3. Cost by Category (Donut Chart + Legend) */}
+      <div className="vision-card p-6 flex flex-col justify-between">
+        <div className="pb-2">
+          <h3 className="text-base font-bold text-white tracking-tight">
             Cost by Category ({activeCategoryMonthName})
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col md:flex-row items-center justify-between gap-6 py-6 flex-1">
-          {/* Left Column: Clean Donut Chart */}
-          <div className="w-full md:w-1/2 flex justify-center">
-            <ResponsiveContainer width="100%" height={240}>
+          </h3>
+          <p className="text-xs text-[#a0aec0] mt-0.5">Distribution by service domain</p>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-3 flex-1">
+          <div className="w-full sm:w-1/2 flex justify-center">
+            <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie
                   data={latestCategoryMonth}
                   dataKey="Cost"
                   nameKey="Category"
-                  innerRadius={65}
-                  outerRadius={90}
-                  paddingAngle={1.5}
+                  innerRadius={55}
+                  outerRadius={75}
+                  paddingAngle={2}
                 >
                   {latestCategoryMonth.map((c, i) => (
                     <Cell
                       key={i}
-                      fill={PROFESSIONAL_COLORS[i % PROFESSIONAL_COLORS.length]}
-                      className="outline-none stroke-background stroke-2"
+                      fill={VISION_COLORS[i % VISION_COLORS.length]}
+                      className="outline-none"
                     />
                   ))}
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "rgba(255, 255, 255, 0.96)",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "12px",
-                    boxShadow: "0 8px 30px rgb(0 0 0 / 0.08)",
+                    backgroundColor: "rgba(6, 11, 40, 0.95)",
+                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    borderRadius: "14px",
+                    backdropFilter: "blur(20px)",
                     fontSize: "12px",
-                    fontFamily: "inherit",
+                    color: "#ffffff",
                   }}
                   formatter={(value) => [formatFullCurrency(value), "Cost"]}
                 />
@@ -320,28 +289,27 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
             </ResponsiveContainer>
           </div>
 
-          {/* Right Column: Beautiful Scrollable Tabular Legend */}
-          <div className="w-full md:w-1/2 flex flex-col justify-center">
-            <div className="flex flex-col gap-1.5 max-h-[240px] overflow-y-auto pr-1 select-none scrollbar-thin">
+          <div className="w-full sm:w-1/2 flex flex-col justify-center">
+            <div className="flex flex-col gap-1 max-h-[200px] overflow-y-auto pr-1 select-none scrollbar-thin">
               {latestCategoryMonth.map((c, i) => {
                 const pct = totalCategoryCost > 0 ? (c.Cost / totalCategoryCost) * 100 : 0;
-                const color = PROFESSIONAL_COLORS[i % PROFESSIONAL_COLORS.length];
+                const color = VISION_COLORS[i % VISION_COLORS.length];
                 return (
-                  <div 
-                    key={i} 
-                    className="flex items-center justify-between text-xs py-1 border-b border-muted/15 last:border-0 hover:bg-muted/10 px-2 rounded transition-colors"
+                  <div
+                    key={i}
+                    className="flex items-center justify-between text-xs py-1 px-2 rounded-lg hover:bg-white/[0.04] transition-colors"
                   >
                     <div className="flex items-center gap-2 truncate">
-                      <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-                      <span className="font-medium text-foreground truncate" title={c.Category}>
+                      <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+                      <span className="font-medium text-slate-300 truncate" title={c.Category}>
                         {c.Category}
                       </span>
                     </div>
-                    <div className="flex items-center gap-3 text-right shrink-0">
-                      <span className="font-semibold text-foreground">
+                    <div className="flex items-center gap-2 text-right shrink-0">
+                      <span className="font-bold text-white text-[11px]">
                         {formatFullCurrency(c.Cost)}
                       </span>
-                      <span className="text-xs text-muted-foreground w-8 font-medium">
+                      <span className="text-[10px] text-[#a0aec0] font-mono">
                         {pct.toFixed(0)}%
                       </span>
                     </div>
@@ -350,8 +318,8 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
               })}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

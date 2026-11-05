@@ -166,7 +166,7 @@ export function AzureSubscriptionDetailPage() {
         <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
           Loading 360° Azure Subscription Analytics & FOCUS Cost Data...
         </p>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[#a0aec0]">
           Querying SQL database and FOCUS storage exports for subscription {subscriptionId}
         </p>
       </div>
@@ -177,12 +177,12 @@ export function AzureSubscriptionDetailPage() {
     return (
       <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 flex flex-col items-center justify-center p-6 space-y-4 font-sans">
         <AlertTriangle className="w-10 h-10 text-rose-500" />
-        <h2 className="text-xl font-bold tracking-tight text-foreground">Failed to Load Subscription Profile</h2>
+        <h2 className="text-xl font-bold tracking-tight text-white">Failed to Load Subscription Profile</h2>
         <p className="text-xs text-rose-600 max-w-md text-center">{error}</p>
         <div className="flex gap-2.5 pt-2">
           <Link
             to="/azure/subscriptions"
-            className="px-3 py-1.5 text-xs font-semibold rounded-md border border-input bg-background hover:bg-muted text-foreground transition-colors"
+            className="px-3 py-1.5 text-xs font-semibold rounded-md border border-white/10 bg-[#080d28]/90 text-white hover:bg-muted text-white transition-colors"
           >
             ← Back to Directory
           </Link>
@@ -207,23 +207,23 @@ export function AzureSubscriptionDetailPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased pb-12">
+    <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased pb-12">
       {/* Top Breadcrumb Header Bar */}
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-6 py-3 backdrop-blur shadow-xs flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#060b26]/85 backdrop-blur-xl border-b border-white/10 text-white px-6 py-3 backdrop-blur shadow-xs flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link
             to="/azure/subscriptions"
-            className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground px-2.5 py-1 rounded-md border border-input bg-background hover:bg-muted transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-medium text-[#a0aec0] hover:text-white px-2.5 py-1 rounded-md border border-white/10 bg-[#080d28]/90 text-white hover:bg-muted transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Subscriptions Directory</span>
           </Link>
-          <span className="text-muted-foreground/40">/</span>
+          <span className="text-[#a0aec0]/40">/</span>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-foreground">
+            <span className="text-sm font-bold text-white">
               {account.accountName}
             </span>
-            <span className="font-mono text-xs text-muted-foreground bg-muted/40 px-2 py-0.5 rounded border border-muted/50">
+            <span className="font-mono text-xs text-[#a0aec0] bg-muted/40 px-2 py-0.5 rounded border border-muted/50">
               {account.linkedAccountId}
             </span>
           </div>
@@ -232,7 +232,7 @@ export function AzureSubscriptionDetailPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={fetchDetails}
-            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md border border-input bg-background hover:bg-muted text-foreground transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md border border-white/10 bg-[#080d28]/90 text-white hover:bg-muted text-white transition-colors cursor-pointer"
           >
             <RefreshCw className="w-3 h-3 text-sky-500" />
             <span>Refresh Live Azure</span>
@@ -242,11 +242,11 @@ export function AzureSubscriptionDetailPage() {
 
       <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6">
         {/* Subscription Identity Card */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card border-none">
           <div className="p-5 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2.5">
-                <h1 className="text-xl font-bold tracking-tight text-foreground">
+                <h1 className="text-xl font-bold tracking-tight text-white">
                   {account.accountName}
                 </h1>
                 {account.status === "ACTIVE" ? (
@@ -283,17 +283,17 @@ export function AzureSubscriptionDetailPage() {
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground pt-1">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-[#a0aec0] pt-1">
                 {/* Subscription ID */}
                 <div className="flex items-center gap-1.5 font-mono bg-muted/40 px-2.5 py-0.5 rounded border border-muted/50">
-                  <span className="text-muted-foreground">Subscription ID:</span>
-                  <span className="font-semibold text-foreground">
+                  <span className="text-[#a0aec0]">Subscription ID:</span>
+                  <span className="font-semibold text-white">
                     {account.linkedAccountId}
                   </span>
                   <button
                     onClick={() => copyToClipboard(account.linkedAccountId)}
                     title="Copy Subscription ID"
-                    className="hover:text-foreground transition-colors cursor-pointer"
+                    className="hover:text-white transition-colors cursor-pointer"
                   >
                     {copiedId === account.linkedAccountId ? (
                       <Check className="w-3 h-3 text-emerald-500" />
@@ -305,8 +305,8 @@ export function AzureSubscriptionDetailPage() {
 
                 {/* Billing Account / Tenant */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-muted-foreground">Billing Scope:</span>
-                  <span className="font-semibold text-foreground">
+                  <span className="text-[#a0aec0]">Billing Scope:</span>
+                  <span className="font-semibold text-white">
                     {account.rootAccount.name}
                   </span>
                 </div>
@@ -314,8 +314,8 @@ export function AzureSubscriptionDetailPage() {
                 {/* Data Format */}
                 <div className="flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-sky-500" />
-                  <span className="text-muted-foreground">Data Standard:</span>
-                  <span className="font-medium text-foreground">
+                  <span className="text-[#a0aec0]">Data Standard:</span>
+                  <span className="font-medium text-white">
                     FinOps FOCUS 1.0 Export
                   </span>
                 </div>
@@ -337,7 +337,7 @@ export function AzureSubscriptionDetailPage() {
 
         {/* 4 Financial KPI Cards */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
                 <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -356,7 +356,7 @@ export function AzureSubscriptionDetailPage() {
             </div>
           </Card>
 
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
                 <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -373,7 +373,7 @@ export function AzureSubscriptionDetailPage() {
                           ? "text-rose-600 dark:text-rose-500"
                           : isNegativeMoM
                           ? "text-emerald-600 dark:text-emerald-500"
-                          : "text-muted-foreground"
+                          : "text-[#a0aec0]"
                       }`}
                     >
                       {isPositiveMoM && <TrendingUp className="h-3.5 w-3.5" />}
@@ -382,7 +382,7 @@ export function AzureSubscriptionDetailPage() {
                       {financials.momChangePercent}% MoM
                     </span>
                   ) : (
-                    <span className="text-muted-foreground">Prior month total</span>
+                    <span className="text-[#a0aec0]">Prior month total</span>
                   )}
                 </div>
               </div>
@@ -392,7 +392,7 @@ export function AzureSubscriptionDetailPage() {
             </div>
           </Card>
 
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
                 <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -403,7 +403,7 @@ export function AzureSubscriptionDetailPage() {
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 pt-0.5">
                   Volatility:{" "}
-                  <span className="font-semibold text-foreground">
+                  <span className="font-semibold text-white">
                     {variance?.volatilityCategory || "Stable"}
                   </span>
                 </p>
@@ -414,7 +414,7 @@ export function AzureSubscriptionDetailPage() {
             </div>
           </Card>
 
-          <Card className="border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-xs transition-all hover:border-slate-300">
+          <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1 min-w-0 pr-2">
                 <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -437,14 +437,14 @@ export function AzureSubscriptionDetailPage() {
         {/* Visual Charts Grid: 6-Month Spend Trend & Live Service Breakdown */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Chart 1: 6-Month Historical Spend Trajectory */}
-          <Card className="border border-muted/50 shadow-sm transition-all duration-300 hover:shadow-md bg-card/60 backdrop-blur-md">
+          <Card className="vision-card border-none">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+                  <CardTitle className="text-lg font-semibold tracking-tight text-white">
                     Historical Monthly Spend Trend
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-xs text-[#a0aec0] mt-0.5">
                     Monthly billing history from Azure FOCUS dataset
                   </p>
                 </div>
@@ -495,7 +495,7 @@ export function AzureSubscriptionDetailPage() {
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <div className="h-[280px] flex items-center justify-center text-muted-foreground text-xs">
+                <div className="h-[280px] flex items-center justify-center text-[#a0aec0] text-xs">
                   No historical cost data recorded for this subscription.
                 </div>
               )}
@@ -503,15 +503,15 @@ export function AzureSubscriptionDetailPage() {
           </Card>
 
           {/* Chart 2: Top Azure Services inside this subscription */}
-          <Card className="border border-muted/50 shadow-sm transition-all duration-300 hover:shadow-md bg-card/60 backdrop-blur-md">
+          <Card className="vision-card border-none">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">
+                  <CardTitle className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
                     <Server className="w-4 h-4 text-sky-500" />
                     Services Inside This Subscription
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-xs text-[#a0aec0] mt-0.5">
                     Azure Service breakdown ({financials.currentMonth})
                   </p>
                 </div>
@@ -574,11 +574,11 @@ export function AzureSubscriptionDetailPage() {
                                 PROFESSIONAL_COLORS[idx % PROFESSIONAL_COLORS.length],
                             }}
                           />
-                          <span className="font-medium text-foreground truncate">
+                          <span className="font-medium text-white truncate">
                             {s.name}
                           </span>
                         </div>
-                        <span className="font-mono font-semibold text-foreground shrink-0">
+                        <span className="font-mono font-semibold text-white shrink-0">
                           {fmt(s.value)}
                         </span>
                       </div>
@@ -586,7 +586,7 @@ export function AzureSubscriptionDetailPage() {
                   </div>
                 </div>
               ) : (
-                <div className="h-[280px] flex items-center justify-center text-muted-foreground text-xs">
+                <div className="h-[280px] flex items-center justify-center text-[#a0aec0] text-xs">
                   No service breakdown available.
                 </div>
               )}
@@ -597,12 +597,12 @@ export function AzureSubscriptionDetailPage() {
         {/* Section 3: Services Table & Regional Distribution */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Detailed Services Table */}
-          <Card className="lg:col-span-2 border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-muted/30">
-              <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+          <Card className="lg:col-span-2 vision-card border-none">
+            <CardHeader className="pb-3 border-b border-white/10">
+              <CardTitle className="text-lg font-semibold tracking-tight text-white">
                 Granular Service Consumption
               </CardTitle>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[#a0aec0]">
                 All Azure service charges billed to subscription {account.linkedAccountId}
               </p>
             </CardHeader>
@@ -610,25 +610,25 @@ export function AzureSubscriptionDetailPage() {
               {liveAzure?.services && liveAzure.services.length > 0 ? (
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-b border-muted/30 bg-muted/20 hover:bg-transparent">
-                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <TableRow className="border-b border-white/10 bg-muted/20 hover:bg-transparent">
+                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider">
                         Azure Service
                       </TableHead>
-                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[140px]">
+                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-right w-[140px]">
                         Cost
                       </TableHead>
-                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[110px]">
+                      <TableHead className="py-2.5 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-right w-[110px]">
                         Share %
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {liveAzure.services.map((s, idx) => (
-                      <TableRow key={idx} className="hover:bg-muted/30">
-                        <TableCell className="py-2.5 px-4 font-medium text-xs text-foreground">
+                      <TableRow key={idx} className="border-b border-white/5 hover:bg-white/[0.04]">
+                        <TableCell className="py-2.5 px-4 font-medium text-xs text-white">
                           {s.service}
                         </TableCell>
-                        <TableCell className="py-2.5 px-4 text-right font-mono font-semibold text-xs text-foreground">
+                        <TableCell className="py-2.5 px-4 text-right font-mono font-semibold text-xs text-white">
                           {fmt(s.cost)}
                         </TableCell>
                         <TableCell className="py-2.5 px-4 text-right font-medium text-xs text-sky-600 dark:text-sky-400">
@@ -639,7 +639,7 @@ export function AzureSubscriptionDetailPage() {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-xs text-muted-foreground py-8 text-center">
+                <p className="text-xs text-[#a0aec0] py-8 text-center">
                   Service-level details could not be retrieved from FOCUS data.
                 </p>
               )}
@@ -647,15 +647,15 @@ export function AzureSubscriptionDetailPage() {
           </Card>
 
           {/* Regional Footprint */}
-          <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-muted/30">
+          <Card className="vision-card border-none">
+            <CardHeader className="pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-sky-500" />
                 <div>
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
+                  <CardTitle className="text-lg font-semibold tracking-tight text-white">
                     Regional Footprint
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[#a0aec0]">
                     Geographic distribution of spend
                   </p>
                 </div>
@@ -667,10 +667,10 @@ export function AzureSubscriptionDetailPage() {
                   {liveAzure.regions.slice(0, 6).map((r, idx) => (
                     <div key={idx} className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-foreground font-mono">
+                        <span className="font-semibold text-white font-mono">
                           {r.region}
                         </span>
-                        <span className="font-mono text-muted-foreground">
+                        <span className="font-mono text-[#a0aec0]">
                           {fmt(r.cost)} ({r.sharePct}%)
                         </span>
                       </div>
@@ -684,7 +684,7 @@ export function AzureSubscriptionDetailPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-muted-foreground py-8 text-center">
+                <p className="text-xs text-[#a0aec0] py-8 text-center">
                   No regional data available.
                 </p>
               )}
@@ -694,15 +694,15 @@ export function AzureSubscriptionDetailPage() {
 
         {/* Section 4: Resource Groups Breakdown (if available) */}
         {liveAzure?.resourceGroups && liveAzure.resourceGroups.length > 0 && (
-          <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-muted/30">
+          <Card className="vision-card border-none">
+            <CardHeader className="pb-3 border-b border-white/10">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">
+                  <CardTitle className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
                     <Layers className="w-4 h-4 text-sky-500" />
                     Resource Groups Inside This Subscription
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-xs text-[#a0aec0] mt-0.5">
                     Distribution of cost by Azure Resource Group ({financials.currentMonth})
                   </p>
                 </div>
@@ -714,25 +714,25 @@ export function AzureSubscriptionDetailPage() {
             <CardContent className="p-0">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-muted/30 bg-muted/20 hover:bg-transparent">
-                    <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <TableRow className="border-b border-white/10 bg-muted/20 hover:bg-transparent">
+                    <TableHead className="py-2.5 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider">
                       Resource Group
                     </TableHead>
-                    <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[140px]">
+                    <TableHead className="py-2.5 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-right w-[140px]">
                       Cost
                     </TableHead>
-                    <TableHead className="py-2.5 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right w-[110px]">
+                    <TableHead className="py-2.5 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-right w-[110px]">
                       Share %
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {liveAzure.resourceGroups.slice(0, 10).map((rg, idx) => (
-                    <TableRow key={idx} className="hover:bg-muted/30">
-                      <TableCell className="py-2.5 px-4 font-mono font-medium text-xs text-foreground">
+                    <TableRow key={idx} className="border-b border-white/5 hover:bg-white/[0.04]">
+                      <TableCell className="py-2.5 px-4 font-mono font-medium text-xs text-white">
                         {rg.resourceGroup}
                       </TableCell>
-                      <TableCell className="py-2.5 px-4 text-right font-mono font-semibold text-xs text-foreground">
+                      <TableCell className="py-2.5 px-4 text-right font-mono font-semibold text-xs text-white">
                         {fmt(rg.cost)}
                       </TableCell>
                       <TableCell className="py-2.5 px-4 text-right font-medium text-xs text-sky-600 dark:text-sky-400">

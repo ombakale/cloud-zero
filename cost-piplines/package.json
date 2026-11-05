@@ -16,12 +16,14 @@
     "report:azure": "tsx src/azure_cost_report/index.ts",
     "report:azure:pdf": "tsx src/generate_azure_manager_report_pdf.ts",
     "send:report": "tsx src/send_manager_report_email.ts",
-    "report:email:scheduled": "tsx src/cron_manager_report.ts",
     "test:report": "tsx src/azure_cost_report/self-check.ts",
     "alert:azure": "tsx src/alerts/index.ts",
     "test:alerts": "tsx src/alerts/self-check.ts",
     "sync:azure-budgets": "tsx src/fetch_data/sync-azure-budgets.ts",
-    "reconcile:arm": "tsx src/fetch_data/reconcile-azure-arm.ts"
+    "reconcile:arm": "tsx src/fetch_data/reconcile-azure-arm.ts",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -42,31 +44,26 @@
     "@azure/arm-subscriptions": "^5.1.0",
     "@azure/identity": "^4.13.2",
     "@azure/storage-blob": "^12.33.0",
-    "@prisma/adapter-mssql": "^7.10.0",
-    "@prisma/client": "^7.10.0",
     "cors": "^2.8.5",
     "csv-parse": "^7.0.2",
     "dotenv": "^16.6.1",
+    "drizzle-orm": "^0.39.3",
     "express": "^5.2.1",
     "nodemailer": "^10.0.15",
+    "pg": "^8.13.3",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "recharts": "^3.10.1",
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "@types/mssql": "^12.3.0",
     "@types/node": "^26.6.2",
     "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.11.11",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "prisma": "^7.10.0",
+    "drizzle-kit": "^0.30.4",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
-  },
-  "allowScripts": {
-    "@prisma/engines@7.10.0": true,
-    "prisma@7.10.0": true,
-    "esbuild@0.28.2": true
   }
 }

@@ -1,17 +1,9 @@
 import { useState, useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { useCsv } from "@/lib/useCsv";
 import type { ServiceCost, RecurringRow } from "@/lib/types";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Layers } from "lucide-react";
 
 interface DataTablesProps {
   selectedMonth: string;
@@ -19,64 +11,67 @@ interface DataTablesProps {
 }
 
 export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProps) {
-  // Static latest month fallbacks
-  const { data: services } = useCsv<ServiceCost>(
-    `${basePath}/latest_month_services.csv`,
-  );
-  const { data: recurring } = useCsv<RecurringRow>(
-    `${basePath}/recurring_vs_onetime.csv`,
-  );
+  // 1. Cost by Service (Monthly) - we prefer wide pivot if available, or fall back to single month
+  const { data: wideServices } = useCsv<any>(`${basePath}/cost_by_service_last_6_months.csv`);
+  const { data: services } = useCsv<ServiceCost>(`${basePath}/cost_by_service.csv`);
 
-  // Wide service costs containing full 6 months history
-  const { data: wideServices } = useCsv<any>(`${basePath}/cost_by_service_wide.csv`);
+  // 2. Service Usage Frequency (Recurring vs Onetime)
+  const { data: recurring } = useCsv<RecurringRow>(`${basePath}/recurring_vs_onetime.csv`);
 
-  // Determine if wideServices is formatted as:
-  // Format A (Month-first): [{ Month: "2026-09", "EC2": 100, ... }]
-  // Format B (Service-first): [{ Service: "EC2", "2026-09": 100, "Total Cost": 500, ... }]
-  const isServiceFirst = useMemo(() => {
-    if (!wideServices || wideServices.length === 0) return false;
-    return Boolean(wideServices[0] && ("Service" in wideServices[0] || !("Month" in wideServices[0])));
+  // Extract available months from wideServices to determine default/latest and previous month
+  const { availableMonths, isServiceFirst } = useMemo(() => {
+    if (!wideServices || wideServices.length === 0) {
+      return { availableMonths: [], isServiceFirst: false };
+    }
+
+    const firstRow = wideServices[0];
+    const isServiceFirstFormat = "Service" in firstRow;
+
+    if (isServiceFirstFormat) {
+      // Shape A: Columns are months (e.g. Service, 2026-04, 2026-05)
+      const keys = Object.keys(firstRow).filter((k) => k !== "Service" && k !== "Total Cost");
+      const sortedMonths = keys.filter((k) => /^\d{4}-\d{2}/.test(k)).sort();
+      return { availableMonths: sortedMonths, isServiceFirst: true };
+    } else {
+      // Shape B: Rows are months (e.g. Month, EC2, S3, RDS)
+      const monthsFromRows = wideServices
+        .map((r) => r.Month)
+        .filter((m) => Boolean(m) && /^\d{4}-\d{2}/.test(m))
+        .sort();
+      return { availableMonths: monthsFromRows, isServiceFirst: false };
+    }
   }, [wideServices]);
 
-  // Determine sorted months list from wide dataset
-  const sortedMonths = useMemo(() => {
-    if (!wideServices || wideServices.length === 0) return [];
-    if (isServiceFirst) {
-      const sample = wideServices[0] || {};
-      return Object.keys(sample).filter((k) => /^\d{4}-\d{2}$/.test(k)).sort();
+  // Determine effective current month and previous month for comparison
+  const { effectiveMonth, prevMonth } = useMemo(() => {
+    if (availableMonths.length === 0) {
+      return { effectiveMonth: selectedMonth || null, prevMonth: null };
     }
-    return [...new Set(wideServices.filter((r) => r && r.Month).map((r) => r.Month))].sort();
-  }, [wideServices, isServiceFirst]);
 
-  // Determine effective current month (selectedMonth if available; else latest month in dataset)
-  const effectiveMonth = useMemo(() => {
-    if (selectedMonth && sortedMonths.includes(selectedMonth)) {
-      return selectedMonth;
-    }
-    if (sortedMonths.length > 0) {
-      return sortedMonths[sortedMonths.length - 1];
-    }
-    return selectedMonth || "";
-  }, [selectedMonth, sortedMonths]);
+    const curr = selectedMonth && availableMonths.includes(selectedMonth)
+      ? selectedMonth
+      : availableMonths[availableMonths.length - 1];
 
-  // Determine previous month relative to effectiveMonth
-  const prevMonth = useMemo(() => {
-    if (sortedMonths.length === 0 || !effectiveMonth) return null;
-    const idx = sortedMonths.indexOf(effectiveMonth);
-    return idx > 0 ? sortedMonths[idx - 1] : null;
-  }, [sortedMonths, effectiveMonth]);
+    const currIdx = availableMonths.indexOf(curr);
+    const prev = currIdx > 0 ? availableMonths[currIdx - 1] : null;
 
-  // Dynamically compute the services and costs for effectiveMonth and prevMonth
+    return { effectiveMonth: curr, prevMonth: prev };
+  }, [availableMonths, selectedMonth]);
+
+  // Transform wideServices into comparison list: { Service, CurrentCost, PreviousCost }
   const serviceComparisons = useMemo(() => {
     if (!wideServices || wideServices.length === 0) {
-      return (services || []).map((s) => ({
-        Service: s ? s.Service : "",
-        CurrentCost: s ? s.Cost : 0,
-        PreviousCost: 0,
-      }));
+      if (services && services.length > 0) {
+        return services.map((s) => ({
+          Service: s ? s.Service : "",
+          CurrentCost: Number(s?.Cost ?? 0),
+          PreviousCost: 0,
+        }));
+      }
+      return [];
     }
 
-    const list: { Service: string; CurrentCost: number; PreviousCost: number }[] = [];
+    const list: Array<{ Service: string; CurrentCost: number; PreviousCost: number }> = [];
 
     if (isServiceFirst) {
       // Each row is a service, with months as columns
@@ -124,7 +119,7 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
     if (list.length === 0 && services && services.length > 0) {
       return services.map((s) => ({
         Service: s ? s.Service : "",
-        CurrentCost: s ? s.Cost : 0,
+        CurrentCost: Number(s?.Cost ?? 0),
         PreviousCost: 0,
       }));
     }
@@ -197,22 +192,30 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {/* Cost by Service */}
-      <Card className="flex flex-col h-full border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+      <Card className="vision-card flex flex-col h-full border-none">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold tracking-tight">
-            Cost by Service ({effectiveMonth ? formatMonthName(effectiveMonth) : (selectedMonth ? formatMonthName(selectedMonth) : "Latest Month")})
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                <Layers className="h-4 w-4 text-[#0075ff]" />
+                Cost by Service
+              </CardTitle>
+              <p className="text-xs text-[#a0aec0] mt-0.5">
+                {effectiveMonth ? formatMonthName(effectiveMonth) : (selectedMonth ? formatMonthName(selectedMonth) : "Latest Month")} vs previous period
+              </p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="flex flex-col flex-1 pb-4">
           {/* Search Input */}
           <div className="relative mb-3">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
             <input
               type="text"
               placeholder="Search services..."
               value={searchServices}
               onChange={(e) => handleSearchServices(e.target.value)}
-              className="w-full bg-background pl-8 pr-3 py-1.5 text-sm rounded-md border border-input focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50"
+              className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
             />
           </div>
 
@@ -220,12 +223,12 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
           <div className="flex-1 min-h-[360px]">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead className="max-w-[200px]">Service</TableHead>
-                  <TableHead className="text-right whitespace-nowrap w-[100px]">
+                <TableRow className="border-b border-white/10 hover:bg-transparent">
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] max-w-[200px]">Service</TableHead>
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right whitespace-nowrap w-[100px]">
                     {prevMonth ? formatShortMonthName(prevMonth) : "Prev"}
                   </TableHead>
-                  <TableHead className="text-right whitespace-nowrap w-[100px]">
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right whitespace-nowrap w-[100px]">
                     {effectiveMonth ? formatShortMonthName(effectiveMonth) : (selectedMonth ? formatShortMonthName(selectedMonth) : "Curr")}
                   </TableHead>
                 </TableRow>
@@ -233,21 +236,21 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
               <TableBody>
                 {paginatedServices.length > 0 ? (
                   paginatedServices.map((s, i) => (
-                    <TableRow key={i} className="hover:bg-muted/30">
-                      <TableCell className="max-w-[200px] truncate font-medium py-2.5" title={s.Service}>
+                    <TableRow key={i} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors">
+                      <TableCell className="max-w-[200px] truncate font-medium text-white py-2.5 text-xs" title={s.Service}>
                         {s.Service}
                       </TableCell>
-                      <TableCell className="text-right whitespace-nowrap w-[100px] py-2.5 text-muted-foreground text-xs font-medium">
-                        ${s.PreviousCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <TableCell className="text-right whitespace-nowrap w-[100px] py-2.5 text-[#a0aec0] text-xs font-medium">
+                        ${Number(s.PreviousCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </TableCell>
-                      <TableCell className="text-right font-semibold whitespace-nowrap w-[100px] py-2.5 text-xs">
-                        ${s.CurrentCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <TableCell className="text-right font-bold text-white whitespace-nowrap w-[100px] py-2.5 text-xs">
+                        ${Number(s.CurrentCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={3} className="text-center text-[#a0aec0] py-8 text-xs">
                       No services found
                     </TableCell>
                   </TableRow>
@@ -257,52 +260,57 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted/30">
-            <div className="text-xs text-muted-foreground">
-              {filteredServices.length > 0 ? (
-                `Showing ${(pageServices - 1) * ITEMS_PER_PAGE + 1}-${Math.min(pageServices * ITEMS_PER_PAGE, filteredServices.length)} of ${filteredServices.length}`
-              ) : (
-                "0-0 of 0"
-              )}
-            </div>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
+            <span className="text-xs text-[#a0aec0]">
+              Page {pageServices} of {Math.max(1, totalPagesServices)} ({filteredServices.length} items)
+            </span>
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setPageServices((p) => Math.max(1, p - 1))}
-                disabled={pageServices === 1}
-                className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                disabled={pageServices <= 1}
+                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title="Previous page"
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft className="h-3.5 w-3.5" />
               </button>
-              <span className="text-xs font-medium min-w-[32px] text-center">
-                {pageServices} / {totalPagesServices || 1}
-              </span>
               <button
                 onClick={() => setPageServices((p) => Math.min(totalPagesServices, p + 1))}
-                disabled={pageServices === totalPagesServices || totalPagesServices === 0}
-                className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                disabled={pageServices >= totalPagesServices || totalPagesServices === 0}
+                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title="Next page"
               >
-                <ChevronRight size={16} />
+                <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Service Usage Frequency */}
-      <Card className="flex flex-col h-full border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+      {/* Service Usage Frequency (Recurring vs Onetime) */}
+      <Card className="vision-card flex flex-col h-full border-none">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold tracking-tight">Service Usage Frequency</CardTitle>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                <Layers className="h-4 w-4 text-[#00c5ff]" />
+                Service Usage Frequency
+              </CardTitle>
+              <p className="text-xs text-[#a0aec0] mt-0.5">
+                Recurring infrastructure vs ad-hoc usage
+              </p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="flex flex-col flex-1 pb-4">
           {/* Search Input */}
           <div className="relative mb-3">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
             <input
               type="text"
-              placeholder="Search usage..."
+              placeholder="Search recurring services..."
               value={searchRecurring}
               onChange={(e) => handleSearchRecurring(e.target.value)}
-              className="w-full bg-background pl-8 pr-3 py-1.5 text-sm rounded-md border border-input focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50"
+              className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
             />
           </div>
 
@@ -310,42 +318,42 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
           <div className="flex-1 min-h-[360px]">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead className="max-w-[150px]">Service</TableHead>
-                  <TableHead className="whitespace-nowrap w-[60px]">Months</TableHead>
-                  <TableHead className="w-[120px]">Type</TableHead>
+                <TableRow className="border-b border-white/10 hover:bg-transparent">
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] max-w-[200px]">Service</TableHead>
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-center w-[120px]">Months Active</TableHead>
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[100px]">Classification</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {paginatedRecurring.length > 0 ? (
                   paginatedRecurring.map((r, i) => (
-                    <TableRow key={i} className="hover:bg-muted/30">
-                      <TableCell className="max-w-[150px] truncate font-medium py-2.5" title={r.Service}>
+                    <TableRow key={i} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors">
+                      <TableCell className="max-w-[200px] truncate font-medium text-white py-2.5 text-xs" title={r.Service}>
                         {r.Service}
                       </TableCell>
-                      <TableCell className="whitespace-nowrap w-[60px] py-2.5 text-muted-foreground font-medium">
-                        {(r["Months Active"] ?? (r as any)["Active Months"] ?? "-")}/{(r["Total Months"] ?? (r as any)["Months in Scope"] ?? (r as any)["Total Months in Run"] ?? "-")}
+                      <TableCell className="text-center py-2.5 text-xs">
+                        <span className="font-bold text-white">
+                          {r["Months Active"] ?? 0}
+                        </span>
+                        <span className="text-[#a0aec0]">/{r["Total Months"] ?? 6}</span>
                       </TableCell>
-                      <TableCell className="w-[120px] py-2.5">
-                        <Badge
-                          variant="secondary"
-                          className={`font-semibold text-xs px-2 py-0.5 border ${
+                      <TableCell className="text-right py-2.5">
+                        <span
+                          className={
                             r.Classification === "Recurring"
-                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300"
-                              : r.Classification === "Occasional"
-                                ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300"
-                                : "bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-300"
-                          }`}
+                              ? "vision-badge-green text-[10px] font-semibold py-0.5 px-2"
+                              : "vision-badge-red text-[10px] font-semibold py-0.5 px-2"
+                          }
                         >
-                          {r.Classification}
-                        </Badge>
+                          {r.Classification || "Onetime"}
+                        </span>
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
-                      No services found
+                    <TableCell colSpan={3} className="text-center text-[#a0aec0] py-8 text-xs">
+                      No classification data found
                     </TableCell>
                   </TableRow>
                 )}
@@ -354,31 +362,26 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted/30">
-            <div className="text-xs text-muted-foreground">
-              {filteredRecurring.length > 0 ? (
-                `Showing ${(pageRecurring - 1) * ITEMS_PER_PAGE + 1}-${Math.min(pageRecurring * ITEMS_PER_PAGE, filteredRecurring.length)} of ${filteredRecurring.length}`
-              ) : (
-                "0-0 of 0"
-              )}
-            </div>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
+            <span className="text-xs text-[#a0aec0]">
+              Page {pageRecurring} of {Math.max(1, totalPagesRecurring)} ({filteredRecurring.length} items)
+            </span>
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setPageRecurring((p) => Math.max(1, p - 1))}
-                disabled={pageRecurring === 1}
-                className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                disabled={pageRecurring <= 1}
+                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title="Previous page"
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft className="h-3.5 w-3.5" />
               </button>
-              <span className="text-xs font-medium min-w-[32px] text-center">
-                {pageRecurring} / {totalPagesRecurring || 1}
-              </span>
               <button
                 onClick={() => setPageRecurring((p) => Math.min(totalPagesRecurring, p + 1))}
-                disabled={pageRecurring === totalPagesRecurring || totalPagesRecurring === 0}
-                className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                disabled={pageRecurring >= totalPagesRecurring || totalPagesRecurring === 0}
+                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title="Next page"
               >
-                <ChevronRight size={16} />
+                <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </div>
           </div>
@@ -387,4 +390,3 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
     </div>
   );
 }
-

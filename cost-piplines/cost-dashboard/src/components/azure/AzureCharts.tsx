@@ -79,7 +79,7 @@ interface EmptyChartMessageProps {
  */
 
 const PRICING_MODEL_COLORS = [
-    "#2563eb",
+    "#0075ff",
     "#7c3aed",
     "#0d9488",
     "#f59e0b",
@@ -190,17 +190,15 @@ const truncateLabel = (
  */
 
 const tooltipStyle = {
-    backgroundColor: "rgba(255, 255, 255, 0.98)",
-    border: "1px solid #e2e8f0",
-    borderRadius: "10px",
-    boxShadow: "0 8px 30px rgb(0 0 0 / 0.08)",
+    backgroundColor: "rgba(6, 11, 40, 0.95)",
+    border: "1px solid rgba(255, 255, 255, 0.12)",
+    borderRadius: "12px",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
     fontSize: "12px",
+    color: "#ffffff",
 };
 
-const chartCardClass =
-    "border border-muted/50 bg-card/60 shadow-sm " +
-    "backdrop-blur-md transition-all duration-300 " +
-    "hover:shadow-md";
+const chartCardClass = "vision-card border-none";
 
 export function AzureCharts({
     selectedMonth,
@@ -445,7 +443,7 @@ export function AzureCharts({
                         Monthly Cost Trend
                     </CardTitle>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[#a0aec0]">
                         Total Azure usage cost across all
                         available months
                     </p>
@@ -476,13 +474,13 @@ export function AzureCharts({
                                     >
                                         <stop
                                             offset="5%"
-                                            stopColor="#2563eb"
+                                            stopColor="#0075ff"
                                             stopOpacity={0.3}
                                         />
 
                                         <stop
                                             offset="95%"
-                                            stopColor="#2563eb"
+                                            stopColor="#0075ff"
                                             stopOpacity={0}
                                         />
                                     </linearGradient>
@@ -490,7 +488,7 @@ export function AzureCharts({
 
                                 <CartesianGrid
                                     strokeDasharray="3 3"
-                                    stroke="#e2e8f0"
+                                    stroke="rgba(255, 255, 255, 0.05)"
                                     vertical={false}
                                 />
 
@@ -532,12 +530,12 @@ export function AzureCharts({
                                 {effectiveMonth && (
                                     <ReferenceLine
                                         x={effectiveMonth}
-                                        stroke="#2563eb"
+                                        stroke="#0075ff"
                                         strokeDasharray="4 4"
                                         strokeWidth={2}
                                         label={{
                                             value: "Selected",
-                                            fill: "#2563eb",
+                                            fill: "#0075ff",
                                             fontSize: 10,
                                             fontWeight: 600,
                                             position: "top",
@@ -549,12 +547,12 @@ export function AzureCharts({
                                     type="monotone"
                                     dataKey="Cost"
                                     name="Total Cost"
-                                    stroke="#2563eb"
+                                    stroke="#0075ff"
                                     strokeWidth={2.5}
                                     fill="url(#azureCostGradient)"
                                     activeDot={{
                                         r: 6,
-                                        fill: "#2563eb",
+                                        fill: "#0075ff",
                                         strokeWidth: 0,
                                     }}
                                 />
@@ -574,7 +572,7 @@ export function AzureCharts({
                         Top Services
                     </CardTitle>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[#a0aec0]">
                         Highest-cost services for{" "}
                         {activeMonthName}
                     </p>
@@ -598,7 +596,7 @@ export function AzureCharts({
                             >
                                 <CartesianGrid
                                     strokeDasharray="3 3"
-                                    stroke="#e2e8f0"
+                                    stroke="rgba(255, 255, 255, 0.05)"
                                     horizontal={false}
                                 />
 
@@ -645,7 +643,7 @@ export function AzureCharts({
                                 <Bar
                                     dataKey="cost"
                                     name="Cost"
-                                    fill="#2563eb"
+                                    fill="#0075ff"
                                     radius={[0, 6, 6, 0]}
                                     barSize={18}
                                 />
@@ -667,7 +665,7 @@ export function AzureCharts({
                         Cost by Subscription
                     </CardTitle>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[#a0aec0]">
                         Highest-cost subscriptions for{" "}
                         {activeMonthName}
                     </p>
@@ -693,7 +691,7 @@ export function AzureCharts({
                             >
                                 <CartesianGrid
                                     strokeDasharray="3 3"
-                                    stroke="#e2e8f0"
+                                    stroke="rgba(255, 255, 255, 0.05)"
                                     horizontal={false}
                                 />
 
@@ -762,7 +760,7 @@ export function AzureCharts({
                         Cost by Pricing Model
                     </CardTitle>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[#a0aec0]">
                         Cost distribution for{" "}
                         {activeMonthName}
                     </p>
@@ -836,12 +834,12 @@ export function AzureCharts({
                                 {/* Donut center value */}
 
                                 <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs text-[#a0aec0]">
                                         Total Cost
                                     </span>
 
                                     <span
-                                        className="mt-1 text-lg font-bold text-foreground"
+                                        className="mt-1 text-lg font-bold text-white"
                                         title={formatFullCurrency(
                                             totalPricingModelCost
                                         )}
@@ -902,13 +900,13 @@ export function AzureCharts({
                                                 </div>
 
                                                 <div className="shrink-0 text-right">
-                                                    <p className="text-sm font-semibold text-foreground">
+                                                    <p className="text-sm font-semibold text-white">
                                                         {formatFullCurrency(
                                                             row.cost
                                                         )}
                                                     </p>
 
-                                                    <p className="text-xs text-muted-foreground">
+                                                    <p className="text-xs text-[#a0aec0]">
                                                         {percentage.toFixed(
                                                             1
                                                         )}
@@ -937,7 +935,7 @@ export function AzureCharts({
                         Top Individual Resource Groups
                     </CardTitle>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[#a0aec0]">
                         Most expensive resources for{" "}
                         {activeMonthName}
                     </p>
@@ -961,7 +959,7 @@ export function AzureCharts({
                             >
                                 <CartesianGrid
                                     strokeDasharray="3 3"
-                                    stroke="#e2e8f0"
+                                    stroke="rgba(255, 255, 255, 0.05)"
                                     horizontal={false}
                                 />
 
@@ -1028,7 +1026,7 @@ export function AzureCharts({
                     <CardTitle className="text-lg font-semibold tracking-tight">
                         Cost by Service Category
                     </CardTitle>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[#a0aec0]">
                         {activeMonthName} spend grouped by standard FinOps cloud categories
                     </p>
                 </CardHeader>
@@ -1063,8 +1061,8 @@ export function AzureCharts({
                                     </PieChart>
                                 </ResponsiveContainer>
                                 <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                                    <span className="text-xs text-muted-foreground">Total Cost</span>
-                                    <span className="mt-1 text-lg font-bold text-foreground">
+                                    <span className="text-xs text-[#a0aec0]">Total Cost</span>
+                                    <span className="mt-1 text-lg font-bold text-white">
                                         {formatCompactCurrency(totalCategoryCost)}
                                     </span>
                                 </div>
@@ -1084,7 +1082,7 @@ export function AzureCharts({
                                             </div>
                                             <div className="text-right shrink-0">
                                                 <span className="text-xs font-semibold">{formatCompactCurrency(row.cost)}</span>
-                                                <span className="ml-1.5 text-[10px] text-muted-foreground">({percentage.toFixed(1)}%)</span>
+                                                <span className="ml-1.5 text-[10px] text-[#a0aec0]">({percentage.toFixed(1)}%)</span>
                                             </div>
                                         </div>
                                     );
@@ -1104,7 +1102,7 @@ function EmptyChartMessage({
     message = "No cost data is available for this selection.",
 }: EmptyChartMessageProps) {
     return (
-        <div className="flex h-[320px] items-center justify-center px-4 text-center text-sm text-muted-foreground">
+        <div className="flex h-[320px] items-center justify-center px-4 text-center text-sm text-[#a0aec0]">
             {message}
         </div>
     );

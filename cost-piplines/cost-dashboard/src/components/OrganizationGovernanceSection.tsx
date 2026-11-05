@@ -8,7 +8,6 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { useCsv } from "@/lib/useCsv";
 import { resolveBudgetsForMonth, type AccountSpendInfo } from "@/lib/budgetMatcher";
 import type {
@@ -263,47 +262,49 @@ export function OrganizationGovernanceSection({
   return (
     <div className="space-y-6 pt-2">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-muted/30 pb-3">
-        <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-3">
+          <div className="vision-icon-box h-10 w-10 shrink-0 text-white">
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-foreground">
+            <h2 className="text-lg font-bold tracking-tight text-white">
               AWS Organization & Budget Governance
             </h2>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-[#a0aec0]">
               Account inventory, budget enforcement, and unbudgeted financial exposure
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-xs font-semibold px-2.5 py-1 bg-background/50">
+          <span className="vision-badge-blue text-xs font-semibold py-1 px-3">
             Reporting Period: {monthLabel}
-          </Badge>
+          </span>
         </div>
       </div>
 
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {/* Card 1: Accounts in Organisation */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground">
+              <span className="text-xs font-semibold text-[#a0aec0]">
                 Org Accounts
               </span>
-              <Building2 className="h-4 w-4 text-indigo-500" />
+              <div className="vision-icon-box h-8 w-8 text-white">
+                <Building2 className="h-4 w-4" />
+              </div>
             </div>
-            <div className="mt-2 text-2xl font-bold text-foreground">
+            <div className="mt-2 text-2xl font-bold text-white">
               {summary ? summary.totalAccounts : unbudgetedAccounts.length || "--"}
             </div>
-            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-muted/30 pt-2 text-muted-foreground">
-              <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2 text-[#a0aec0]">
+              <span className="flex items-center gap-1.5 text-[#01b574] font-medium">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#01b574]" />
                 {summary ? `${summary.activeAccounts} active` : "Active accounts"}
               </span>
-              <span className="text-slate-500">
+              <span className="text-[#a0aec0]">
                 {summary ? `${summary.suspendedAccounts} closed` : ""}
               </span>
             </div>
@@ -311,27 +312,29 @@ export function OrganizationGovernanceSection({
         </Card>
 
         {/* Card 2: Accounts with a Budget */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground">
+              <span className="text-xs font-semibold text-[#a0aec0]">
                 Budget Coverage
               </span>
-              <PieChart className="h-4 w-4 text-emerald-500" />
+              <div className="vision-icon-box h-8 w-8 text-white">
+                <PieChart className="h-4 w-4" />
+              </div>
             </div>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-foreground">
+              <span className="text-2xl font-bold text-white">
                 {summary ? `${summary.budgetCoveragePct}%` : "--%"}
               </span>
-              <span className="text-xs text-muted-foreground font-medium">
+              <span className="text-xs text-[#a0aec0] font-medium">
                 {summary ? `${summary.accountsWithBudget}/${summary.activeAccounts}` : "covered"}
               </span>
             </div>
-            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-muted/30 pt-2">
-              <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2">
+              <span className="text-[#01b574] font-medium">
                 {summary ? `${summary.accountsWithBudget} with budget` : "Under budget"}
               </span>
-              <span className="text-amber-600 dark:text-amber-400 font-medium">
+              <span className="text-[#e31a1a] font-medium">
                 {summary ? `${summary.accountsWithNoBudget} no budget` : "No budget"}
               </span>
             </div>
@@ -339,45 +342,49 @@ export function OrganizationGovernanceSection({
         </Card>
 
         {/* Card 3: Spend Under Management */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground">
+              <span className="text-xs font-semibold text-[#a0aec0]">
                 {monthLabel} Active Spend
               </span>
-              <TrendingUp className="h-4 w-4 text-blue-500" />
+              <div className="vision-icon-box h-8 w-8 text-white">
+                <TrendingUp className="h-4 w-4" />
+              </div>
             </div>
-            <div className="mt-2 text-2xl font-bold text-foreground">
-              ${summary ? summary.activeSpendTotal.toLocaleString(undefined, { maximumFractionDigits: 0 }) : "--"}
+            <div className="mt-2 text-2xl font-bold text-white">
+              ${summary ? Number(summary?.activeSpendTotal ?? summary?.["Actual Spend"] ?? 0).toLocaleString(undefined, { maximumFractionDigits: 0 }) : "--"}
             </div>
-            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-muted/30 pt-2">
-              <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                ${summary ? summary.spendUnderBudget.toLocaleString(undefined, { maximumFractionDigits: 0 }) : "0"} under
+            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2">
+              <span className="text-[#01b574] font-medium">
+                ${summary ? Number(summary?.spendUnderBudget ?? 0).toLocaleString(undefined, { maximumFractionDigits: 0 }) : "0"} under
               </span>
-              <span className="text-rose-600 dark:text-rose-400 font-medium">
-                ${summary ? summary.spendWithNoBudget.toLocaleString(undefined, { maximumFractionDigits: 0 }) : "0"} unbudgeted
+              <span className="text-[#e31a1a] font-medium">
+                ${summary ? Number(summary?.spendWithNoBudget ?? 0).toLocaleString(undefined, { maximumFractionDigits: 0 }) : "0"} unbudgeted
               </span>
             </div>
           </CardContent>
         </Card>
 
         {/* Card 4: Sum of Budget Limits in Force */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground">
+              <span className="text-xs font-semibold text-[#a0aec0]">
                 Budget Limits In Force
               </span>
-              <Wallet className="h-4 w-4 text-purple-500" />
+              <div className="vision-icon-box h-8 w-8 text-white">
+                <Wallet className="h-4 w-4" />
+              </div>
             </div>
-            <div className="mt-2 text-2xl font-bold text-foreground">
-              ${summary ? summary.sumBudgetLimits.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "--"}
+            <div className="mt-2 text-2xl font-bold text-white">
+              ${summary ? Number(summary?.sumBudgetLimits ?? summary?.["Total Budget"] ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "--"}
             </div>
-            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-muted/30 pt-2">
-              <span className="text-muted-foreground">
+            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2">
+              <span className="text-[#a0aec0]">
                 Uncovered Share:
               </span>
-              <span className="font-semibold text-rose-600 dark:text-rose-400">
+              <span className="font-semibold text-[#e31a1a]">
                 {summary ? `${summary.shareSpendUncoveredPct}%` : "--%"}
               </span>
             </div>
@@ -385,28 +392,30 @@ export function OrganizationGovernanceSection({
         </Card>
 
         {/* Card 5: Suspended Accounts Still Charging */}
-        <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground">
-                Suspended Accounts Leakage
+              <span className="text-xs font-semibold text-[#a0aec0]">
+                Suspended Leakage
               </span>
-              <AlertTriangle className={`h-4 w-4 ${summary && summary.suspendedAccountsChargingCount > 0 ? "text-amber-500" : "text-slate-400"}`} />
+              <div className="vision-icon-box h-8 w-8 text-white">
+                <AlertTriangle className="h-4 w-4" />
+              </div>
             </div>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className={`text-2xl font-bold ${summary && summary.suspendedAccountsChargingCount > 0 ? "text-amber-600 dark:text-amber-400" : "text-foreground"}`}>
+              <span className={`text-2xl font-bold ${summary && summary.suspendedAccountsChargingCount > 0 ? "text-[#e31a1a]" : "text-white"}`}>
                 {summary ? summary.suspendedAccountsChargingCount : 0}
               </span>
-              <span className="text-xs text-muted-foreground font-medium">
+              <span className="text-xs text-[#a0aec0] font-medium">
                 still charging
               </span>
             </div>
-            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-muted/30 pt-2">
-              <span className="text-muted-foreground">
+            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2">
+              <span className="text-[#a0aec0]">
                 {summary?.suspendedPeriodLabel || "Jun-Sep Total"}:
               </span>
-              <span className="font-bold text-rose-600 dark:text-rose-400">
-                ${summary ? summary.suspendedAccountsSpendTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
+              <span className="font-bold text-[#e31a1a]">
+                ${summary ? Number(summary?.suspendedAccountsSpendTotal ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
               </span>
             </div>
           </CardContent>
@@ -416,34 +425,31 @@ export function OrganizationGovernanceSection({
       {/* Governance Data Tables (3-Column Grid: Top 5 Spends | Unbudgeted Accounts | AWS Budgets Overview) */}
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
         {/* Table 0: Top 5 Spends */}
-        <Card className="flex flex-col h-full border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card flex flex-col h-full border-none">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between gap-2">
               <div>
-                <CardTitle className="text-lg font-semibold tracking-tight flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-indigo-500" />
+                <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-[#0075ff]" />
                   Top 5 Spends
                 </CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-xs text-[#a0aec0] mt-0.5">
                   Highest-spending member accounts in {monthLabel}
                 </p>
               </div>
-              <Badge
-                variant="outline"
-                className="text-xs font-semibold text-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 shrink-0"
-              >
+              <span className="vision-badge-blue text-xs font-semibold py-0.5 px-2.5 shrink-0">
                 {top5SharePct}% of org spend
-              </Badge>
+              </span>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col flex-1 pb-4">
             {/* Summary Strip */}
-            <div className="mb-3 flex items-center justify-between rounded-md border border-input/70 bg-background/70 px-3 py-1.5 text-xs">
-              <span className="text-muted-foreground font-medium">
+            <div className="mb-3 flex items-center justify-between rounded-xl border border-white/10 bg-[#080d28]/70 px-3 py-2 text-xs">
+              <span className="text-[#a0aec0] font-medium">
                 Top 5 Combined ({monthLabel}):
               </span>
-              <span className="font-bold text-indigo-600 dark:text-indigo-400">
-                ${top5TotalSpend.toLocaleString(undefined, {
+              <span className="font-bold text-white">
+                ${Number(top5TotalSpend || 0).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -454,11 +460,11 @@ export function OrganizationGovernanceSection({
             <div className="flex-1 min-h-[300px]">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[36px]">#</TableHead>
-                    <TableHead className="max-w-[150px]">Account</TableHead>
-                    <TableHead className="w-[95px]">Share</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[90px]">
+                  <TableRow className="border-b border-white/10 hover:bg-transparent">
+                    <TableHead className="w-[36px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">#</TableHead>
+                    <TableHead className="max-w-[150px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Account</TableHead>
+                    <TableHead className="w-[95px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Share</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
                       {monthLabel} Spend
                     </TableHead>
                   </TableRow>
@@ -473,58 +479,53 @@ export function OrganizationGovernanceSection({
                       const mom = Number(acc.momChangePercent || 0);
 
                       return (
-                        <TableRow key={acc.id || idx} className="hover:bg-muted/30">
+                        <TableRow key={acc.id || idx} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors">
                           <TableCell className="py-2.5 w-[36px]">
                             <span
-                              className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+                              className={`inline-flex h-5 w-5 items-center justify-center rounded-lg text-[10px] font-bold ${
                                 idx === 0
-                                  ? "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
-                                  : idx === 1
-                                  ? "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                                  : idx === 2
-                                  ? "bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-300"
-                                  : "bg-indigo-50 text-indigo-600 dark:bg-indigo-950/40 dark:text-indigo-400"
+                                  ? "bg-[#0075ff] text-white shadow-sm"
+                                  : "bg-white/10 text-[#a0aec0]"
                               }`}
                             >
                               {idx + 1}
                             </span>
                           </TableCell>
                           <TableCell className="py-2.5 max-w-[150px]">
-                            <div className="font-semibold text-xs truncate" title={acc.name}>
+                            <div className="font-semibold text-xs text-white truncate" title={acc.name}>
                               {acc.name}
                             </div>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="text-[10px] text-muted-foreground font-mono">
+                              <span className="text-[10px] text-[#a0aec0] font-mono">
                                 {acc.id}
                               </span>
-                              <Badge
-                                variant="secondary"
-                                className={`text-[9px] px-1 py-0 border ${
+                              <span
+                                className={`text-[9px] px-1.5 py-0.2 rounded-md font-semibold ${
                                   acc.hasBudget
-                                    ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300"
-                                    : "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300"
+                                    ? "vision-badge-green"
+                                    : "vision-badge-red"
                                 }`}
                               >
                                 {acc.hasBudget ? "Budgeted" : "No Budget"}
-                              </Badge>
+                              </span>
                             </div>
                           </TableCell>
                           <TableCell className="py-2.5 w-[95px]">
                             <div className="flex items-center gap-1.5">
-                              <div className="flex-1 bg-muted rounded-full h-1.5 overflow-hidden">
+                              <div className="flex-1 bg-white/10 rounded-full h-1.5 overflow-hidden">
                                 <div
-                                  className="h-full bg-indigo-500 rounded-full transition-all"
+                                  className="h-full bg-gradient-to-r from-[#0075ff] to-[#00c5ff] rounded-full transition-all"
                                   style={{ width: `${Math.min(100, sharePct)}%` }}
                                 />
                               </div>
-                              <span className="text-[10px] font-mono font-medium text-muted-foreground min-w-[28px] text-right">
+                              <span className="text-[10px] font-mono font-medium text-[#a0aec0] min-w-[28px] text-right">
                                 {sharePct}%
                               </span>
                             </div>
                           </TableCell>
                           <TableCell className="text-right whitespace-nowrap w-[90px] py-2.5">
-                            <div className="font-semibold text-xs text-foreground">
-                              ${acc.currentSpend.toLocaleString(undefined, {
+                            <div className="font-semibold text-xs text-white">
+                              ${Number(acc.currentSpend || 0).toLocaleString(undefined, {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })}
@@ -533,10 +534,10 @@ export function OrganizationGovernanceSection({
                               <div
                                 className={`text-[10px] font-medium ${
                                   mom > 0
-                                    ? "text-rose-600 dark:text-rose-400"
+                                    ? "text-[#e31a1a]"
                                     : mom < 0
-                                    ? "text-emerald-600 dark:text-emerald-400"
-                                    : "text-muted-foreground"
+                                    ? "text-[#01b574]"
+                                    : "text-[#a0aec0]"
                                 }`}
                               >
                                 {mom > 0 ? `+${mom}%` : `${mom}%`} MoM
@@ -548,7 +549,7 @@ export function OrganizationGovernanceSection({
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={4} className="text-center text-[#a0aec0] py-8 text-xs">
                         No account spend data found
                       </TableCell>
                     </TableRow>
@@ -558,37 +559,37 @@ export function OrganizationGovernanceSection({
             </div>
 
             {/* Footer Info */}
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted/30 text-xs text-muted-foreground">
+            <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10 text-xs text-[#a0aec0]">
               <span>Top {top5Spends.length} of {accountsForMonth.length || top5Spends.length} accounts</span>
-              <span className="font-medium text-foreground">
-                Org Total: ${totalOrgMonthSpend.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              <span className="font-bold text-white">
+                Org Total: ${Number(totalOrgMonthSpend || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
               </span>
             </div>
           </CardContent>
         </Card>
 
         {/* Table 1: Largest Accounts with No Budget */}
-        <Card className="flex flex-col h-full border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card flex flex-col h-full border-none">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-lg font-semibold tracking-tight flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-amber-500" />
-                  Largest Accounts with No Budget
+                <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-[#e31a1a]" />
+                  Unbudgeted Accounts
                 </CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  High-spend active accounts without budget limits in force
+                <p className="text-xs text-[#a0aec0] mt-0.5">
+                  High-spend active accounts without budget limits
                 </p>
               </div>
-              <Badge variant="outline" className="text-xs font-semibold text-amber-600 border-amber-300 dark:border-amber-800">
+              <span className="vision-badge-red text-xs font-semibold py-0.5 px-2.5">
                 {filteredUnbudgeted.length} accounts
-              </Badge>
+              </span>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col flex-1 pb-4">
             {/* Search Input */}
             <div className="relative mb-3">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
               <input
                 type="text"
                 placeholder="Search unbudgeted accounts..."
@@ -597,7 +598,7 @@ export function OrganizationGovernanceSection({
                   setSearchUnbudgeted(e.target.value);
                   setPageUnbudgeted(1);
                 }}
-                className="w-full bg-background pl-8 pr-3 py-1.5 text-sm rounded-md border border-input focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50"
+                className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
               />
             </div>
 
@@ -605,10 +606,10 @@ export function OrganizationGovernanceSection({
             <div className="flex-1 min-h-[300px]">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="max-w-[180px]">Account</TableHead>
-                    <TableHead className="w-[100px] hidden sm:table-cell">Top Driver</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[90px]">
+                  <TableRow className="border-b border-white/10 hover:bg-transparent">
+                    <TableHead className="max-w-[180px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Account</TableHead>
+                    <TableHead className="w-[100px] hidden sm:table-cell text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Top Driver</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
                       {monthLabel} Spend
                     </TableHead>
                   </TableRow>
@@ -616,21 +617,21 @@ export function OrganizationGovernanceSection({
                 <TableBody>
                   {paginatedUnbudgeted.length > 0 ? (
                     paginatedUnbudgeted.map((a, i) => (
-                      <TableRow key={i} className="hover:bg-muted/30">
+                      <TableRow key={i} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors">
                         <TableCell className="py-2.5 max-w-[180px]">
-                          <div className="font-semibold text-xs truncate" title={a["Account Name"]}>
+                          <div className="font-semibold text-xs text-white truncate" title={a["Account Name"]}>
                             {a["Account Name"]}
                           </div>
-                          <div className="text-[10px] text-muted-foreground font-mono">
+                          <div className="text-[10px] text-[#a0aec0] font-mono">
                             {a["Account ID"]}
                           </div>
                         </TableCell>
                         <TableCell className="py-2.5 w-[100px] hidden sm:table-cell">
-                          <span className="text-xs text-muted-foreground truncate block max-w-[120px]" title={a["Top Cost Driver"]}>
+                          <span className="text-xs text-[#a0aec0] truncate block max-w-[120px]" title={a["Top Cost Driver"]}>
                             {a["Top Cost Driver"] || "Various"}
                           </span>
                         </TableCell>
-                        <TableCell className="text-right font-semibold whitespace-nowrap w-[90px] py-2.5 text-xs text-rose-600 dark:text-rose-400">
+                        <TableCell className="text-right font-semibold whitespace-nowrap w-[90px] py-2.5 text-xs text-[#e31a1a]">
                           ${Number(a["Current Month Spend"] || 0).toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -640,7 +641,7 @@ export function OrganizationGovernanceSection({
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={3} className="text-center text-[#a0aec0] py-8 text-xs">
                         No unbudgeted accounts found
                       </TableCell>
                     </TableRow>
@@ -650,8 +651,8 @@ export function OrganizationGovernanceSection({
             </div>
 
             {/* Pagination Controls */}
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted/30">
-              <div className="text-xs text-muted-foreground">
+            <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
+              <div className="text-xs text-[#a0aec0]">
                 {filteredUnbudgeted.length > 0
                   ? `Showing ${(pageUnbudgeted - 1) * ITEMS_PER_PAGE + 1}-${Math.min(
                       pageUnbudgeted * ITEMS_PER_PAGE,
@@ -659,23 +660,23 @@ export function OrganizationGovernanceSection({
                     )} of ${filteredUnbudgeted.length}`
                   : "0-0 of 0"}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setPageUnbudgeted((p) => Math.max(1, p - 1))}
                   disabled={pageUnbudgeted === 1}
-                  className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronLeft size={16} />
+                  <ChevronLeft size={14} />
                 </button>
-                <span className="text-xs font-medium min-w-[32px] text-center">
+                <span className="text-xs font-medium min-w-[32px] text-center text-white">
                   {pageUnbudgeted} / {totalPagesUnbudgeted || 1}
                 </span>
                 <button
                   onClick={() => setPageUnbudgeted((p) => Math.min(totalPagesUnbudgeted, p + 1))}
                   disabled={pageUnbudgeted === totalPagesUnbudgeted || totalPagesUnbudgeted === 0}
-                  className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronRight size={16} />
+                  <ChevronRight size={14} />
                 </button>
               </div>
             </div>
@@ -683,32 +684,27 @@ export function OrganizationGovernanceSection({
         </Card>
 
         {/* Table 2: AWS Budgets Overview & Health */}
-        <Card className="flex flex-col h-full border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
+        <Card className="vision-card flex flex-col h-full border-none">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-lg font-semibold tracking-tight flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#01b574]" />
                   AWS Budgets Overview
                 </CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Live budget limits, actual consumption, and forecasted alerts
+                <p className="text-xs text-[#a0aec0] mt-0.5">
+                  Live budget limits & actual consumption
                 </p>
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800">
-                  Live Active Budgets
-                </Badge>
-                <Badge variant="outline" className="text-xs font-semibold text-indigo-600 border-indigo-300 dark:border-indigo-800">
-                  {filteredBudgets.length} budgets
-                </Badge>
-              </div>
+              <span className="vision-badge-green text-xs font-semibold py-0.5 px-2.5">
+                {filteredBudgets.length} budgets
+              </span>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col flex-1 pb-4">
             {/* Search Input */}
             <div className="relative mb-3">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
               <input
                 type="text"
                 placeholder="Search budgets..."
@@ -717,7 +713,7 @@ export function OrganizationGovernanceSection({
                   setSearchBudgets(e.target.value);
                   setPageBudgets(1);
                 }}
-                className="w-full bg-background pl-8 pr-3 py-1.5 text-sm rounded-md border border-input focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50"
+                className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
               />
             </div>
 
@@ -725,11 +721,11 @@ export function OrganizationGovernanceSection({
             <div className="flex-1 min-h-[300px]">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="max-w-[150px]">Budget Name</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[70px]">Limit</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[90px]">{monthLabel} Used</TableHead>
-                    <TableHead className="w-[110px]">Utilization</TableHead>
+                  <TableRow className="border-b border-white/10 hover:bg-transparent">
+                    <TableHead className="max-w-[150px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Budget Name</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[70px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Limit</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">{monthLabel} Used</TableHead>
+                    <TableHead className="w-[110px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Utilization</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -741,45 +737,44 @@ export function OrganizationGovernanceSection({
                       const isExceeded = b["Threshold Status"]?.toLowerCase().includes("exceeded") || pct >= 100;
 
                       return (
-                        <TableRow key={i} className="hover:bg-muted/30">
+                        <TableRow key={i} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors">
                           <TableCell className="py-2.5 max-w-[150px]">
-                            <div className="font-semibold text-xs truncate" title={b["Budget Name"]}>
+                            <div className="font-semibold text-xs text-white truncate" title={b["Budget Name"]}>
                               {b["Budget Name"]}
                             </div>
                             <div className="mt-0.5">
-                              <Badge
-                                variant="secondary"
-                                className={`text-[10px] px-1.5 py-0 border ${
+                              <span
+                                className={`text-[9px] px-1.5 py-0.2 rounded-md font-semibold ${
                                   isExceeded
-                                    ? "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300"
-                                    : "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300"
+                                    ? "vision-badge-red"
+                                    : "vision-badge-green"
                                 }`}
                               >
                                 {b["Threshold Status"] || (isExceeded ? "Exceeded" : "OK")}
-                              </Badge>
+                              </span>
                             </div>
                           </TableCell>
-                          <TableCell className="text-right font-medium whitespace-nowrap w-[70px] py-2.5 text-xs">
-                            ${limit.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          <TableCell className="text-right font-medium whitespace-nowrap w-[70px] py-2.5 text-xs text-[#a0aec0]">
+                            ${Number(limit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </TableCell>
-                          <TableCell className="text-right font-semibold whitespace-nowrap w-[70px] py-2.5 text-xs text-foreground">
-                            ${used.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          <TableCell className="text-right font-bold whitespace-nowrap w-[70px] py-2.5 text-xs text-white">
+                            ${Number(used || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </TableCell>
                           <TableCell className="w-[110px] py-2.5">
                             <div className="flex items-center gap-2">
-                              <div className="flex-1 bg-muted rounded-full h-1.5 overflow-hidden">
+                              <div className="flex-1 bg-white/10 rounded-full h-1.5 overflow-hidden">
                                 <div
                                   className={`h-full rounded-full transition-all ${
                                     pct >= 100
-                                      ? "bg-rose-500"
+                                      ? "bg-[#e31a1a]"
                                       : pct >= 80
-                                      ? "bg-amber-500"
-                                      : "bg-emerald-500"
+                                      ? "bg-[#ffb547]"
+                                      : "bg-[#01b574]"
                                   }`}
                                   style={{ width: `${Math.min(pct, 100)}%` }}
                                 />
                               </div>
-                              <span className="text-[11px] font-mono font-medium text-muted-foreground min-w-[28px] text-right">
+                              <span className="text-[11px] font-mono font-medium text-[#a0aec0] min-w-[28px] text-right">
                                 {pct}%
                               </span>
                             </div>
@@ -789,7 +784,7 @@ export function OrganizationGovernanceSection({
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={4} className="text-center text-[#a0aec0] py-8 text-xs">
                         No budgets found
                       </TableCell>
                     </TableRow>
@@ -799,8 +794,8 @@ export function OrganizationGovernanceSection({
             </div>
 
             {/* Pagination Controls */}
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted/30">
-              <div className="text-xs text-muted-foreground">
+            <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
+              <div className="text-xs text-[#a0aec0]">
                 {filteredBudgets.length > 0
                   ? `Showing ${(pageBudgets - 1) * ITEMS_PER_PAGE + 1}-${Math.min(
                       pageBudgets * ITEMS_PER_PAGE,
@@ -808,23 +803,23 @@ export function OrganizationGovernanceSection({
                     )} of ${filteredBudgets.length}`
                   : "0-0 of 0"}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setPageBudgets((p) => Math.max(1, p - 1))}
                   disabled={pageBudgets === 1}
-                  className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronLeft size={16} />
+                  <ChevronLeft size={14} />
                 </button>
-                <span className="text-xs font-medium min-w-[32px] text-center">
+                <span className="text-xs font-medium min-w-[32px] text-center text-white">
                   {pageBudgets} / {totalPagesBudgets || 1}
                 </span>
                 <button
                   onClick={() => setPageBudgets((p) => Math.min(totalPagesBudgets, p + 1))}
                   disabled={pageBudgets === totalPagesBudgets || totalPagesBudgets === 0}
-                  className="p-1 rounded border border-muted/30 hover:bg-muted/50 disabled:opacity-40 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronRight size={16} />
+                  <ChevronRight size={14} />
                 </button>
               </div>
             </div>

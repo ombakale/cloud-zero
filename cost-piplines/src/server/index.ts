@@ -7,9 +7,9 @@ import https from 'https';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.ts';
-import requestRoutes from './routes/requests.ts';
 import awsRoutes from './routes/aws.ts';
 import azureRoutes from './routes/azure.ts';
+import connectRoutes from './routes/connect.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,8 +25,8 @@ app.use(cors());
 app.use(express.json());
 
 // Mount routers
+app.use('/api/connect', connectRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/requests', requestRoutes);
 app.use('/api/aws', awsRoutes);
 app.use('/api/azure', azureRoutes);
 
@@ -80,7 +80,6 @@ if (resolvedPfx) {
       console.log(`🔒 [HTTPS] Cost Intelligence Dashboard listening on https://localhost:${HTTPS_PORT}`);
     });
 
-    // Also keep HTTP listening so users who type http are supported
     http.createServer(app).listen(PORT, () => {
       console.log(`🚀 [HTTP] Cost Intelligence API listening on http://localhost:${PORT}`);
     });
