@@ -161,7 +161,7 @@ export function AzureSubscriptionDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f4f7fa] dark:bg-slate-950 flex flex-col items-center justify-center space-y-3 font-sans">
+      <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 flex flex-col items-center justify-center space-y-3 font-sans">
         <RefreshCw className="w-8 h-8 text-sky-500 animate-spin" />
         <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
           Loading 360° Azure Subscription Analytics & FOCUS Cost Data...
@@ -175,7 +175,7 @@ export function AzureSubscriptionDetailPage() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-[#f4f7fa] dark:bg-slate-950 flex flex-col items-center justify-center p-6 space-y-4 font-sans">
+      <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 flex flex-col items-center justify-center p-6 space-y-4 font-sans">
         <AlertTriangle className="w-10 h-10 text-rose-500" />
         <h2 className="text-xl font-bold tracking-tight text-foreground">Failed to Load Subscription Profile</h2>
         <p className="text-xs text-rose-600 max-w-md text-center">{error}</p>
@@ -207,7 +207,7 @@ export function AzureSubscriptionDetailPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-[#f4f7fa] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased pb-12">
+    <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased pb-12">
       {/* Top Breadcrumb Header Bar */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-6 py-3 backdrop-blur shadow-xs flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -240,7 +240,7 @@ export function AzureSubscriptionDetailPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
+      <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6">
         {/* Subscription Identity Card */}
         <Card className="border border-muted/40 shadow-sm bg-card/60 backdrop-blur-md">
           <div className="p-5 flex flex-col md:flex-row md:items-start md:justify-between gap-4">

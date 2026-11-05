@@ -242,7 +242,7 @@ export function LinkedAccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f7fa] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased">
+    <div className="min-h-screen bg-[rgb(248 250 252 / 0.7)] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased">
       {/* Top Navbar */}
       <Navbar
         activeProvider="aws"
@@ -251,7 +251,7 @@ export function LinkedAccountsPage() {
         onAwsAccountChange={setSelectedAwsAccount}
       />
 
-      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
+      <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-muted/30 pb-3">
           <div className="flex items-center gap-2.5">

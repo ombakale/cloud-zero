@@ -3,154 +3,118 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AccountRequestForm } from "@/components/AccountRequestForm";
 import { useAccountRequests } from "@/lib/useAccountRequests";
 import { useAuth } from "@/lib/auth";
+import { Navbar } from "@/components/Navbar";
 import {
-  Cloud,
-  ArrowLeft,
-  LogOut,
   Clock,
   CheckCircle,
   XCircle,
   AlertCircle,
   PlusCircle,
   ListOrdered,
+  ArrowLeft,
+  Sparkles,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 
 export function NewRequestPage() {
   const { records, addRecord } = useAccountRequests();
-  const { user, logout, isAdmin } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState<"form" | "my-requests">("form");
 
   const myRequests = useMemo(() => {
-    if (!user) return [];
-    if (isAdmin) return records;
-    const userEmail = (user.email || "").toLowerCase();
-    const userName = (user.name || "").toLowerCase();
-    return records.filter((r) => {
-      const submitter = (r.submitterEmail || "").toLowerCase();
-      const poc = (r.pointOfContact || "").toLowerCase();
-      return (
-        (userEmail && submitter === userEmail) ||
-        (userName && poc && poc.includes(userName))
-      );
-    });
-  }, [records, user, isAdmin]);
-
-  const handleSignOut = () => {
-    logout();
-    navigate("/login");
-  };
+    return records;
+  }, [records]);
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-muted/30 text-foreground">
-        {/* Header */}
-        <header className="sticky top-0 z-50 flex items-center justify-between border-b bg-background/80 px-6 py-3.5 backdrop-blur">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
-              <Cloud className="h-6 w-6 text-primary" />
-            </div>
+      <div className="min-h-screen bg-slate-50/70 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased flex flex-col">
+        {/* Unified Top Navbar */}
+        <Navbar />
+
+        {/* Sub-Header Ribbon */}
+        <div className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 px-4 py-4 sm:px-6 lg:px-8 shadow-2xs">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold">Cloud Cost Intelligence</h1>
+                <h1 className="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white">
+                  Cloud Account Provisioning &amp; Requests
+                </h1>
                 <Badge
                   variant="outline"
-                  className={
-                    isAdmin
-                      ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300 border-indigo-200"
-                      : "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border-emerald-200"
-                  }
+                  className="bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 border-indigo-200 text-[10px] font-bold"
                 >
-                  {isAdmin ? "Admin View" : "Requester Portal"}
+                  <Sparkles className="w-2.5 h-2.5 mr-1 text-indigo-500" />
+                  Self-Service FinOps
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                AWS Account Provisioning & Approval Center
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Submit and track AWS accounts, environments, and budget approval requests
               </p>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3">
-            {/* View Switcher: Submit Form vs My Requests */}
-            <div className="flex rounded-xl bg-muted/60 p-1 border border-border">
-              <button
-                onClick={() => setActiveView("form")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  activeView === "form"
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <PlusCircle size={14} />
-                <span>Request Form</span>
-              </button>
+            {/* View Switcher: Submit Form vs All Requests */}
+            <div className="flex items-center gap-2">
+              <div className="flex rounded-xl bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200/80 dark:border-slate-700">
+                <button
+                  type="button"
+                  onClick={() => setActiveView("form")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    activeView === "form"
+                      ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-2xs"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                  }`}
+                >
+                  <PlusCircle size={14} />
+                  <span>Request Form</span>
+                </button>
 
-              <button
-                onClick={() => setActiveView("my-requests")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  activeView === "my-requests"
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <ListOrdered size={14} />
-                <span>{isAdmin ? "All Submissions" : "My Requests"} ({myRequests.length})</span>
-              </button>
-            </div>
-
-            {/* Back to Admin Dashboard if Admin */}
-            {isAdmin && (
-              <button
-                onClick={() => navigate("/")}
-                className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted/50 transition-colors"
-              >
-                <ArrowLeft size={14} />
-                <span>Back to Dashboard</span>
-              </button>
-            )}
-
-            {/* User details and Logout */}
-            <div className="flex items-center gap-2 pl-2 border-l border-border">
-              <div className="hidden sm:flex flex-col text-right">
-                <span className="text-xs font-medium text-foreground leading-none">
-                  {user?.name}
-                </span>
-                <span className="text-[10px] text-muted-foreground">
-                  {user?.email}
-                </span>
+                <button
+                  type="button"
+                  onClick={() => setActiveView("my-requests")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    activeView === "my-requests"
+                      ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-2xs"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                  }`}
+                >
+                  <ListOrdered size={14} />
+                  <span>Submissions ({myRequests.length})</span>
+                </button>
               </div>
 
-              <button
-                onClick={handleSignOut}
-                className="flex items-center gap-1 p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors"
-                title="Sign Out"
+              <Link
+                to="/"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors shadow-2xs"
               >
-                <LogOut size={16} />
-              </button>
+                <ArrowLeft size={14} />
+                <span className="hidden sm:inline">Overview</span>
+              </Link>
             </div>
           </div>
-        </header>
+        </div>
 
         {/* Main Body */}
-        <main className="mx-auto max-w-4xl space-y-8 p-6">
+        <main className="mx-auto w-full max-w-5xl flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
           {activeView === "form" ? (
-            <AccountRequestForm onSubmit={addRecord} />
+            <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm">
+              <AccountRequestForm onSubmit={addRecord} />
+            </div>
           ) : (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">
-                    {isAdmin ? "Submitted AWS Account Requests" : "Your Account Requests & Approval Status"}
+                  <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+                    Cloud Account Requests &amp; Approval Status
                   </h2>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     Track approvals, FinOps reviews, and provisioned environments.
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveView("form")}
-                  className="flex items-center gap-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 text-xs font-semibold shadow-sm transition-all"
+                  className="flex items-center gap-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 text-xs font-bold shadow-xs transition-all cursor-pointer"
                 >
                   <PlusCircle size={14} />
                   <span>Submit Another Request</span>
@@ -158,15 +122,17 @@ export function NewRequestPage() {
               </div>
 
               {myRequests.length === 0 ? (
-                <div className="rounded-2xl border border-border bg-card p-12 text-center text-muted-foreground">
+                <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-12 text-center text-slate-500 shadow-sm">
                   <AlertCircle className="w-10 h-10 mx-auto mb-3 opacity-40 text-indigo-500" />
-                  <h3 className="font-semibold text-foreground text-sm mb-1">No requests found</h3>
-                  <p className="text-xs max-w-md mx-auto mb-4">
-                    You haven't submitted any account provisioning requests yet. Click the button below to start a new request.
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-1">
+                    No requests found
+                  </h3>
+                  <p className="text-xs max-w-md mx-auto mb-4 text-slate-400">
+                    No account provisioning requests have been submitted yet. Click below to start a new request.
                   </p>
                   <button
                     onClick={() => setActiveView("form")}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold shadow-sm hover:opacity-90"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold shadow-xs hover:bg-indigo-700 cursor-pointer"
                   >
                     <PlusCircle size={14} />
                     <span>Create New Account Request</span>
@@ -179,27 +145,27 @@ export function NewRequestPage() {
                     return (
                       <div
                         key={req.id}
-                        className="rounded-2xl border border-border bg-card p-5 shadow-sm space-y-3 transition-all hover:border-primary/40"
+                        className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-xs space-y-3 transition-all hover:border-indigo-500/40"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div>
                             <div className="flex items-center gap-2">
-                              <h3 className="font-bold text-base text-foreground">
+                              <h3 className="font-extrabold text-base text-slate-900 dark:text-white">
                                 {req.projectName}
                               </h3>
-                              <Badge variant="outline" className="text-xs">
+                              <Badge variant="outline" className="text-[11px] font-semibold">
                                 {req.accountEnvironment}
                               </Badge>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                              Division: <span className="font-medium text-foreground">{req.division}</span> • Contact: <span className="font-medium text-foreground">{req.pointOfContact}</span>
+                            <p className="text-xs text-slate-500 mt-1">
+                              Division: <span className="font-semibold text-slate-800 dark:text-slate-200">{req.division}</span> • Contact: <span className="font-semibold text-slate-800 dark:text-slate-200">{req.pointOfContact}</span>
                             </p>
                           </div>
 
                           <div className="text-right">
                             <Badge
                               variant="outline"
-                              className={`text-xs capitalize font-semibold ${
+                              className={`text-xs capitalize font-bold px-2.5 py-0.5 ${
                                 status === "approved"
                                   ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
                                   : status === "rejected"
@@ -215,43 +181,43 @@ export function NewRequestPage() {
                               {status === "pending" && <Clock className="w-3 h-3 mr-1 inline" />}
                               {status.replace("_", " ")}
                             </Badge>
-                            <p className="text-[11px] text-muted-foreground mt-1">
+                            <p className="text-[11px] text-slate-400 mt-1">
                               Submitted: {new Date(req.submittedAt).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
 
                         {req.adminNotes && (
-                          <div className="p-3 bg-muted/40 rounded-xl border border-border text-xs">
-                            <span className="font-semibold text-foreground block mb-0.5">
+                          <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/80 dark:border-slate-700 text-xs">
+                            <span className="font-bold text-slate-900 dark:text-white block mb-0.5">
                               Admin Feedback ({req.reviewedBy || "FinOps"}):
                             </span>
-                            <p className="text-muted-foreground italic">"{req.adminNotes}"</p>
+                            <p className="text-slate-600 dark:text-slate-300 italic">"{req.adminNotes}"</p>
                           </div>
                         )}
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-border text-xs text-muted-foreground">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500">
                           <div>
-                            <span className="block text-[10px]">Est. Monthly Cost</span>
-                            <span className="font-semibold text-foreground">
+                            <span className="block text-[10px] uppercase font-bold text-slate-400">Est. Monthly Cost</span>
+                            <span className="font-extrabold text-slate-900 dark:text-white">
                               ${req.estimatedMonthlyCost || "0"}/mo
                             </span>
                           </div>
                           <div>
-                            <span className="block text-[10px]">Managed By Coforge</span>
-                            <span className="font-semibold text-foreground">
+                            <span className="block text-[10px] uppercase font-bold text-slate-400">Managed By</span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200">
                               {req.managedByCoforge}
                             </span>
                           </div>
                           <div>
-                            <span className="block text-[10px]">Account Manager</span>
-                            <span className="font-semibold text-foreground">
+                            <span className="block text-[10px] uppercase font-bold text-slate-400">Account Manager</span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200">
                               {req.accountManager}
                             </span>
                           </div>
                           <div>
-                            <span className="block text-[10px]">Charged Back</span>
-                            <span className="font-semibold text-foreground">
+                            <span className="block text-[10px] uppercase font-bold text-slate-400">Charged Back</span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200">
                               {req.costChargedBack}
                             </span>
                           </div>

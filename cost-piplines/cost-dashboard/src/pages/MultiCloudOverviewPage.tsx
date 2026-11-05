@@ -1,12 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
+import { Navbar, type AccountOption } from "@/components/Navbar";
 import { AdminRequestsModal } from "@/components/AdminRequestsModal";
 import { useAccountRequests } from "@/lib/useAccountRequests";
-import { useAuth } from "@/lib/auth";
 import { useCsv } from "@/lib/useCsv";
-import type { AccountOption } from "@/components/Navbar";
 import type {
   MonthTotal,
   AzureMonthlyTotal,
@@ -18,7 +17,6 @@ import {
   Cloud,
   ArrowRight,
   Layers,
-  LogOut,
   Plus,
   Inbox,
   Shield,
@@ -32,6 +30,9 @@ import {
   Lock,
   ChevronLeft,
   ChevronRight,
+  BarChart3,
+  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 
 interface AzureGovernanceSummary {
@@ -104,20 +105,23 @@ const formatAwsAccount = (acc: AccountOption): AccountOption => {
 function CoverageGauge({
   percentage,
   colorClass,
-  size = 68,
+  size = 64,
 }: {
   percentage: number;
   colorClass: string;
   size?: number;
 }) {
   const clamped = Math.max(0, Math.min(100, percentage || 0));
-  const strokeWidth = 7;
+  const strokeWidth = 6.5;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (clamped / 100) * circumference;
 
   return (
-    <div className="relative flex items-center justify-center shrink-0" style={{ width: size, height: size }}>
+    <div
+      className="relative flex items-center justify-center shrink-0"
+      style={{ width: size, height: size }}
+    >
       <svg className="w-full h-full -rotate-90" viewBox={`0 0 ${size} ${size}`}>
         <circle
           cx={size / 2}
@@ -142,7 +146,7 @@ function CoverageGauge({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xs font-extrabold text-slate-900 dark:text-white leading-none">
+        <span className="text-xs font-black text-slate-900 dark:text-white leading-none">
           {Math.round(clamped)}%
         </span>
       </div>
@@ -152,18 +156,12 @@ function CoverageGauge({
 
 export function MultiCloudOverviewPage() {
   const navigate = useNavigate();
-  const { user, logout, isAdmin } = useAuth();
   const { records } = useAccountRequests();
   const [isAdminRequestsOpen, setIsAdminRequestsOpen] = useState(false);
 
   // AWS Account State
   const [awsAccounts, setAwsAccounts] = useState<AccountOption[]>(DEFAULT_AWS_ACCOUNTS);
   const [selectedAwsAccount, setSelectedAwsAccount] = useState<string>("account-1");
-
-  const pendingRequestsCount = useMemo(
-    () => records.filter((r) => (r.status || "pending") === "pending").length,
-    [records]
-  );
 
   useEffect(() => {
     fetch("/api/aws/accounts")
@@ -214,7 +212,7 @@ export function MultiCloudOverviewPage() {
   }, [azureMonthly]);
 
   const formatMonthName = (mStr: string) => {
-    if (!mStr) return "Current";
+    if (!mStr) return "Current Month";
     const parts = mStr.split("-");
     if (parts.length < 2) return mStr;
     const date = new Date(Number(parts[0]), Number(parts[1]) - 1, 1);
@@ -223,10 +221,9 @@ export function MultiCloudOverviewPage() {
   };
 
   const awsMonthLabel = formatMonthName(awsLatestMonth);
+  const azureMonthLabel = formatMonthName(azureLatestMonth);
 
-  // =========================================================================
   // AWS Governance Data
-  // =========================================================================
   const [awsSummary, setAwsSummary] = useState<GovernanceSummary | null>(null);
 
   useEffect(() => {
@@ -265,47 +262,17 @@ export function MultiCloudOverviewPage() {
     ? `${awsBasePath}/unbudgeted_accounts.csv?month=${encodeURIComponent(awsLatestMonth)}`
     : `${awsBasePath}/unbudgeted_accounts.csv`;
   const { data: awsUnbudgeted } = useCsv<UnbudgetedAccountRow>(unbudgetedPath);
+
   const budgetsPath = awsLatestMonth
     ? `${awsBasePath}/budgets_overview.csv?month=${encodeURIComponent(awsLatestMonth)}`
     : `${awsBasePath}/budgets_overview.csv`;
   const { data: awsBudgets } = useCsv<BudgetOverviewRow>(budgetsPath);
 
-  const awsListRef = useRef<HTMLDivElement | null>(null);
-  const azureListRef = useRef<HTMLDivElement | null>(null);
-  const [awsItemsPerPage, setAwsItemsPerPage] = useState(5);
-  const [azureItemsPerPage, setAzureItemsPerPage] = useState(5);
-
+  // Pagination states
   const [pageAwsUnbudgeted, setPageAwsUnbudgeted] = useState(1);
   const [pageAwsBudgets, setPageAwsBudgets] = useState(1);
   const [pageAzureBudgets, setPageAzureBudgets] = useState(1);
-
-  // Dynamically compute how many rows fit cleanly whenever window/card resizes or zooms
-  useEffect(() => {
-    const ROW_HEIGHT = 50; // comfortable height in px per row without overlapping
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const height = entry.contentRect.height;
-        if (height > 0) {
-          const fitCount = Math.max(3, Math.floor(height / ROW_HEIGHT));
-          if (entry.target === awsListRef.current) {
-            setAwsItemsPerPage(fitCount);
-          } else if (entry.target === azureListRef.current) {
-            setAzureItemsPerPage(fitCount);
-          }
-        }
-      }
-    });
-
-    if (awsListRef.current) observer.observe(awsListRef.current);
-    if (azureListRef.current) observer.observe(azureListRef.current);
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    setPageAwsUnbudgeted(1);
-    setPageAwsBudgets(1);
-  }, [selectedAwsAccount]);
+  const itemsPerPage = 5;
 
   const validAwsUnbudgeted = useMemo(
     () => (awsUnbudgeted || []).filter((a) => a && a["Account Name"]),
@@ -313,19 +280,16 @@ export function MultiCloudOverviewPage() {
   );
   const totalPagesAwsUnbudgeted = Math.max(
     1,
-    Math.ceil(validAwsUnbudgeted.length / awsItemsPerPage)
+    Math.ceil(validAwsUnbudgeted.length / itemsPerPage)
   );
-  useEffect(() => {
-    setPageAwsUnbudgeted((p) => Math.min(p, totalPagesAwsUnbudgeted));
-  }, [totalPagesAwsUnbudgeted]);
 
   const paginatedAwsUnbudgeted = useMemo(
     () =>
       validAwsUnbudgeted.slice(
-        (pageAwsUnbudgeted - 1) * awsItemsPerPage,
-        pageAwsUnbudgeted * awsItemsPerPage
+        (pageAwsUnbudgeted - 1) * itemsPerPage,
+        pageAwsUnbudgeted * itemsPerPage
       ),
-    [validAwsUnbudgeted, pageAwsUnbudgeted, awsItemsPerPage]
+    [validAwsUnbudgeted, pageAwsUnbudgeted, itemsPerPage]
   );
 
   const validAwsBudgets = useMemo(
@@ -334,24 +298,19 @@ export function MultiCloudOverviewPage() {
   );
   const totalPagesAwsBudgets = Math.max(
     1,
-    Math.ceil(validAwsBudgets.length / awsItemsPerPage)
+    Math.ceil(validAwsBudgets.length / itemsPerPage)
   );
-  useEffect(() => {
-    setPageAwsBudgets((p) => Math.min(p, totalPagesAwsBudgets));
-  }, [totalPagesAwsBudgets]);
 
   const paginatedAwsBudgets = useMemo(
     () =>
       validAwsBudgets.slice(
-        (pageAwsBudgets - 1) * awsItemsPerPage,
-        pageAwsBudgets * awsItemsPerPage
+        (pageAwsBudgets - 1) * itemsPerPage,
+        pageAwsBudgets * itemsPerPage
       ),
-    [validAwsBudgets, pageAwsBudgets, awsItemsPerPage]
+    [validAwsBudgets, pageAwsBudgets, itemsPerPage]
   );
 
-  // =========================================================================
   // Azure Governance Data
-  // =========================================================================
   const [azureSummary, setAzureSummary] = useState<AzureGovernanceSummary | null>(null);
   const [azureBudgets, setAzureBudgets] = useState<AzureBudgetRow[]>([]);
   const [azureUnbudgetedCount, setAzureUnbudgetedCount] = useState(0);
@@ -405,19 +364,16 @@ export function MultiCloudOverviewPage() {
   );
   const totalPagesAzureBudgets = Math.max(
     1,
-    Math.ceil(activeAzureBudgets.length / azureItemsPerPage)
+    Math.ceil(activeAzureBudgets.length / itemsPerPage)
   );
-  useEffect(() => {
-    setPageAzureBudgets((p) => Math.min(p, totalPagesAzureBudgets));
-  }, [totalPagesAzureBudgets]);
 
   const paginatedAzureBudgets = useMemo(
     () =>
       activeAzureBudgets.slice(
-        (pageAzureBudgets - 1) * azureItemsPerPage,
-        pageAzureBudgets * azureItemsPerPage
+        (pageAzureBudgets - 1) * itemsPerPage,
+        pageAzureBudgets * itemsPerPage
       ),
-    [activeAzureBudgets, pageAzureBudgets, azureItemsPerPage]
+    [activeAzureBudgets, pageAzureBudgets, itemsPerPage]
   );
 
   const azureTotalAccounts =
@@ -446,753 +402,697 @@ export function MultiCloudOverviewPage() {
     );
   }, [awsSummary]);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  // Combined totals
+  const totalAwsSpend = awsSummary?.activeSpendTotal || 0;
+  const totalAzureSpend = azureSummary?.activeSpend || 0;
+  // Note: Azure is in INR, AWS in USD. For executive presentation, show both clearly.
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen lg:h-screen w-full overflow-x-hidden lg:overflow-hidden bg-slate-100/80 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased flex flex-col">
+      <div className="min-h-screen bg-slate-50/70 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased flex flex-col">
+        {/* Unified Top Navigation */}
+        <Navbar />
+
         {/* ================================================================= */}
-        {/* CLEAN TOP BAR                                                     */}
+        {/* EXECUTIVE FINOPS HERO STRIP                                      */}
         {/* ================================================================= */}
-        <header className="shrink-0 h-14 flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 px-5">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white shadow-sm">
-              <Cloud className="h-5 w-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <h1 className="text-sm sm:text-base font-bold tracking-tight text-slate-900 dark:text-white truncate">
-                  Cloud Cost Intelligence
-                </h1>
-                <span className="hidden sm:inline-flex items-center rounded-full bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800 shrink-0">
-                  Executive Portal
-                </span>
+        <div className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 px-4 py-5 sm:px-6 lg:px-8 shadow-2xs">
+          <div className="mx-auto max-w-[1720px]">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+                    Multi-Cloud Executive Command Center
+                  </h1>
+                  <Badge
+                    variant="outline"
+                    className="bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200/80 dark:border-indigo-800 text-[11px] font-bold"
+                  >
+                    Global FinOps
+                  </Badge>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Unified visibility, cross-cloud budget governance &amp; risk tracking for AWS &amp; Microsoft Azure
+                </p>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                Multi-Cloud Governance & Budgets Command Center
-              </p>
+
+              {/* Quick Jump Buttons */}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <Link
+                  to="/aws"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 px-3 py-2 text-xs font-bold hover:bg-amber-500/20 transition-all shadow-2xs"
+                >
+                  <BarChart3 className="w-4 h-4 text-amber-600" />
+                  <span>AWS Analytics</span>
+                  <ArrowRight className="w-3.5 h-3.5 opacity-60" />
+                </Link>
+
+                <Link
+                  to="/azure"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-sky-500/10 text-sky-700 dark:text-sky-400 border border-sky-500/20 px-3 py-2 text-xs font-bold hover:bg-sky-500/20 transition-all shadow-2xs"
+                >
+                  <BarChart3 className="w-4 h-4 text-sky-600" />
+                  <span>Azure Analytics</span>
+                  <ArrowRight className="w-3.5 h-3.5 opacity-60" />
+                </Link>
+
+                <Link
+                  to="/newrequest"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 text-xs font-bold shadow-xs transition-all"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>New Request</span>
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => navigate("/newrequest")}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5 text-indigo-500" />
-              <span className="hidden sm:inline">New Request</span>
-            </button>
-
-            {isAdmin && (
-              <button
-                onClick={() => setIsAdminRequestsOpen(true)}
-                className="relative inline-flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-              >
-                <Inbox className="w-3.5 h-3.5 text-indigo-500" />
-                <span className="hidden sm:inline">Requests</span>
-                {pendingRequestsCount > 0 && (
-                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
-                    {pendingRequestsCount}
+            {/* Top KPI Cards Ribbon */}
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Card 1: AWS Month Spend */}
+              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-amber-500/40">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    AWS {awsMonthLabel} Spend
                   </span>
-                )}
-              </button>
-            )}
-
-            <div className="flex items-center gap-2.5 pl-2.5 border-l border-slate-200 dark:border-slate-800">
-              <div className="hidden md:flex flex-col text-right">
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center justify-end gap-1">
-                  {user?.name || "Admin"}
-                  <Shield className="w-3 h-3 text-indigo-500" />
-                </span>
-                <span className="text-[10px] text-slate-400">{user?.email}</span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 font-black text-xs">
+                    AWS
+                  </div>
+                </div>
+                <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                  ${totalAwsSpend.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                </div>
+                <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                    {awsSummary?.budgetCoveragePct || 0}% covered
+                  </span>
+                  <span>•</span>
+                  <span>{awsSummary?.totalAccounts || 0} org accounts</span>
+                </div>
               </div>
-              <button
-                onClick={handleLogout}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/70 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 hover:bg-rose-100 px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer"
-                title="Sign Out"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </button>
+
+              {/* Card 2: Azure Month Spend */}
+              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-sky-500/40">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    Azure {azureMonthLabel} Spend
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-500/10 text-sky-600 font-black text-xs">
+                    AZ
+                  </div>
+                </div>
+                <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                  ₹{totalAzureSpend.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                </div>
+                <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                  <span className="text-sky-600 dark:text-sky-400 font-semibold">
+                    {azureCoveragePct}% budgeted
+                  </span>
+                  <span>•</span>
+                  <span>{azureTotalAccounts} subscriptions</span>
+                </div>
+              </div>
+
+              {/* Card 3: Governance & Unbudgeted Risk */}
+              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-rose-500/40">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    Unbudgeted Exposure
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600">
+                    <AlertTriangle className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-2xl font-black text-rose-600 dark:text-rose-400">
+                    {awsSummary?.accountsWithNoBudget || 0}
+                  </span>
+                  <span className="text-xs text-slate-500">AWS accounts without limit</span>
+                </div>
+                <div className="text-xs text-rose-600 dark:text-rose-400 font-semibold mt-1 truncate">
+                  ${(awsSummary?.spendWithNoBudget || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })} unprotected spend
+                </div>
+              </div>
+
+              {/* Card 4: Azure RBAC & Access Status */}
+              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-purple-500/40">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    Azure Access / RBAC
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-500/10 text-purple-600">
+                    <Lock className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-2xl font-black text-purple-600 dark:text-purple-400">
+                    {azurePermissionDenied}
+                  </span>
+                  <span className="text-xs text-slate-500">Subs missing Cost RBAC</span>
+                </div>
+                <div className="text-xs text-slate-500 font-medium mt-1">
+                  {azureBudgetedAccounts} of {azureTotalAccounts} active budgets monitored
+                </div>
+              </div>
             </div>
           </div>
-        </header>
+        </div>
 
         {/* ================================================================= */}
-        {/* 50 / 50 EXECUTIVE PORTAL SPLIT (AWS LEFT | AZURE RIGHT)           */}
+        {/* MAIN DUAL-CLOUD COMMAND SPLIT                                     */}
         {/* ================================================================= */}
-        <main className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 overflow-y-auto lg:overflow-hidden">
-          {/* =============================================================== */}
-          {/* LEFT PORTAL CARD: AWS ORGANIZATION & BUDGET GOVERNANCE          */}
-          {/* =============================================================== */}
-          <div className="flex flex-col min-h-[540px] lg:min-h-0 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
-            {/* Portal Top Banner */}
-            <div className="shrink-0 px-4 py-3 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-indigo-50/60 via-white to-amber-50/40 dark:from-indigo-950/30 dark:via-slate-900 dark:to-slate-900 flex flex-wrap xl:flex-nowrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="h-9 w-9 shrink-0 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-extrabold text-xs shadow-2xs">
-                  AWS
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                      AWS Governance & Budgets
-                    </h2>
-                    <Badge
-                      variant="outline"
-                      className="text-[10px] font-semibold px-2 py-0 bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 shrink-0"
-                    >
-                      {awsMonthLabel}
-                    </Badge>
+        <main className="mx-auto w-full max-w-[1720px] flex-1 p-4 sm:p-6 lg:p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* ============================================================= */}
+            {/* LEFT PORTAL: AWS GOVERNANCE & BUDGETS                         */}
+            {/* ============================================================= */}
+            <div className="rounded-3xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden flex flex-col">
+              {/* Card Header */}
+              <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-amber-500/5 via-white to-transparent dark:from-amber-500/10 dark:via-slate-900 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 shrink-0 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 font-black text-sm shadow-2xs">
+                    AWS
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                    Organization inventory, budget coverage & unbudgeted exposure
-                  </p>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+                        AWS Governance &amp; Budgets
+                      </h2>
+                      <Badge className="bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200/80 text-[10px] font-bold">
+                        {awsMonthLabel}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Organizational inventory, active budget tracking &amp; unbudgeted spend
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-1.5 shrink-0">
-                {/* Account 1 / Account 2 Pill Switcher */}
-                {awsAccounts.length > 1 && (
-                  <div className="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200/80 dark:border-slate-700">
-                    {awsAccounts.map((acc, idx) => {
-                      const active = acc.id === selectedAwsAccount;
-                      return (
+                <div className="flex items-center gap-2">
+                  {/* Account Switcher */}
+                  {awsAccounts.length > 1 && (
+                    <div className="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200/80 dark:border-slate-700">
+                      {awsAccounts.map((acc, idx) => (
                         <button
                           key={acc.id}
                           type="button"
                           onClick={() => setSelectedAwsAccount(acc.id)}
-                          className={`px-2 py-1 text-[11px] font-semibold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                            active
-                              ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-2xs"
-                              : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-200"
+                          className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                            acc.id === selectedAwsAccount
+                              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-2xs"
+                              : "text-slate-500 hover:text-slate-900"
                           }`}
-                          title={acc.name}
                         >
                           Account {idx + 1}
                         </button>
-                      );
-                    })}
-                  </div>
-                )}
-
-                <button
-                  onClick={() => navigate("/linked-accounts")}
-                  className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors cursor-pointer whitespace-nowrap"
-                >
-                  <Layers className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Accounts</span>
-                </button>
-
-                <button
-                  onClick={() =>
-                    navigate(`/aws?account=${encodeURIComponent(selectedAwsAccount)}`)
-                  }
-                  className="inline-flex items-center gap-1 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 text-[11px] font-semibold shadow-xs transition-all cursor-pointer whitespace-nowrap"
-                >
-                  <span>Enter AWS</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Portal Body */}
-            <div className="flex-1 min-h-0 p-4 flex flex-col justify-between gap-3.5 overflow-hidden">
-              {/* Visual Gauges & Key KPIs Strip */}
-              <div className="shrink-0 grid grid-cols-12 gap-3">
-                {/* Gauge Card: Budget Coverage + Org Accounts */}
-                <div className="col-span-5 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 p-3 flex items-center gap-3">
-                  <CoverageGauge
-                    percentage={awsSummary?.budgetCoveragePct || 0}
-                    colorClass="text-emerald-500"
-                    size={56}
-                  />
-                  <div className="min-w-0 flex-1 space-y-0.5">
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
-                        Coverage
-                      </span>
-                      <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
-                        {awsSummary ? awsSummary.totalAccounts : "--"} Org Accs
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-[11px] whitespace-nowrap">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                        {awsSummary ? `${awsSummary.accountsWithBudget} budgeted` : "--"}
-                      </span>
-                      <span className="text-slate-300 dark:text-slate-700">•</span>
-                      <span className="text-amber-600 dark:text-amber-400 font-semibold">
-                        {awsSummary ? `${awsSummary.accountsWithNoBudget} unbudgeted` : "--"}
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1.5 whitespace-nowrap">
-                      <span className="inline-flex items-center gap-1 text-emerald-600 font-medium">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                        {awsSummary ? `${awsSummary.activeAccounts} active` : "--"}
-                      </span>
-                      <span>•</span>
-                      <span>{awsSummary ? `${awsSummary.suspendedAccounts} closed` : "--"}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Spend & Limits Visual Card */}
-                <div className="col-span-7 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 p-3 flex flex-col justify-between">
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="min-w-0">
-                      <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1 truncate">
-                        <TrendingUp className="w-3 h-3 text-blue-500 shrink-0" />
-                        <span className="truncate">{awsMonthLabel} Spend</span>
-                      </div>
-                      <div className="text-base xl:text-lg font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
-                        $
-                        {awsSummary
-                          ? awsSummary.activeSpendTotal.toLocaleString(undefined, {
-                              maximumFractionDigits: 0,
-                            })
-                          : "--"}
-                      </div>
-                    </div>
-
-                    <div className="min-w-0">
-                      <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1 truncate">
-                        <Wallet className="w-3 h-3 text-purple-500 shrink-0" />
-                        <span className="truncate">Budget Limits</span>
-                      </div>
-                      <div className="text-base xl:text-lg font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
-                        $
-                        {awsSummary
-                          ? awsSummary.sumBudgetLimits.toLocaleString(undefined, {
-                              maximumFractionDigits: 0,
-                            })
-                          : "--"}
-                      </div>
-                    </div>
-
-                    <div className="min-w-0">
-                      <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1 truncate">
-                        <AlertTriangle className="w-3 h-3 text-amber-500 shrink-0" />
-                        <span className="truncate">Suspended Leak</span>
-                      </div>
-                      <div className="flex items-baseline gap-1 mt-0.5 truncate">
-                        <span className="text-base xl:text-lg font-extrabold text-amber-600 dark:text-amber-400">
-                          {awsSummary ? awsSummary.suspendedAccountsChargingCount : 0}
-                        </span>
-                        <span className="text-[11px] font-bold text-rose-600 dark:text-rose-400 truncate">
-                          ($
-                          {awsSummary
-                            ? awsSummary.suspendedAccountsSpendTotal.toLocaleString(
-                                undefined,
-                                { maximumFractionDigits: 0 }
-                              )
-                            : "0"}
-                          )
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Segmented Spend Bar: Under Budget vs Unbudgeted */}
-                  <div className="mt-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-700/60">
-                    <div className="flex items-center justify-between text-[11px] mb-1 gap-2">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold truncate">
-                        $
-                        {awsSummary
-                          ? awsSummary.spendUnderBudget.toLocaleString(undefined, {
-                              maximumFractionDigits: 0,
-                            })
-                          : 0}{" "}
-                        under budget
-                      </span>
-                      <span className="text-rose-600 dark:text-rose-400 font-semibold truncate">
-                        $
-                        {awsSummary
-                          ? awsSummary.spendWithNoBudget.toLocaleString(undefined, {
-                              maximumFractionDigits: 0,
-                            })
-                          : 0}{" "}
-                        unbudgeted ({awsSummary ? `${awsSummary.shareSpendUncoveredPct}%` : "0%"})
-                      </span>
-                    </div>
-                    <div className="h-1.5 w-full rounded-full bg-rose-500/20 overflow-hidden flex">
-                      <div
-                        className="h-full bg-emerald-500 rounded-l-full"
-                        style={{ width: `${awsBudgetedSpendPct}%` }}
-                      />
-                      <div
-                        className="h-full bg-rose-500 rounded-r-full"
-                        style={{ width: `${100 - awsBudgetedSpendPct}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Paginated Cards (Side-by-Side: Unbudgeted Accounts & AWS Budgets) */}
-              <div className="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-2 gap-3.5 overflow-hidden">
-                {/* Card 1: Largest Accounts with No Budget */}
-                <div className="flex flex-col min-h-0 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-3.5 overflow-hidden">
-                  <div className="shrink-0 flex items-center justify-between mb-1.5 gap-2">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <AlertCircle className="h-4 w-4 text-amber-500 shrink-0" />
-                      <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
-                        Largest Accounts with No Budget
-                      </span>
-                    </div>
-                    <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 shrink-0">
-                      {validAwsUnbudgeted.length} total
-                    </span>
-                  </div>
-
-                  <div
-                    ref={awsListRef}
-                    className="flex-1 min-h-0 flex flex-col justify-start divide-y divide-slate-200/60 dark:divide-slate-800 overflow-hidden"
-                  >
-                    {paginatedAwsUnbudgeted.length > 0 ? (
-                      paginatedAwsUnbudgeted.map((acc, i) => (
-                        <div
-                          key={i}
-                          className={`${
-                            paginatedAwsUnbudgeted.length === awsItemsPerPage ? "flex-1" : ""
-                          } py-1.5 flex items-center justify-between gap-2`}
-                        >
-                          <div className="min-w-0">
-                            <div
-                              className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate leading-tight"
-                              title={acc["Account Name"]}
-                            >
-                              {acc["Account Name"]}
-                            </div>
-                            <div className="text-[10px] text-slate-400 font-mono leading-tight mt-0.5">
-                              {acc["Account ID"]}
-                            </div>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <span className="text-xs font-bold text-rose-600 dark:text-rose-400">
-                              $
-                              {Number(acc["Current Month Spend"] || 0).toLocaleString(
-                                undefined,
-                                { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="flex-1 flex items-center justify-center text-xs text-slate-400">
-                        No unbudgeted accounts
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Pagination Footer */}
-                  <div className="shrink-0 pt-2 mt-1 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-                    <span>
-                      {validAwsUnbudgeted.length > 0
-                        ? `${(pageAwsUnbudgeted - 1) * awsItemsPerPage + 1}–${Math.min(
-                            pageAwsUnbudgeted * awsItemsPerPage,
-                            validAwsUnbudgeted.length
-                          )} of ${validAwsUnbudgeted.length}`
-                        : "0 of 0"}
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => setPageAwsUnbudgeted((p) => Math.max(1, p - 1))}
-                        disabled={pageAwsUnbudgeted <= 1}
-                        className="p-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-default"
-                        title="Previous Page"
-                      >
-                        <ChevronLeft className="h-3.5 w-3.5" />
-                      </button>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300 px-1">
-                        {pageAwsUnbudgeted} / {totalPagesAwsUnbudgeted}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setPageAwsUnbudgeted((p) =>
-                            Math.min(totalPagesAwsUnbudgeted, p + 1)
-                          )
-                        }
-                        disabled={pageAwsUnbudgeted >= totalPagesAwsUnbudgeted}
-                        className="p-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-default"
-                        title="Next Page"
-                      >
-                        <ChevronRight className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card 2: AWS Budgets Overview */}
-                <div className="flex flex-col min-h-0 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-3.5 overflow-hidden">
-                  <div className="shrink-0 flex items-center justify-between mb-1.5 gap-2">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                      <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
-                        AWS Budgets Overview
-                      </span>
-                    </div>
-                    <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">
-                      {validAwsBudgets.length} active
-                    </span>
-                  </div>
-
-                  <div className="flex-1 min-h-0 flex flex-col justify-start divide-y divide-slate-200/60 dark:divide-slate-800 overflow-hidden">
-                    {paginatedAwsBudgets.length > 0 ? (
-                      paginatedAwsBudgets.map((b, i) => {
-                        const limit = Number(b.Limit ?? b["Budget Limit"] ?? 0);
-                        const used = Number(b["Current Used"] ?? b["Current Spend"] ?? 0);
-                        const pct = limit > 0 ? Math.round((used / limit) * 100) : 0;
-                        const isExceeded =
-                          b["Threshold Status"]?.toLowerCase().includes("exceeded") ||
-                          pct >= 100;
-
-                        return (
-                          <div
-                            key={i}
-                            className={`${
-                              paginatedAwsBudgets.length === awsItemsPerPage ? "flex-1" : ""
-                            } py-1.5 flex flex-col justify-center space-y-1`}
-                          >
-                            <div className="flex items-center justify-between gap-2">
-                              <span
-                                className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate leading-tight"
-                                title={b["Budget Name"]}
-                              >
-                                {b["Budget Name"]}
-                              </span>
-                              <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 shrink-0 leading-tight">
-                                ${used.toLocaleString(undefined, { maximumFractionDigits: 0 })} / $
-                                {limit.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="flex-1 h-1.5 bg-slate-200/70 dark:bg-slate-700 rounded-full overflow-hidden">
-                                <div
-                                  className={`h-full rounded-full ${
-                                    isExceeded
-                                      ? "bg-rose-500"
-                                      : pct >= 80
-                                      ? "bg-amber-500"
-                                      : "bg-emerald-500"
-                                  }`}
-                                  style={{ width: `${Math.min(100, pct)}%` }}
-                                />
-                              </div>
-                              <span className="text-[10px] font-mono font-bold text-slate-500 w-8 text-right leading-none">
-                                {pct}%
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <div className="flex-1 flex items-center justify-center text-xs text-slate-400">
-                        No active budgets
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Pagination Footer */}
-                  <div className="shrink-0 pt-2 mt-1 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-                    <span>
-                      {validAwsBudgets.length > 0
-                        ? `${(pageAwsBudgets - 1) * awsItemsPerPage + 1}–${Math.min(
-                            pageAwsBudgets * awsItemsPerPage,
-                            validAwsBudgets.length
-                          )} of ${validAwsBudgets.length}`
-                        : "0 of 0"}
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => setPageAwsBudgets((p) => Math.max(1, p - 1))}
-                        disabled={pageAwsBudgets <= 1}
-                        className="p-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-default"
-                        title="Previous Page"
-                      >
-                        <ChevronLeft className="h-3.5 w-3.5" />
-                      </button>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300 px-1">
-                        {pageAwsBudgets} / {totalPagesAwsBudgets}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setPageAwsBudgets((p) => Math.min(totalPagesAwsBudgets, p + 1))
-                        }
-                        disabled={pageAwsBudgets >= totalPagesAwsBudgets}
-                        className="p-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-default"
-                        title="Next Page"
-                      >
-                        <ChevronRight className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* =============================================================== */}
-          {/* RIGHT PORTAL CARD: AZURE BUDGETS & GOVERNANCE                   */}
-          {/* =============================================================== */}
-          <div className="flex flex-col min-h-[540px] lg:min-h-0 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
-            {/* Portal Top Banner */}
-            <div className="shrink-0 px-4 py-3 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-sky-50/70 via-white to-blue-50/40 dark:from-sky-950/30 dark:via-slate-900 dark:to-slate-900 flex flex-wrap xl:flex-nowrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="h-9 w-9 shrink-0 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-600 dark:text-sky-400 font-extrabold text-xs shadow-2xs">
-                  AZ
-                </div>
-                <div className="min-w-0">
-                  <h2 className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                    Azure Budgets & Governance
-                  </h2>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                    Management-configured budgets, thresholds & RBAC status
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1.5 shrink-0">
-                <button
-                  onClick={handleSyncAzureBudgets}
-                  disabled={syncingAzure}
-                  className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-50 whitespace-nowrap"
-                >
-                  <RefreshCw
-                    className={`w-3.5 h-3.5 ${syncingAzure ? "animate-spin text-sky-600" : ""}`}
-                  />
-                  <span>{syncingAzure ? "Syncing..." : "Sync"}</span>
-                </button>
-
-                <button
-                  onClick={() => navigate("/azure/subscriptions")}
-                  className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors cursor-pointer whitespace-nowrap"
-                >
-                  <Layers className="w-3.5 h-3.5 text-sky-500" />
-                  <span>Subscriptions</span>
-                </button>
-
-                <button
-                  onClick={() => navigate("/azure")}
-                  className="inline-flex items-center gap-1 rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 text-[11px] font-semibold shadow-xs transition-all cursor-pointer whitespace-nowrap"
-                >
-                  <span>Enter Azure</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Portal Body */}
-            <div className="flex-1 min-h-0 p-4 flex flex-col justify-between gap-3.5 overflow-hidden">
-              {/* Visual Gauges & Key KPIs Strip */}
-              <div className="shrink-0 grid grid-cols-12 gap-3">
-                {/* Gauge Card: Azure Coverage + Permission Restricted */}
-                <div className="col-span-5 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 p-3 flex items-center gap-3">
-                  <CoverageGauge
-                    percentage={azureCoveragePct}
-                    colorClass="text-sky-500"
-                    size={56}
-                  />
-                  <div className="min-w-0 flex-1 space-y-0.5">
-                    <div className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
-                      Budget Coverage
-                    </div>
-                    <div className="text-[11px] text-slate-500 font-medium truncate">
-                      {azureBudgetedAccounts} of {azureTotalAccounts} subscriptions
-                    </div>
-                    <div className="text-[11px] flex items-center gap-1 pt-0.5 text-purple-600 dark:text-purple-400 font-semibold truncate">
-                      <Lock className="w-3 h-3 shrink-0" />
-                      <span className="truncate">{azurePermissionDenied} subs missing RBAC</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Spend & Allocation Summary Card */}
-                <div className="col-span-7 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 p-3 flex flex-col justify-center">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="min-w-0">
-                      <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1 truncate">
-                        <Wallet className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span className="truncate">Total Budget Allocated</span>
-                      </div>
-                      <div className="text-lg xl:text-xl font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
-                        ₹{(azureSummary?.totalBudgetedSpend || 0).toLocaleString()}
-                      </div>
-                      <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5 truncate">
-                        Configured across {azureBudgetedAccounts} subs
-                      </div>
-                    </div>
-
-                    <div className="border-l border-slate-200/70 dark:border-slate-700/70 pl-3 min-w-0">
-                      <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1 truncate">
-                        <Building2 className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                        <span className="truncate">Active Month Spend</span>
-                      </div>
-                      <div className="text-lg xl:text-xl font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
-                        ₹
-                        {(azureSummary?.activeSpend || 0).toLocaleString(undefined, {
-                          maximumFractionDigits: 0,
-                        })}
-                      </div>
-                      <div className="text-[10px] text-slate-400 mt-0.5 truncate">
-                        Live consumption across org
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Paginated Azure Subscriptions Budget Tracking Card */}
-              <div className="flex-1 min-h-0 flex flex-col rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-3.5 overflow-hidden">
-                <div className="shrink-0 flex items-center justify-between mb-1.5 gap-2">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <Wallet className="h-4 w-4 text-sky-600 shrink-0" />
-                    <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
-                      Azure Subscriptions Budget Tracking
-                    </span>
-                  </div>
-                  <span className="text-[11px] font-semibold text-sky-600 dark:text-sky-400 shrink-0">
-                    {activeAzureBudgets.length} budgets
-                  </span>
-                </div>
-
-                <div
-                  ref={azureListRef}
-                  className="flex-1 min-h-0 flex flex-col justify-start divide-y divide-slate-200/60 dark:divide-slate-800 overflow-hidden"
-                >
-                  {paginatedAzureBudgets.length > 0 ? (
-                    paginatedAzureBudgets.map((b, idx) => {
-                      const isExceeded = b.Status === "Exceeded";
-                      const isWarning = b.Status === "Warning";
-
-                      return (
-                        <div
-                          key={idx}
-                          className={`${
-                            paginatedAzureBudgets.length === azureItemsPerPage ? "flex-1" : ""
-                          } py-1.5 flex items-center justify-between gap-4`}
-                        >
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-2">
-                              <span
-                                className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate leading-tight"
-                                title={b["Linked Account"]}
-                              >
-                                {b["Linked Account"]}
-                              </span>
-                              <span className="text-[10px] text-slate-400 truncate max-w-[160px] leading-tight">
-                                ({b["Budget Name"]})
-                              </span>
-                            </div>
-                            <div className="text-[10px] text-slate-400 font-mono truncate leading-tight mt-0.5">
-                              {b["Account ID"]}
-                            </div>
-                          </div>
-
-                          <div className="text-right shrink-0 w-36">
-                            <div className="text-xs font-bold text-slate-800 dark:text-slate-100 leading-tight">
-                              ₹
-                              {(b["Actual Spend"] || 0).toLocaleString(undefined, {
-                                maximumFractionDigits: 0,
-                              })}{" "}
-                              <span className="text-[10px] font-normal text-slate-400">
-                                / ₹{(b["Budget Limit"] || 0).toLocaleString()}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1.5 mt-1">
-                              <div className="flex-1 h-1.5 bg-slate-200/70 dark:bg-slate-700 rounded-full overflow-hidden">
-                                <div
-                                  className={`h-full rounded-full ${
-                                    isExceeded
-                                      ? "bg-rose-500"
-                                      : isWarning
-                                      ? "bg-amber-500"
-                                      : "bg-emerald-500"
-                                  }`}
-                                  style={{
-                                    width: `${Math.min(100, b["% Utilized"] || 0)}%`,
-                                  }}
-                                />
-                              </div>
-                              <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 leading-none">
-                                {b["% Utilized"]}%
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="shrink-0 w-18 text-right">
-                            <Badge
-                              className={`text-[10px] px-2 py-0.5 border ${
-                                isExceeded
-                                  ? "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20"
-                                  : isWarning
-                                  ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
-                                  : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20"
-                              }`}
-                            >
-                              {b.Status || "On Track"}
-                            </Badge>
-                          </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="flex-1 flex items-center justify-center text-xs text-slate-400">
-                      No Azure budgets found
+                      ))}
                     </div>
                   )}
+
+                  <Link
+                    to={`/aws?account=${encodeURIComponent(selectedAwsAccount)}`}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-2 text-xs font-bold shadow-2xs transition-all"
+                  >
+                    <span>Enter AWS</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div className="p-6 space-y-6 flex-1 flex flex-col justify-between">
+                {/* Stats & Donut Gauge Strip */}
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                  {/* Gauge */}
+                  <div className="sm:col-span-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex items-center gap-4">
+                    <CoverageGauge
+                      percentage={awsSummary?.budgetCoveragePct || 0}
+                      colorClass="text-emerald-500"
+                      size={64}
+                    />
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                        Budget Coverage
+                      </div>
+                      <div className="text-xs font-extrabold text-indigo-600 dark:text-indigo-400">
+                        {awsSummary ? awsSummary.totalAccounts : "--"} Total Org Accounts
+                      </div>
+                      <div className="flex items-center gap-2 text-[11px] text-slate-500">
+                        <span className="text-emerald-600 font-bold">
+                          {awsSummary ? awsSummary.accountsWithBudget : "--"} budgeted
+                        </span>
+                        <span>•</span>
+                        <span className="text-amber-600 font-bold">
+                          {awsSummary ? awsSummary.accountsWithNoBudget : "--"} unbudgeted
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Spend Breakdown */}
+                  <div className="sm:col-span-7 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex flex-col justify-between">
+                    <div className="grid grid-cols-3 gap-2">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          Active Spend
+                        </div>
+                        <div className="text-base font-black text-slate-900 dark:text-white mt-0.5">
+                          ${awsSummary?.activeSpendTotal?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || "--"}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          Budget Limits
+                        </div>
+                        <div className="text-base font-black text-slate-900 dark:text-white mt-0.5">
+                          ${awsSummary?.sumBudgetLimits?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || "--"}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          Suspended Spend
+                        </div>
+                        <div className="text-base font-black text-amber-600 dark:text-amber-400 mt-0.5">
+                          ${awsSummary?.suspendedAccountsSpendTotal?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || "0"}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar: Under Budget vs Unbudgeted */}
+                    <div className="mt-3 pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
+                      <div className="flex items-center justify-between text-[11px] mb-1">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                          ${awsSummary?.spendUnderBudget?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || 0} covered
+                        </span>
+                        <span className="text-rose-600 dark:text-rose-400 font-bold">
+                          ${awsSummary?.spendWithNoBudget?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || 0} unbudgeted
+                        </span>
+                      </div>
+                      <div className="h-2 w-full rounded-full bg-slate-200/80 dark:bg-slate-700 overflow-hidden flex">
+                        <div
+                          className="h-full bg-emerald-500 rounded-l-full"
+                          style={{ width: `${awsBudgetedSpendPct}%` }}
+                        />
+                        <div
+                          className="h-full bg-rose-500 rounded-r-full"
+                          style={{ width: `${100 - awsBudgetedSpendPct}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Pagination Footer */}
-                <div className="shrink-0 pt-2 mt-1 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-                  <span>
-                    {activeAzureBudgets.length > 0
-                      ? `Showing ${(pageAzureBudgets - 1) * azureItemsPerPage + 1}–${Math.min(
-                          pageAzureBudgets * azureItemsPerPage,
-                          activeAzureBudgets.length
-                        )} of ${activeAzureBudgets.length}`
-                      : "0 of 0"}
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => setPageAzureBudgets((p) => Math.max(1, p - 1))}
-                      disabled={pageAzureBudgets <= 1}
-                      className="p-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-default"
-                      title="Previous Page"
-                    >
-                      <ChevronLeft className="h-3.5 w-3.5" />
-                    </button>
-                    <span className="font-semibold text-slate-700 dark:text-slate-300 px-1">
+                {/* Side-by-Side Tables: Unbudgeted Accounts & Active Budgets */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Unbudgeted Accounts Card */}
+                  <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-1.5">
+                          <AlertCircle className="w-4 h-4 text-amber-500" />
+                          <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                            Top Unbudgeted Accounts
+                          </span>
+                        </div>
+                        <span className="text-[11px] font-bold text-amber-600">
+                          {validAwsUnbudgeted.length} accounts
+                        </span>
+                      </div>
+
+                      <div className="divide-y divide-slate-200/60 dark:divide-slate-800">
+                        {paginatedAwsUnbudgeted.length > 0 ? (
+                          paginatedAwsUnbudgeted.map((acc, i) => (
+                            <div key={i} className="py-2 flex items-center justify-between gap-2">
+                              <div className="min-w-0">
+                                <div className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                                  {acc["Account Name"]}
+                                </div>
+                                <div className="text-[10px] text-slate-400 font-mono">
+                                  {acc["Account ID"]}
+                                </div>
+                              </div>
+                              <span className="text-xs font-black text-rose-600 shrink-0">
+                                ${Number(acc["Current Month Spend"] || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                              </span>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="py-4 text-center text-xs text-slate-400">
+                            No unbudgeted accounts
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Pagination */}
+                    <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+                      <span>
+                        Page {pageAwsUnbudgeted} of {totalPagesAwsUnbudgeted}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => setPageAwsUnbudgeted((p) => Math.max(1, p - 1))}
+                          disabled={pageAwsUnbudgeted <= 1}
+                          className="p-1 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => setPageAwsUnbudgeted((p) => Math.min(totalPagesAwsUnbudgeted, p + 1))}
+                          disabled={pageAwsUnbudgeted >= totalPagesAwsUnbudgeted}
+                          className="p-1 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Active Budgets Card */}
+                  <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                            AWS Budgets Tracking
+                          </span>
+                        </div>
+                        <span className="text-[11px] font-bold text-indigo-600">
+                          {validAwsBudgets.length} active
+                        </span>
+                      </div>
+
+                      <div className="divide-y divide-slate-200/60 dark:divide-slate-800">
+                        {paginatedAwsBudgets.length > 0 ? (
+                          paginatedAwsBudgets.map((b, i) => {
+                            const limit = Number(b.Limit ?? b["Budget Limit"] ?? 0);
+                            const used = Number(b["Current Used"] ?? b["Current Spend"] ?? 0);
+                            const pct = limit > 0 ? Math.round((used / limit) * 100) : 0;
+                            const isExceeded = pct >= 100;
+
+                            return (
+                              <div key={i} className="py-2 space-y-1">
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="font-bold text-slate-800 dark:text-slate-100 truncate max-w-[140px]">
+                                    {b["Budget Name"]}
+                                  </span>
+                                  <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                                    ${used.toLocaleString(undefined, { maximumFractionDigits: 0 })} / ${limit.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                    <div
+                                      className={`h-full rounded-full ${
+                                        isExceeded
+                                          ? "bg-rose-500"
+                                          : pct >= 80
+                                          ? "bg-amber-500"
+                                          : "bg-emerald-500"
+                                      }`}
+                                      style={{ width: `${Math.min(100, pct)}%` }}
+                                    />
+                                  </div>
+                                  <span className="text-[10px] font-mono font-bold text-slate-500 w-8 text-right">
+                                    {pct}%
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <div className="py-4 text-center text-xs text-slate-400">
+                            No active budgets
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Pagination */}
+                    <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+                      <span>
+                        Page {pageAwsBudgets} of {totalPagesAwsBudgets}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => setPageAwsBudgets((p) => Math.max(1, p - 1))}
+                          disabled={pageAwsBudgets <= 1}
+                          className="p-1 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => setPageAwsBudgets((p) => Math.min(totalPagesAwsBudgets, p + 1))}
+                          disabled={pageAwsBudgets >= totalPagesAwsBudgets}
+                          className="p-1 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Link */}
+                <div className="pt-2 flex justify-end">
+                  <Link
+                    to="/linked-accounts"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                  >
+                    <span>View all AWS Linked Accounts</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ============================================================= */}
+            {/* RIGHT PORTAL: AZURE BUDGETS & GOVERNANCE                      */}
+            {/* ============================================================= */}
+            <div className="rounded-3xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden flex flex-col">
+              {/* Card Header */}
+              <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-sky-500/5 via-white to-transparent dark:from-sky-500/10 dark:via-slate-900 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 shrink-0 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-600 font-black text-sm shadow-2xs">
+                    AZ
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+                        Azure Budgets &amp; Subscriptions
+                      </h2>
+                      <Badge className="bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-400 border border-sky-200/80 text-[10px] font-bold">
+                        {azureMonthLabel}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Management-configured limits, consumption &amp; RBAC compliance
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleSyncAzureBudgets}
+                    disabled={syncingAzure}
+                    className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors shadow-2xs"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${syncingAzure ? "animate-spin text-sky-600" : ""}`} />
+                    <span>{syncingAzure ? "Syncing..." : "Sync Budgets"}</span>
+                  </button>
+
+                  <Link
+                    to="/azure"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-2 text-xs font-bold shadow-2xs transition-all"
+                  >
+                    <span>Enter Azure</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div className="p-6 space-y-6 flex-1 flex flex-col justify-between">
+                {/* Stats & Gauge */}
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                  {/* Gauge */}
+                  <div className="sm:col-span-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex items-center gap-4">
+                    <CoverageGauge
+                      percentage={azureCoveragePct}
+                      colorClass="text-sky-500"
+                      size={64}
+                    />
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                        Azure Coverage
+                      </div>
+                      <div className="text-xs font-extrabold text-sky-600 dark:text-sky-400">
+                        {azureBudgetedAccounts} of {azureTotalAccounts} Subscriptions
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] text-purple-600 font-bold">
+                        <Lock className="w-3 h-3" />
+                        <span>{azurePermissionDenied} missing Cost RBAC</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Allocation Card */}
+                  <div className="sm:col-span-7 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex flex-col justify-center">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          Total Budget Allocated
+                        </div>
+                        <div className="text-xl font-black text-slate-900 dark:text-white mt-0.5">
+                          ₹{(azureSummary?.totalBudgetedSpend || 0).toLocaleString()}
+                        </div>
+                        <div className="text-[11px] text-emerald-600 font-bold mt-1">
+                          Across {azureBudgetedAccounts} subscriptions
+                        </div>
+                      </div>
+
+                      <div className="border-l border-slate-200/80 dark:border-slate-700/80 pl-4">
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          Active Month Spend
+                        </div>
+                        <div className="text-xl font-black text-slate-900 dark:text-white mt-0.5">
+                          ₹{(azureSummary?.activeSpend || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                        </div>
+                        <div className="text-[11px] text-slate-500 font-medium mt-1">
+                          Live across enterprise tenant
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Subscriptions Budget Tracking List */}
+                <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-1.5">
+                        <Wallet className="w-4 h-4 text-sky-600" />
+                        <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                          Azure Subscriptions Budget Tracking
+                        </span>
+                      </div>
+                      <span className="text-[11px] font-bold text-sky-600">
+                        {activeAzureBudgets.length} configured
+                      </span>
+                    </div>
+
+                    <div className="divide-y divide-slate-200/60 dark:divide-slate-800">
+                      {paginatedAzureBudgets.length > 0 ? (
+                        paginatedAzureBudgets.map((b, idx) => {
+                          const isExceeded = b.Status === "Exceeded";
+                          const isWarning = b.Status === "Warning";
+
+                          return (
+                            <div key={idx} className="py-2.5 flex items-center justify-between gap-4">
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                                    {b["Linked Account"]}
+                                  </span>
+                                  <span className="text-[10px] text-slate-400 truncate max-w-[120px]">
+                                    ({b["Budget Name"]})
+                                  </span>
+                                </div>
+                                <div className="text-[10px] text-slate-400 font-mono truncate">
+                                  {b["Account ID"]}
+                                </div>
+                              </div>
+
+                              <div className="text-right shrink-0 w-36">
+                                <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                                  ₹{(b["Actual Spend"] || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}{" "}
+                                  <span className="text-[10px] font-normal text-slate-400">
+                                    / ₹{(b["Budget Limit"] || 0).toLocaleString()}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                    <div
+                                      className={`h-full rounded-full ${
+                                        isExceeded
+                                          ? "bg-rose-500"
+                                          : isWarning
+                                          ? "bg-amber-500"
+                                          : "bg-emerald-500"
+                                      }`}
+                                      style={{ width: `${Math.min(100, b["% Utilized"] || 0)}%` }}
+                                    />
+                                  </div>
+                                  <span className="text-[10px] font-mono font-bold text-slate-500">
+                                    {b["% Utilized"]}%
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="shrink-0 w-20 text-right">
+                                <Badge
+                                  className={`text-[10px] px-2 py-0.5 border ${
+                                    isExceeded
+                                      ? "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20"
+                                      : isWarning
+                                      ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
+                                      : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20"
+                                  }`}
+                                >
+                                  {b.Status || "On Track"}
+                                </Badge>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className="py-4 text-center text-xs text-slate-400">
+                          No active Azure budgets
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Pagination */}
+                  <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>
                       Page {pageAzureBudgets} of {totalPagesAzureBudgets}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setPageAzureBudgets((p) =>
-                          Math.min(totalPagesAzureBudgets, p + 1)
-                        )
-                      }
-                      disabled={pageAzureBudgets >= totalPagesAzureBudgets}
-                      className="p-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-default"
-                      title="Next Page"
-                    >
-                      <ChevronRight className="h-3.5 w-3.5" />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => setPageAzureBudgets((p) => Math.max(1, p - 1))}
+                        disabled={pageAzureBudgets <= 1}
+                        className="p-1 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setPageAzureBudgets((p) => Math.min(totalPagesAzureBudgets, p + 1))}
+                        disabled={pageAzureBudgets >= totalPagesAzureBudgets}
+                        className="p-1 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+                      >
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
+                </div>
+
+                {/* Footer Link */}
+                <div className="pt-2 flex justify-end">
+                  <Link
+                    to="/azure/subscriptions"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline"
+                  >
+                    <span>View all Azure Subscriptions</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </main>
 
-        {/* Admin Requests Modal */}
+        {/* Requests Modal */}
         <AdminRequestsModal
           isOpen={isAdminRequestsOpen}
           onClose={() => setIsAdminRequestsOpen(false)}

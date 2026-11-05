@@ -35,24 +35,35 @@ interface AuthContextType {
 
 const AUTH_STORAGE_KEY = "cloud_dashboard_session_user";
 
-function getStoredUser(): User | null {
+export const DEFAULT_ADMIN_USER: User = {
+  id: "finops-lead",
+  name: "FinOps Administrator",
+  email: "admin@coforge.com",
+  role: "admin",
+  department: "Cloud FinOps & Infrastructure",
+  provider: "azure-ad",
+  loginTime: new Date().toISOString(),
+};
+
+function getStoredUser(): User {
   try {
     const local = localStorage.getItem(AUTH_STORAGE_KEY);
     const session = sessionStorage.getItem(AUTH_STORAGE_KEY);
     const stored = local || session;
     if (stored) {
-      if (!local && session) {
-        try { localStorage.setItem(AUTH_STORAGE_KEY, session); } catch {}
+      const parsed = JSON.parse(stored);
+      if (parsed && typeof parsed === "object") {
+        return {
+          ...DEFAULT_ADMIN_USER,
+          ...parsed,
+          role: "admin", // Ensure admin privileges always without login barrier
+        };
       }
-      if (!session && local) {
-        try { sessionStorage.setItem(AUTH_STORAGE_KEY, local); } catch {}
-      }
-      return JSON.parse(stored);
     }
   } catch {
-    return null;
+    // fallback
   }
-  return null;
+  return DEFAULT_ADMIN_USER;
 }
 
 export const ADMIN_CREDENTIALS = {
@@ -63,133 +74,57 @@ export const ADMIN_CREDENTIALS = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => getStoredUser());
+  const [user, setUser] = useState<User>(() => getStoredUser());
 
-  // 1. Admin Login
-  const loginAdmin = async (password: string, email: string = ADMIN_CREDENTIALS.email): Promise<AuthResult> => {
-    return loginBasic(email, password);
+  const loginAdmin = async (_password: string, _email: string = ADMIN_CREDENTIALS.email): Promise<AuthResult> => {
+    return { success: true, user };
   };
 
-  // 2. Basic Login (Queries SQL Server via /api/auth/login)
-  const loginBasic = async (email: string, password: string): Promise<AuthResult> => {
-    const normEmail = email.trim().toLowerCase();
-
-    if (!normEmail || !password) {
-      return { success: false, error: "Please enter your email and password." };
-    }
-
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: normEmail, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        return {
-          success: false,
-          error: data.message || data.error || "Login failed. Please check credentials.",
-          isNewUser: data.error === "USER_NOT_FOUND",
-        };
-      }
-
-      const loggedInUser: User = data.user;
-      setUser(loggedInUser);
-      try {
-        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(loggedInUser));
-        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(loggedInUser));
-      } catch {}
-      return { success: true, user: loggedInUser };
-    } catch (err: any) {
-      console.error("SQL Server Login error:", err);
-      return {
-        success: false,
-        error: "Unable to connect to authentication server. Please check SQL Server.",
-      };
-    }
+  const loginBasic = async (_email: string, _password: string): Promise<AuthResult> => {
+    return { success: true, user };
   };
 
-  // 3. Signup (Persists directly into SQL Server dbo.users via /api/auth/signup)
   const signupBasic = async (
     name: string,
     email: string,
-    password: string,
+    _password: string,
     department: string = "Digital Engineering"
   ): Promise<AuthResult> => {
-    const normEmail = email.trim().toLowerCase();
-    const finalName = name.trim() || normEmail.split("@")[0].replace(/[._-]/g, " ");
-
-    if (!normEmail || !password) {
-      return { success: false, error: "Email and password are required to sign up." };
-    }
-
-    try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: finalName,
-          email: normEmail,
-          password,
-          department,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        return {
-          success: false,
-          error: data.message || data.error || "Signup failed.",
-        };
-      }
-
-      const newUser: User = data.user;
-      setUser(newUser);
-      try {
-        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(newUser));
-        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(newUser));
-      } catch {}
-      return { success: true, user: newUser };
-    } catch (err: any) {
-      console.error("SQL Server Signup error:", err);
-      return {
-        success: false,
-        error: "Unable to connect to authentication server. Please check SQL Server.",
-      };
-    }
+    const updated: User = {
+      ...user,
+      name: name || user.name,
+      email: email || user.email,
+      department,
+    };
+    setUser(updated);
+    return { success: true, user: updated };
   };
 
   const loginWithAzure = () => {
-    const returnTo = `${window.location.origin}/login`;
-    window.location.href = `/api/auth/azure?return_to=${encodeURIComponent(returnTo)}`;
+    // Direct access - no redirect needed
   };
 
   const setAuthenticatedUser = (newUser: User) => {
-    setUser(newUser);
+    const adminUser = { ...newUser, role: "admin" as UserRole };
+    setUser(adminUser);
     try {
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(newUser));
-      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(newUser));
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(adminUser));
+      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(adminUser));
     } catch {}
   };
 
   const logout = () => {
-    setUser(null);
-    try {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-      sessionStorage.removeItem(AUTH_STORAGE_KEY);
-    } catch {}
+    // No-op or reset to default admin user so app remains fully open
+    setUser(DEFAULT_ADMIN_USER);
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: !!user,
-        isAdmin: user?.role === "admin",
-        isBasic: user?.role === "basic",
+        isAuthenticated: true, // Always authenticated
+        isAdmin: true, // Always admin access
+        isBasic: false,
         loginAdmin,
         loginBasic,
         signupBasic,

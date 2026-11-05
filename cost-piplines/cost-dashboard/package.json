@@ -6,9 +6,9 @@
   "scripts": {
     "start": "tsx ../src/server/index.ts",
     "server": "tsx ../src/server/index.ts",
-    "dev:vite": "vite",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"API,VITE\" -c \"cyan,magenta\" \"tsx ../src/server/index.ts\" \"vite\"",
-    "build": "vite build",
+    "dev:vite": "vite --configLoader runner",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"API,VITE\" -c \"cyan,magenta\" \"tsx ../src/server/index.ts\" \"vite --configLoader runner\"",
+    "build": "vite build --configLoader runner",
     "deploy": "npm run build && wrangler pages deploy dist",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -18,6 +18,7 @@
     "@fontsource-variable/inter": "^5.3.0",
     "@hugeicons/core-free-icons": "^4.2.3",
     "@hugeicons/react": "^1.1.9",
+    "@rolldown/binding-win32-x64-msvc": "^1.2.16",
     "@tailwindcss/vite": "^4.3.3",
     "@tremor/react": "^3.18.7",
     "class-variance-authority": "^0.7.1",
@@ -50,10 +51,10 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
+    "tsx": "^4.23.15",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0",
-    "tsx": "^4.23.15",
-    "vite": "^8.2.0",
+    "vite --configLoader runner": "^8.2.0",
     "wrangler": "^4.127.1"
   }
 }
