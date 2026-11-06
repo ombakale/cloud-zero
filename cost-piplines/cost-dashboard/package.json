@@ -8,8 +8,8 @@
     "server": "tsx ../src/server/index.ts",
     "dev:vite": "vite --configLoader runner",
     "dev": "concurrently -k -p \"[{name}]\" -n \"API,VITE\" -c \"cyan,magenta\" \"tsx ../src/server/index.ts\" \"vite --configLoader runner\"",
-    "build": "vite build --configLoader runner",
-    "deploy": "npm run build && wrangler pages deploy dist",
+    "build": "vite build --configLoader runner && node -e \"require('fs').rmSync('dist/_redirects',{force:true})\"",
+    "deploy": "npm run build && wrangler deploy",
     "lint": "eslint .",
     "preview": "vite preview"
   },
