@@ -54,7 +54,7 @@
     "tsx": "^4.23.15",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0",
-    "vite --configLoader runner": "^8.2.0",
+    "vite": "^8.2.0",
     "wrangler": "^4.127.1"
   }
 }
