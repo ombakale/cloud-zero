@@ -143,6 +143,15 @@ export function Navbar({
 
         {/* Right: Actions */}
         <div className="flex items-center gap-3">
+          {/* Landing Page Link */}
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] px-3 py-1.5 text-xs font-semibold text-[#a0aec0] hover:text-white transition-all cursor-pointer shadow-sm"
+            title="Go to Cloud Zero Landing Page"
+          >
+            <span>Website</span>
+          </Link>
+
           {/* Switch / Connect Account Button */}
           <button
             onClick={() => navigate("/connect")}

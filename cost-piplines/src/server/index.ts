@@ -35,6 +35,54 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Talk to an Expert / Consultation Request endpoint
+app.post('/api/expert-request', (req, res) => {
+  try {
+    const { name, email, company, spend, provider, message } = req.body;
+    console.log('📬 [EXPERT CONSULTATION REQUEST RECEIVED]:', {
+      name,
+      email,
+      company,
+      spend,
+      provider,
+      message,
+      submittedAt: new Date().toISOString(),
+    });
+
+    // Optionally record to data/consultations.json if needed
+    const dataDir = path.resolve(__dirname, '../../data');
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    const consultationsFile = path.join(dataDir, 'consultations.json');
+    let list = [];
+    if (fs.existsSync(consultationsFile)) {
+      try {
+        list = JSON.parse(fs.readFileSync(consultationsFile, 'utf8'));
+      } catch {}
+    }
+    list.push({
+      id: `req-${Date.now()}`,
+      name,
+      email,
+      company,
+      spend,
+      provider,
+      message,
+      createdAt: new Date().toISOString(),
+    });
+    fs.writeFileSync(consultationsFile, JSON.stringify(list, null, 2), 'utf8');
+
+    res.json({
+      success: true,
+      message: 'Consultation request received successfully. Our FinOps expert will reach out within 24 hours.',
+    });
+  } catch (err: any) {
+    console.error('Error recording expert request:', err);
+    res.status(500).json({ success: false, message: 'Failed to submit request.' });
+  }
+});
+
 // Serve frontend static build if dist exists (Production VM deployment)
 const distPath = path.resolve(__dirname, '../../cost-dashboard/dist');
 if (fs.existsSync(distPath)) {

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import { VantageLandingPage } from './pages/VantageLandingPage.tsx'
 import { ConnectCloudPage } from './pages/ConnectCloudPage.tsx'
 import { MultiCloudOverviewPage } from './pages/MultiCloudOverviewPage.tsx'
 import { LinkedAccountsPage } from './pages/LinkedAccountsPage.tsx'
@@ -27,8 +28,12 @@ createRoot(document.getElementById('root')!).render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Landing Onboarding Screen: Select AWS or Azure & Input Credentials */}
-          <Route path="/" element={<ConnectCloudPage />} />
+          {/* Vantage-Style Modern Landing Page */}
+          <Route path="/" element={<VantageLandingPage />} />
+          <Route path="/home" element={<VantageLandingPage />} />
+          <Route path="/landing" element={<VantageLandingPage />} />
+
+          {/* Onboarding Screen: Select AWS or Azure & Input Credentials */}
           <Route path="/connect" element={<ConnectCloudPage />} />
 
           {/* Multi-Cloud Command Center Overview */}
@@ -52,11 +57,11 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/azure/linked-accounts/:subscriptionId/*" element={<AzureSubscriptionDetailPage />} />
           <Route path="/azure/linked-accounts/:subscriptionId" element={<AzureSubscriptionDetailPage />} />
 
-          {/* Redirect /login and /newrequest directly to connect landing page */}
+          {/* Redirects */}
           <Route path="/newrequest" element={<Navigate to="/connect" replace />} />
-          <Route path="/login" element={<Navigate to="/" replace />} />
+          <Route path="/login" element={<Navigate to="/connect" replace />} />
 
-          {/* Fallback Catch-all: redirect to connect root */}
+          {/* Fallback Catch-all: redirect to landing page */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
