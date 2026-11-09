@@ -241,7 +241,7 @@ export function LinkedAccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased selection:bg-[#0075ff] selection:text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans antialiased selection:bg-[#84cc16] selection:text-white">
       {/* Top Navbar */}
       <Navbar
         activeProvider="aws"
@@ -261,7 +261,7 @@ export function LinkedAccountsPage() {
               <h2 className="text-lg font-bold tracking-tight text-white">
                 AWS Linked Accounts Directory
               </h2>
-              <p className="text-xs text-[#a0aec0]">
+              <p className="text-xs text-[#a1a1aa]">
                 Member account inventory, billing trajectory, and budget enforcement
               </p>
             </div>
@@ -269,15 +269,15 @@ export function LinkedAccountsPage() {
 
           {/* Account and Month Selectors */}
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#a0aec0]">Payer:</span>
+            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#141414]/90 px-3 py-1.5 shadow-sm">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#a1a1aa]">Payer:</span>
               <select
                 value={selectedAwsAccount}
                 onChange={(e) => setSelectedAwsAccount(e.target.value)}
                 className="text-xs font-bold bg-transparent text-white focus:outline-none cursor-pointer"
               >
                 {awsAccounts.map((acc) => (
-                  <option key={acc.id} value={acc.id} className="bg-[#060b26] text-white">
+                  <option key={acc.id} value={acc.id} className="bg-[#0a0a0a] text-white">
                     {acc.name}
                   </option>
                 ))}
@@ -285,8 +285,8 @@ export function LinkedAccountsPage() {
             </div>
 
             {availableMonths.length > 0 && (
-              <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#a0aec0]">Month:</span>
+              <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#141414]/90 px-3 py-1.5 shadow-sm">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#a1a1aa]">Month:</span>
                 <select
                   value={selectedMonth}
                   onChange={(e) => {
@@ -296,7 +296,7 @@ export function LinkedAccountsPage() {
                   className="text-xs font-bold bg-transparent text-white focus:outline-none cursor-pointer"
                 >
                   {availableMonths.map((m) => (
-                    <option key={m} value={m} className="bg-[#060b26] text-white">
+                    <option key={m} value={m} className="bg-[#0a0a0a] text-white">
                       {m}
                     </option>
                   ))}
@@ -308,7 +308,7 @@ export function LinkedAccountsPage() {
               onClick={fetchLinkedAccounts}
               disabled={loading}
               title="Refresh Accounts"
-              className="p-2 rounded-xl border border-white/10 bg-[#080d28] hover:bg-white/10 text-[#a0aec0] hover:text-white transition-colors cursor-pointer"
+              className="p-2 rounded-xl border border-white/10 bg-[#141414] hover:bg-white/10 text-[#a1a1aa] hover:text-white transition-colors cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             </button>
@@ -322,23 +322,23 @@ export function LinkedAccountsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                     ORG ACCOUNTS
                   </p>
                   <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {data.totalLinkedAccounts}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-[#a0aec0] pt-0.5">
+                  <div className="flex items-center gap-2 text-xs text-[#a1a1aa] pt-0.5">
                     <span className="text-[#01b574] font-medium">
                       {data.activeAccountsCount} active
                     </span>
                     <span>•</span>
-                    <span className="text-[#a0aec0]">
+                    <span className="text-[#a1a1aa]">
                       {data.suspendedAccountsCount} closed
                     </span>
                   </div>
                 </div>
-                <div className="vision-icon-box h-10 w-10 text-white">
+                <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                   <Building2 className="h-5 w-5" />
                 </div>
               </div>
@@ -348,17 +348,17 @@ export function LinkedAccountsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                     {formatMonthName(data.selectedMonth).toUpperCase()} SPEND
                   </p>
                   <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {fmt(data.totalSpend)}
                   </h3>
-                  <p className="text-xs text-[#a0aec0] pt-0.5">
+                  <p className="text-xs text-[#a1a1aa] pt-0.5">
                     Across {data.activeAccountsCount} member accounts
                   </p>
                 </div>
-                <div className="vision-icon-box h-10 w-10 text-white">
+                <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                   <DollarSign className="h-5 w-5" />
                 </div>
               </div>
@@ -368,7 +368,7 @@ export function LinkedAccountsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                     BUDGET COVERAGE
                   </p>
                   <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -386,7 +386,7 @@ export function LinkedAccountsPage() {
                     </span>
                   </div>
                 </div>
-                <div className="vision-icon-box h-10 w-10 text-white">
+                <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                   <PieChart className="h-5 w-5" />
                 </div>
               </div>
@@ -396,17 +396,17 @@ export function LinkedAccountsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1 min-w-0 pr-2">
-                  <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                  <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                     TOP CONTRIBUTOR
                   </p>
                   <h3 className="text-lg font-bold text-white tracking-tight truncate" title={data.accounts[0]?.accountName}>
                     {data.accounts[0]?.accountName || "N/A"}
                   </h3>
-                  <p className="text-xs text-[#00c5ff] font-semibold pt-0.5">
+                  <p className="text-xs text-[#a3e635] font-semibold pt-0.5">
                     {fmt(data.accounts[0]?.currentSpend || 0)}
                   </p>
                 </div>
-                <div className="vision-icon-box h-10 w-10 text-white shrink-0">
+                <div className="vision-icon-box h-10 w-10 text-[#0a0a0a] shrink-0">
                   <TrendingUp className="h-5 w-5" />
                 </div>
               </div>
@@ -422,7 +422,7 @@ export function LinkedAccountsPage() {
                 <CardTitle className="text-base font-bold text-white tracking-tight">
                   Member Accounts Inventory
                 </CardTitle>
-                <p className="text-xs text-[#a0aec0] mt-0.5">
+                <p className="text-xs text-[#a1a1aa] mt-0.5">
                   Detailed billing, active governance status, and direct deep-dive analysis
                 </p>
               </div>
@@ -430,13 +430,13 @@ export function LinkedAccountsPage() {
               {/* Status & Budget Quick Filters */}
               <div className="flex flex-wrap items-center gap-2">
                 {/* Status Toggle */}
-                <div className="flex items-center bg-[#080d28]/90 p-1 rounded-xl border border-white/10 text-xs">
+                <div className="flex items-center bg-[#141414]/90 p-1 rounded-xl border border-white/10 text-xs">
                   <button
                     onClick={() => { setStatusFilter("ALL"); setCurrentPage(1); }}
                     className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       statusFilter === "ALL"
-                        ? "bg-[#0075ff] text-white shadow-sm"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#84cc16] text-[#0a0a0a] font-bold shadow-sm"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     All
@@ -445,8 +445,8 @@ export function LinkedAccountsPage() {
                     onClick={() => { setStatusFilter("ACTIVE"); setCurrentPage(1); }}
                     className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       statusFilter === "ACTIVE"
-                        ? "bg-[#0075ff] text-white shadow-sm"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#84cc16] text-[#0a0a0a] font-bold shadow-sm"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Active
@@ -455,8 +455,8 @@ export function LinkedAccountsPage() {
                     onClick={() => { setStatusFilter("SUSPENDED"); setCurrentPage(1); }}
                     className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       statusFilter === "SUSPENDED"
-                        ? "bg-[#0075ff] text-white shadow-sm"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#84cc16] text-[#0a0a0a] font-bold shadow-sm"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Suspended
@@ -464,13 +464,13 @@ export function LinkedAccountsPage() {
                 </div>
 
                 {/* Budget Toggle */}
-                <div className="flex items-center bg-[#080d28]/90 p-1 rounded-xl border border-white/10 text-xs">
+                <div className="flex items-center bg-[#141414]/90 p-1 rounded-xl border border-white/10 text-xs">
                   <button
                     onClick={() => { setBudgetFilter("ALL"); setCurrentPage(1); }}
                     className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       budgetFilter === "ALL"
-                        ? "bg-[#0075ff] text-white shadow-sm"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#84cc16] text-[#0a0a0a] font-bold shadow-sm"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     All
@@ -479,8 +479,8 @@ export function LinkedAccountsPage() {
                     onClick={() => { setBudgetFilter("BUDGETED"); setCurrentPage(1); }}
                     className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       budgetFilter === "BUDGETED"
-                        ? "bg-[#0075ff] text-white shadow-sm"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#84cc16] text-[#0a0a0a] font-bold shadow-sm"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Budgeted
@@ -489,8 +489,8 @@ export function LinkedAccountsPage() {
                     onClick={() => { setBudgetFilter("UNBUDGETED"); setCurrentPage(1); }}
                     className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                       budgetFilter === "UNBUDGETED"
-                        ? "bg-[#0075ff] text-white shadow-sm"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#84cc16] text-[#0a0a0a] font-bold shadow-sm"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Unbudgeted
@@ -501,7 +501,7 @@ export function LinkedAccountsPage() {
 
             {/* Search Input */}
             <div className="relative mt-3">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a1a1aa]" />
               <input
                 type="text"
                 placeholder="Search by account name, 12-digit ID, or service driver..."
@@ -510,7 +510,7 @@ export function LinkedAccountsPage() {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
+                className="w-full bg-[#141414]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a1a1aa] focus:border-[#84cc16] focus:outline-none transition-all"
               />
             </div>
           </CardHeader>
@@ -518,8 +518,8 @@ export function LinkedAccountsPage() {
           <CardContent className="p-0">
             {loading ? (
               <div className="py-20 text-center space-y-3">
-                <RefreshCw className="w-6 h-6 text-[#0075ff] animate-spin mx-auto" />
-                <p className="text-xs font-medium text-[#a0aec0]">
+                <RefreshCw className="w-6 h-6 text-[#84cc16] animate-spin mx-auto" />
+                <p className="text-xs font-medium text-[#a1a1aa]">
                   Loading member accounts from live telemetry...
                 </p>
               </div>
@@ -529,13 +529,13 @@ export function LinkedAccountsPage() {
                 <p className="text-xs font-semibold text-[#e31a1a]">{error}</p>
                 <button
                   onClick={fetchLinkedAccounts}
-                  className="vision-button-primary px-3 py-1.5 text-xs font-semibold rounded-xl text-white cursor-pointer"
+                  className="vision-button-primary px-3 py-1.5 text-xs font-bold rounded-xl text-[#0a0a0a] cursor-pointer"
                 >
                   Retry
                 </button>
               </div>
             ) : paginatedAccounts.length === 0 ? (
-              <div className="py-16 text-center text-[#a0aec0] text-xs space-y-2">
+              <div className="py-16 text-center text-[#a1a1aa] text-xs space-y-2">
                 <p>No member accounts found matching your filters.</p>
                 <button
                   onClick={() => {
@@ -543,7 +543,7 @@ export function LinkedAccountsPage() {
                     setStatusFilter("ALL");
                     setBudgetFilter("ALL");
                   }}
-                  className="text-xs text-[#0075ff] underline font-medium cursor-pointer"
+                  className="text-xs text-[#84cc16] underline font-medium cursor-pointer"
                 >
                   Reset filters
                 </button>
@@ -552,28 +552,28 @@ export function LinkedAccountsPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-white/10 hover:bg-transparent">
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                       Account Name & ID
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] w-[100px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] w-[100px]">
                       Status
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right w-[120px]">
                       Current Spend
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right w-[120px]">
                       Prior Spend
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[110px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right w-[110px]">
                       MoM Variance
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] w-[120px]">
                       Governance
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                       Top Cost Driver
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-center w-[120px]">
+                    <TableHead className="py-3 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-center w-[120px]">
                       Action
                     </TableHead>
                   </TableRow>
@@ -591,7 +591,7 @@ export function LinkedAccountsPage() {
                             <span className="font-semibold text-xs text-white">
                               {acc.accountName}
                             </span>
-                            <div className="flex items-center gap-1.5 mt-0.5 text-[#a0aec0] text-[11px] font-mono">
+                            <div className="flex items-center gap-1.5 mt-0.5 text-[#a1a1aa] text-[11px] font-mono">
                               <span>{acc.linkedAccountId}</span>
                               <button
                                 onClick={() => copyToClipboard(acc.linkedAccountId)}
@@ -627,7 +627,7 @@ export function LinkedAccountsPage() {
                         </TableCell>
 
                         {/* Previous Spend */}
-                        <TableCell className="py-3 px-4 text-right whitespace-nowrap text-[#a0aec0] text-xs font-medium font-mono">
+                        <TableCell className="py-3 px-4 text-right whitespace-nowrap text-[#a1a1aa] text-xs font-medium font-mono">
                           {fmt(acc.previousSpend)}
                         </TableCell>
 
@@ -640,7 +640,7 @@ export function LinkedAccountsPage() {
                                   ? "text-[#e31a1a] font-bold"
                                   : isNegativeMoM
                                   ? "text-[#01b574] font-bold"
-                                  : "text-[#a0aec0]"
+                                  : "text-[#a1a1aa]"
                               }`}
                             >
                               {isPositiveMoM && <TrendingUp className="w-3.5 h-3.5" />}
@@ -649,7 +649,7 @@ export function LinkedAccountsPage() {
                               {acc.momChangePercent}%
                             </span>
                           ) : (
-                            <span className="text-[#a0aec0]">—</span>
+                            <span className="text-[#a1a1aa]">—</span>
                           )}
                         </TableCell>
 
@@ -673,7 +673,7 @@ export function LinkedAccountsPage() {
                         </TableCell>
 
                         {/* Top Cost Driver */}
-                        <TableCell className="py-3 px-4 text-[#a0aec0] text-xs font-medium truncate max-w-[160px]">
+                        <TableCell className="py-3 px-4 text-[#a1a1aa] text-xs font-medium truncate max-w-[160px]">
                           {acc.topCostDriver}
                         </TableCell>
 
@@ -681,10 +681,10 @@ export function LinkedAccountsPage() {
                         <TableCell className="py-3 px-4 text-center">
                           <Link
                             to={`/linked-accounts/${encodeURIComponent(acc.linkedAccountId || "")}?account=${encodeURIComponent(selectedAwsAccount)}${selectedMonth ? `&month=${encodeURIComponent(selectedMonth)}` : ""}`}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] hover:border-[#0075ff]/50 text-white transition-all cursor-pointer"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] hover:border-[#84cc16]/50 text-white transition-all cursor-pointer"
                           >
                             <span>Open</span>
-                            <ArrowRight className="w-3 h-3 text-[#a0aec0]" />
+                            <ArrowRight className="w-3 h-3 text-[#a1a1aa]" />
                           </Link>
                         </TableCell>
                       </TableRow>
@@ -696,7 +696,7 @@ export function LinkedAccountsPage() {
 
             {/* Pagination Controls */}
             <div className="flex items-center justify-between p-4 border-t border-white/10">
-              <div className="text-xs text-[#a0aec0]">
+              <div className="text-xs text-[#a1a1aa]">
                 {filteredAccounts.length > 0 ? (
                   `Showing ${(currentPage - 1) * ITEMS_PER_PAGE + 1}-${Math.min(
                     currentPage * ITEMS_PER_PAGE,
@@ -710,7 +710,7 @@ export function LinkedAccountsPage() {
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronLeft size={14} />
                 </button>
@@ -720,7 +720,7 @@ export function LinkedAccountsPage() {
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages || totalPages === 0}
-                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronRight size={14} />
                 </button>

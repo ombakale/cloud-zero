@@ -69,13 +69,13 @@ export function AzureKpiCards({ selectedMonth, basePath = "/data/azure" }: Azure
             <Card className="vision-card border-none p-5">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                        <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                        <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                             ALLOCATION FOR PERIOD ({displayMonth})
                         </p>
                         <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{fmt(totalCost)}</h3>
-                        <p className="text-xs text-[#a0aec0]">Total Azure spend, pro-rated</p>
+                        <p className="text-xs text-[#a1a1aa]">Total Azure spend, pro-rated</p>
                     </div>
-                    <div className="vision-icon-box h-10 w-10 text-white">
+                    <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                         <IndianRupee className="h-5 w-5" />
                     </div>
                 </div>
@@ -85,11 +85,11 @@ export function AzureKpiCards({ selectedMonth, basePath = "/data/azure" }: Azure
             <Card className="vision-card border-none p-5">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                        <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">PREVIOUS PERIOD SPEND ({prevDisplayMonth})</p>
+                        <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">PREVIOUS PERIOD SPEND ({prevDisplayMonth})</p>
                         <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{fmt(previousTotalCost)}</h3>
-                        <p className="text-xs text-[#a0aec0]">Prior month total</p>
+                        <p className="text-xs text-[#a1a1aa]">Prior month total</p>
                     </div>
-                    <div className="vision-icon-box h-10 w-10 text-white">
+                    <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                         <Calendar className="h-5 w-5" />
                     </div>
                 </div>
@@ -99,7 +99,7 @@ export function AzureKpiCards({ selectedMonth, basePath = "/data/azure" }: Azure
             <Card className="vision-card border-none p-5">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                        <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">MOM VARIANCE</p>
+                        <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">MOM VARIANCE</p>
                         <h3 className={`text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-1.5 ${isUp ? "text-[#e31a1a]" : "text-[#01b574]"}`}>
                             {activeRow?.["MoM % Change"] !== "" ? (
                                 <>
@@ -110,9 +110,9 @@ export function AzureKpiCards({ selectedMonth, basePath = "/data/azure" }: Azure
                                 "—"
                             )}
                         </h3>
-                        <p className="text-xs text-[#a0aec0]">{isUp ? "Increased vs prior month" : "Decreased vs prior month"}</p>
+                        <p className="text-xs text-[#a1a1aa]">{isUp ? "Increased vs prior month" : "Decreased vs prior month"}</p>
                     </div>
-                    <div className="vision-icon-box h-10 w-10 text-white">
+                    <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                         <TrendingUp className="h-5 w-5" />
                     </div>
                 </div>

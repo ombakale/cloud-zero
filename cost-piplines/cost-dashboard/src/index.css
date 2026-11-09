@@ -11,36 +11,57 @@
   --font-sans: 'Inter Variable', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --color-border: rgba(255, 255, 255, 0.08);
   --color-input: rgba(255, 255, 255, 0.1);
-  --color-ring: #0075ff;
-  --color-background: #060b26;
-  --color-foreground: #ffffff;
-  --color-primary: #0075ff;
-  --color-primary-foreground: #ffffff;
-  --color-muted: rgba(255, 255, 255, 0.06);
-  --color-muted-foreground: #a0aec0;
+  --color-ring: #84cc16;
+  --color-background: #0a0a0a;
+  --color-foreground: #fafafa;
+  --color-primary: #84cc16;
+  --color-primary-foreground: #0a0a0a;
+  --color-muted: #141414;
+  --color-muted-foreground: #a1a1aa;
   --radius: 1.25rem;
 }
 
 :root, .dark {
-  --background: oklch(0.11 0.05 260);
-  --foreground: oklch(0.99 0 0);
-  --card: oklch(0.15 0.05 260 / 75%);
-  --card-foreground: oklch(0.99 0 0);
-  --popover: oklch(0.13 0.05 260);
-  --popover-foreground: oklch(0.99 0 0);
-  --primary: oklch(0.58 0.22 255);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.18 0.04 260);
-  --secondary-foreground: oklch(0.99 0 0);
-  --muted: oklch(0.18 0.03 260);
-  --muted-foreground: oklch(0.72 0.02 260);
-  --accent: oklch(0.58 0.22 255);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.62 0.22 25);
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.58 0.22 255);
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #121212;
+  --popover-foreground: #fafafa;
+  --primary: #84cc16;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #fafafa;
+  --muted: #171717;
+  --muted-foreground: #a1a1aa;
+  --accent: #84cc16;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ef4444;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #84cc16;
   --radius: 1.25rem;
+}
+
+html.light {
+  --background: #f4f4f5;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #84cc16;
+  --primary-foreground: #0a0a0a;
+  --secondary: #e4e4e7;
+  --secondary-foreground: #09090b;
+  --muted: #f4f4f5;
+  --muted-foreground: #52525b;
+  --accent: #84cc16;
+  --accent-foreground: #0a0a0a;
+  --destructive: #dc2626;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.1);
+  --ring: #84cc16;
 }
 
 @layer base {
@@ -48,64 +69,253 @@
     @apply border-border;
   }
   body {
-    background-color: #060b26;
-    color: #ffffff;
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans);
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
   html {
     color-scheme: dark;
   }
+  html.light {
+    color-scheme: light;
+  }
 }
 
-/* Vision UI Custom Design System Classes */
+/* ========================================================================= */
+/* WATERMELON UI DESIGN SYSTEM (ui.watermelon.sh/blocks)                     */
+/* Matte Carbon Black (#0a0a0a) + Outer Block Card (#141414) + Lime (#84cc16)*/
+/* ========================================================================= */
+
+.wm-bg,
 .vision-bg {
-  background: radial-gradient(circle at 50% 0%, #0d1b4d 0%, #060b26 70%);
+  background-color: var(--background);
   min-height: 100vh;
 }
 
+/* Outer Block Card (matches Watermelon UI /blocks outer container) */
+.wm-block,
 .vision-card {
-  background: linear-gradient(127.09deg, rgba(6, 11, 40, 0.94) 19.41%, rgba(10, 14, 35, 0.65) 76.65%);
-  backdrop-filter: blur(120px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 1.25rem;
-  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
+html.light .wm-block,
+html.light .vision-card,
+html.light [data-slot="card"] {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.09) !important;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.06) !important;
+  color: #09090b !important;
+}
+
+.wm-block:hover,
+.vision-card:hover {
+  border-color: rgba(132, 204, 22, 0.32) !important;
+}
+
+/* Inner Inset Well (matches the recessed #0a0a0a preview well inside blocks) */
+.wm-well,
 .vision-card-subtle {
-  background: rgba(11, 20, 55, 0.5);
-  backdrop-filter: blur(80px);
+  background: #0a0a0a;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 1rem;
+  border-radius: 0.875rem;
 }
 
+html.light .wm-well,
+html.light .vision-card-subtle {
+  background: #f4f4f5 !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* Glowing Lime Highlight Block (matches Watermelon CTA / Featured Bento) */
+.wm-block-glow,
 .vision-card-glow {
-  background: linear-gradient(127.09deg, rgba(6, 11, 40, 0.96) 19.41%, rgba(10, 14, 35, 0.7) 76.65%);
-  backdrop-filter: blur(120px);
-  border: 1px solid rgba(0, 117, 255, 0.35);
+  background: radial-gradient(circle at 20% 50%, rgba(132, 204, 22, 0.18) 0%, rgba(20, 20, 20, 0.96) 65%);
+  border: 1px solid rgba(132, 204, 22, 0.35);
   border-radius: 1.25rem;
-  box-shadow: 0 0 25px rgba(0, 117, 255, 0.2);
+  box-shadow: 0 0 35px rgba(132, 204, 22, 0.12);
 }
 
+html.light .wm-block-glow,
+html.light .vision-card-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(132, 204, 22, 0.16) 0%, #ffffff 75%) !important;
+  border-color: rgba(132, 204, 22, 0.45) !important;
+  box-shadow: 0 12px 40px -10px rgba(132, 204, 22, 0.2) !important;
+}
+
+/* Subtle Grid Background */
+.wm-grid-bg {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+html.light .wm-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+/* Watermelon Lime Icon Box */
+.wm-icon-box,
 .vision-icon-box {
-  background: #0075ff;
+  background: #84cc16;
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(0, 117, 255, 0.45);
-  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(132, 204, 22, 0.35);
+  color: #0a0a0a !important;
+  font-weight: 800;
 }
 
-.vision-badge-green {
-  color: #01b574;
-  background: rgba(1, 181, 116, 0.12);
-  border: 1px solid rgba(1, 181, 116, 0.25);
+.wm-icon-box-dark {
+  background: #1c1c1e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a3e635;
+}
+
+html.light .wm-icon-box-dark {
+  background: #ecfccb;
+  border-color: rgba(132, 204, 22, 0.3);
+  color: #4d7c0f;
+}
+
+/* Primary Pill / Action Button */
+.wm-btn-primary,
+.vision-button-primary {
+  background: #84cc16;
+  color: #0a0a0a !important;
   font-weight: 700;
+  border: 1px solid rgba(163, 230, 53, 0.5);
+  box-shadow: 0 4px 18px rgba(132, 204, 22, 0.28);
+  transition: all 0.18s ease;
 }
 
+.wm-btn-primary:hover,
+.vision-button-primary:hover {
+  background: #a3e635;
+  box-shadow: 0 6px 24px rgba(132, 204, 22, 0.45);
+}
+
+/* Badges */
+.wm-badge-lime,
+.vision-badge-green,
+.vision-badge-blue {
+  color: #a3e635;
+  background: rgba(132, 204, 22, 0.12);
+  border: 1px solid rgba(132, 204, 22, 0.3);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+html.light .wm-badge-lime,
+html.light .vision-badge-green,
+html.light .vision-badge-blue {
+  color: #3f6212;
+  background: rgba(132, 204, 22, 0.18);
+  border-color: rgba(101, 163, 13, 0.35);
+}
+
+.wm-badge-red,
 .vision-badge-red {
-  color: #e31a1a;
-  background: rgba(227, 26, 26, 0.12);
-  border: 1px solid rgba(227, 26, 26, 0.25);
-  font-weight: 700;
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+html.light .wm-badge-red,
+html.light .vision-badge-red {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.wm-badge-amber {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+html.light .wm-badge-amber {
+  color: #b45309;
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(217, 119, 6, 0.3);
+}
+
+/* ========================================================================= */
+/* LIGHT MODE ADAPTATIONS FOR HARDCODED DARK UTILITIES                       */
+/* ========================================================================= */
+html.light .bg-\[\#0a0a0a\],
+html.light [class*="bg-[#0a0a0a]"] {
+  background-color: #f4f4f5 !important;
+}
+html.light header[class*="bg-[#0a0a0a]"],
+html.light .bg-\[\#0a0a0a\]\/75,
+html.light .bg-\[\#0a0a0a\]\/80,
+html.light .bg-\[\#0a0a0a\]\/85,
+html.light .bg-\[\#0a0a0a\]\/90 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+html.light .bg-\[\#141414\],
+html.light .bg-\[\#141414\]\/90,
+html.light .bg-\[\#141414\]\/80,
+html.light .bg-\[\#141414\]\/70,
+html.light .bg-\[\#141414\]\/60,
+html.light [class*="bg-[#141414]"] {
+  background-color: #ffffff !important;
+}
+html.light select option {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+}
+html.light .text-white,
+html.light .text-zinc-100,
+html.light .text-zinc-200 {
+  color: #09090b !important;
+}
+html.light .text-\[\#a1a1aa\],
+html.light .text-zinc-400,
+html.light .text-zinc-300,
+html.light .text-slate-300,
+html.light .text-slate-400 {
+  color: #52525b !important;
+}
+html.light .text-\[\#a3e635\] {
+  color: #4d7c0f !important;
+}
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20,
+html.light .border-white\/5,
+html.light .border-white\/\[0\.08\],
+html.light .border-white\/\[0\.07\],
+html.light .border-white\/\[0\.06\],
+html.light [class*="border-white/"] {
+  border-color: rgba(0, 0, 0, 0.09) !important;
+}
+html.light .bg-white\/\[0\.03\],
+html.light .bg-white\/\[0\.04\],
+html.light .bg-white\/\[0\.05\],
+html.light .bg-white\/\[0\.06\] {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+html.light .hover\:bg-white\/\[0\.1\]:hover,
+html.light .hover\:bg-white\/\[0\.06\]:hover,
+html.light .hover\:bg-white\/\[0\.04\]:hover {
+  background-color: rgba(0, 0, 0, 0.07) !important;
 }

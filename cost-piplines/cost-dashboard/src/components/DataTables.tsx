@@ -197,10 +197,10 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
-                <Layers className="h-4 w-4 text-[#0075ff]" />
+                <Layers className="h-4 w-4 text-[#84cc16]" />
                 Cost by Service
               </CardTitle>
-              <p className="text-xs text-[#a0aec0] mt-0.5">
+              <p className="text-xs text-[#a1a1aa] mt-0.5">
                 {effectiveMonth ? formatMonthName(effectiveMonth) : (selectedMonth ? formatMonthName(selectedMonth) : "Latest Month")} vs previous period
               </p>
             </div>
@@ -209,13 +209,13 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
         <CardContent className="flex flex-col flex-1 pb-4">
           {/* Search Input */}
           <div className="relative mb-3">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a1a1aa]" />
             <input
               type="text"
               placeholder="Search services..."
               value={searchServices}
               onChange={(e) => handleSearchServices(e.target.value)}
-              className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
+              className="w-full bg-[#141414]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a1a1aa] focus:border-[#84cc16] focus:outline-none transition-all"
             />
           </div>
 
@@ -224,11 +224,11 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
             <Table>
               <TableHeader>
                 <TableRow className="border-b border-white/10 hover:bg-transparent">
-                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] max-w-[200px]">Service</TableHead>
-                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right whitespace-nowrap w-[100px]">
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] max-w-[200px]">Service</TableHead>
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right whitespace-nowrap w-[100px]">
                     {prevMonth ? formatShortMonthName(prevMonth) : "Prev"}
                   </TableHead>
-                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right whitespace-nowrap w-[100px]">
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right whitespace-nowrap w-[100px]">
                     {effectiveMonth ? formatShortMonthName(effectiveMonth) : (selectedMonth ? formatShortMonthName(selectedMonth) : "Curr")}
                   </TableHead>
                 </TableRow>
@@ -240,7 +240,7 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
                       <TableCell className="max-w-[200px] truncate font-medium text-white py-2.5 text-xs" title={s.Service}>
                         {s.Service}
                       </TableCell>
-                      <TableCell className="text-right whitespace-nowrap w-[100px] py-2.5 text-[#a0aec0] text-xs font-medium">
+                      <TableCell className="text-right whitespace-nowrap w-[100px] py-2.5 text-[#a1a1aa] text-xs font-medium">
                         ${Number(s.PreviousCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </TableCell>
                       <TableCell className="text-right font-bold text-white whitespace-nowrap w-[100px] py-2.5 text-xs">
@@ -250,7 +250,7 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center text-[#a0aec0] py-8 text-xs">
+                    <TableCell colSpan={3} className="text-center text-[#a1a1aa] py-8 text-xs">
                       No services found
                     </TableCell>
                   </TableRow>
@@ -261,14 +261,14 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
 
           {/* Pagination Controls */}
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
-            <span className="text-xs text-[#a0aec0]">
+            <span className="text-xs text-[#a1a1aa]">
               Page {pageServices} of {Math.max(1, totalPagesServices)} ({filteredServices.length} items)
             </span>
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setPageServices((p) => Math.max(1, p - 1))}
                 disabled={pageServices <= 1}
-                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 title="Previous page"
               >
                 <ChevronLeft className="h-3.5 w-3.5" />
@@ -276,7 +276,7 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
               <button
                 onClick={() => setPageServices((p) => Math.min(totalPagesServices, p + 1))}
                 disabled={pageServices >= totalPagesServices || totalPagesServices === 0}
-                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 title="Next page"
               >
                 <ChevronRight className="h-3.5 w-3.5" />
@@ -292,10 +292,10 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
-                <Layers className="h-4 w-4 text-[#00c5ff]" />
+                <Layers className="h-4 w-4 text-[#a3e635]" />
                 Service Usage Frequency
               </CardTitle>
-              <p className="text-xs text-[#a0aec0] mt-0.5">
+              <p className="text-xs text-[#a1a1aa] mt-0.5">
                 Recurring infrastructure vs ad-hoc usage
               </p>
             </div>
@@ -304,13 +304,13 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
         <CardContent className="flex flex-col flex-1 pb-4">
           {/* Search Input */}
           <div className="relative mb-3">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a1a1aa]" />
             <input
               type="text"
               placeholder="Search recurring services..."
               value={searchRecurring}
               onChange={(e) => handleSearchRecurring(e.target.value)}
-              className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
+              className="w-full bg-[#141414]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a1a1aa] focus:border-[#84cc16] focus:outline-none transition-all"
             />
           </div>
 
@@ -319,9 +319,9 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
             <Table>
               <TableHeader>
                 <TableRow className="border-b border-white/10 hover:bg-transparent">
-                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] max-w-[200px]">Service</TableHead>
-                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-center w-[120px]">Months Active</TableHead>
-                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[100px]">Classification</TableHead>
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] max-w-[200px]">Service</TableHead>
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-center w-[120px]">Months Active</TableHead>
+                  <TableHead className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right w-[100px]">Classification</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -335,7 +335,7 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
                         <span className="font-bold text-white">
                           {r["Months Active"] ?? 0}
                         </span>
-                        <span className="text-[#a0aec0]">/{r["Total Months"] ?? 6}</span>
+                        <span className="text-[#a1a1aa]">/{r["Total Months"] ?? 6}</span>
                       </TableCell>
                       <TableCell className="text-right py-2.5">
                         <span
@@ -352,7 +352,7 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center text-[#a0aec0] py-8 text-xs">
+                    <TableCell colSpan={3} className="text-center text-[#a1a1aa] py-8 text-xs">
                       No classification data found
                     </TableCell>
                   </TableRow>
@@ -363,14 +363,14 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
 
           {/* Pagination Controls */}
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
-            <span className="text-xs text-[#a0aec0]">
+            <span className="text-xs text-[#a1a1aa]">
               Page {pageRecurring} of {Math.max(1, totalPagesRecurring)} ({filteredRecurring.length} items)
             </span>
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setPageRecurring((p) => Math.max(1, p - 1))}
                 disabled={pageRecurring <= 1}
-                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 title="Previous page"
               >
                 <ChevronLeft className="h-3.5 w-3.5" />
@@ -378,7 +378,7 @@ export function DataTables({ selectedMonth, basePath = "/data" }: DataTablesProp
               <button
                 onClick={() => setPageRecurring((p) => Math.min(totalPagesRecurring, p + 1))}
                 disabled={pageRecurring >= totalPagesRecurring || totalPagesRecurring === 0}
-                className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 title="Next page"
               >
                 <ChevronRight className="h-3.5 w-3.5" />

@@ -344,14 +344,14 @@ export function AzureDataTables({
                                 Top Meter Details
                             </CardTitle>
 
-                            <p className="mt-1 text-xs text-[#a0aec0]">
+                            <p className="mt-1 text-xs text-[#a1a1aa]">
                                 Meter-level Azure costs for{" "}
                                 {activeMonthName}
                             </p>
                         </div>
 
                         <div className="text-left sm:text-right">
-                            <p className="text-xs text-[#a0aec0]">
+                            <p className="text-xs text-[#a1a1aa]">
                                 Filtered total
                             </p>
 
@@ -362,7 +362,7 @@ export function AzureDataTables({
                     </div>
 
                     <div className="relative w-full sm:max-w-md">
-                        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a0aec0]" />
+                        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a1a1aa]" />
 
                         <input
                             type="search"
@@ -374,7 +374,7 @@ export function AzureDataTables({
                             }
                             placeholder="Search meter, category, service, or resource group..."
                             aria-label="Search Azure meter details"
-                            className="h-9 w-full rounded-md border border-white/10 bg-[#080d28]/90 text-white border-white/10 pl-9 pr-3 text-sm outline-none transition-colors placeholder:text-[#a0aec0] focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                            className="h-9 w-full rounded-md border border-white/10 bg-[#141414]/90 text-white border-white/10 pl-9 pr-3 text-sm outline-none transition-colors placeholder:text-[#a1a1aa] focus-visible:ring-2 focus-visible:ring-blue-500/40"
                         />
                     </div>
                 </CardHeader>
@@ -486,7 +486,7 @@ export function AzureDataTables({
                                                 </TableCell>
 
                                                 <TableCell
-                                                    className="max-w-[200px] truncate py-3 text-[#a0aec0]"
+                                                    className="max-w-[200px] truncate py-3 text-[#a1a1aa]"
                                                     title={
                                                         getCategory(meter)
                                                     }
@@ -496,7 +496,7 @@ export function AzureDataTables({
                                                 </TableCell>
 
                                                 <TableCell
-                                                    className="max-w-[230px] truncate py-3 text-[#a0aec0]"
+                                                    className="max-w-[230px] truncate py-3 text-[#a1a1aa]"
                                                     title={
                                                         meter.Service
                                                     }
@@ -506,7 +506,7 @@ export function AzureDataTables({
                                                 </TableCell>
 
                                                 <TableCell
-                                                    className="max-w-[230px] truncate py-3 text-[#a0aec0]"
+                                                    className="max-w-[230px] truncate py-3 text-[#a1a1aa]"
                                                     title={
                                                         getResourceGroup(meter)
                                                     }
@@ -537,7 +537,7 @@ export function AzureDataTables({
                                                     found
                                                 </p>
 
-                                                <p className="text-xs text-[#a0aec0]">
+                                                <p className="text-xs text-[#a1a1aa]">
                                                     No
                                                     meter
                                                     costs
@@ -557,7 +557,7 @@ export function AzureDataTables({
                     </div>
 
                     <div className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs text-[#a0aec0]">
+                        <p className="text-xs text-[#a1a1aa]">
                             Showing {startRow}-
                             {endRow} of{" "}
                             {filteredMeters.length}{" "}
@@ -572,7 +572,7 @@ export function AzureDataTables({
                                 }
                                 disabled={page <= 1}
                                 aria-label="Previous page"
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-[#080d28]/90 text-white border-white/10 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-[#141414]/90 text-white border-white/10 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 <ChevronLeft className="h-4 w-4" />
                             </button>
@@ -592,7 +592,7 @@ export function AzureDataTables({
                                     totalPages
                                 }
                                 aria-label="Next page"
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-[#080d28]/90 text-white border-white/10 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-muted/50 bg-[#141414]/90 text-white border-white/10 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 <ChevronRight className="h-4 w-4" />
                             </button>

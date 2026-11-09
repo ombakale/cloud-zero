@@ -177,7 +177,7 @@ export function AzureSubscriptionsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased">
+    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans antialiased">
       {/* Top Navbar */}
       <Navbar activeProvider="azure" />
 
@@ -185,7 +185,7 @@ export function AzureSubscriptionsPage() {
         {/* Section Header (No Scope selector needed for Azure FOCUS storage export) */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
+            <div className="p-2 rounded-lg bg-[#84cc16]/15 text-[#a3e635]">
               <Layers className="h-5 w-5" />
             </div>
             <div>
@@ -193,11 +193,11 @@ export function AzureSubscriptionsPage() {
                 <h2 className="text-xl font-bold tracking-tight text-white">
                   Azure Subscriptions Directory
                 </h2>
-                <Badge variant="outline" className="text-[10px] font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-800">
+                <Badge variant="outline" className="text-[10px] font-semibold bg-sky-50 dark:bg-sky-950/40 text-[#a3e635] border-sky-300 dark:border-sky-800">
                   FOCUS 1.0 Export
                 </Badge>
               </div>
-              <p className="text-xs text-[#a0aec0]">
+              <p className="text-xs text-[#a1a1aa]">
                 Subscription inventory, billing trajectory, and budget enforcement
               </p>
             </div>
@@ -207,14 +207,14 @@ export function AzureSubscriptionsPage() {
           <div className="flex flex-wrap items-center gap-2.5">
             {availableMonths.length > 0 && (
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-[#a0aec0]">Month:</span>
+                <span className="text-xs font-semibold text-[#a1a1aa]">Month:</span>
                 <select
                   value={selectedMonth}
                   onChange={(e) => {
                     setSelectedMonth(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="text-xs font-medium bg-[#080d28]/90 text-white border border-white/10 rounded-md px-2.5 py-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sky-500/50 cursor-pointer"
+                  className="text-xs font-medium bg-[#141414]/90 text-white border border-white/10 rounded-md px-2.5 py-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sky-500/50 cursor-pointer"
                 >
                   {availableMonths.map((m) => (
                     <option key={m} value={m}>
@@ -229,7 +229,7 @@ export function AzureSubscriptionsPage() {
               onClick={fetchSubscriptions}
               disabled={loading}
               title="Refresh Subscriptions"
-              className="p-1.5 rounded-md border border-white/10 bg-[#080d28]/90 text-white hover:bg-muted text-[#a0aec0] hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 rounded-md border border-white/10 bg-[#141414]/90 text-white hover:bg-muted text-[#a1a1aa] hover:text-white transition-colors cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             </button>
@@ -243,13 +243,13 @@ export function AzureSubscriptionsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
                     SUBSCRIPTIONS
                   </p>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {data.totalLinkedAccounts}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-[#a0aec0] pt-0.5">
+                  <div className="flex items-center gap-2 text-xs text-[#a1a1aa] pt-0.5">
                     <span className="text-emerald-600 dark:text-emerald-400 font-medium">
                       {data.activeAccountsCount} active
                     </span>
@@ -259,7 +259,7 @@ export function AzureSubscriptionsPage() {
                     </span>
                   </div>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-600 dark:bg-sky-950/50 dark:text-sky-400">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#84cc16]/15 text-[#a3e635] border border-[#84cc16]/30">
                   <Layers className="h-5 w-5" />
                 </div>
               </div>
@@ -269,13 +269,13 @@ export function AzureSubscriptionsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
                     {formatMonthName(data.selectedMonth).toUpperCase()} SPEND
                   </p>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {fmt(data.totalSpend)}
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 pt-0.5">
+                  <p className="text-xs text-zinc-400 pt-0.5">
                     Across {data.activeAccountsCount} subscriptions
                   </p>
                 </div>
@@ -289,15 +289,15 @@ export function AzureSubscriptionsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
                     BUDGET COVERAGE
                   </p>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     {data.activeAccountsCount > 0
                       ? `${((data.budgetedCount / data.activeAccountsCount) * 100).toFixed(1)}%`
                       : "0%"}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-[#a0aec0] pt-0.5">
+                  <div className="flex items-center gap-2 text-xs text-[#a1a1aa] pt-0.5">
                     <span className="text-emerald-600 dark:text-emerald-400 font-medium">
                       {data.budgetedCount} budgeted
                     </span>
@@ -307,7 +307,7 @@ export function AzureSubscriptionsPage() {
                     </span>
                   </div>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-600 dark:bg-sky-950/50 dark:text-sky-400">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#84cc16]/15 text-[#a3e635] border border-[#84cc16]/30">
                   <PieChart className="h-5 w-5" />
                 </div>
               </div>
@@ -317,13 +317,13 @@ export function AzureSubscriptionsPage() {
             <Card className="vision-card border-none p-5">
               <div className="flex items-center justify-between">
                 <div className="space-y-1 min-w-0 pr-2">
-                  <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
                     TOP CONTRIBUTOR
                   </p>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate" title={data.accounts[0]?.accountName}>
+                  <h3 className="text-lg font-bold text-white tracking-tight truncate" title={data.accounts[0]?.accountName}>
                     {data.accounts[0]?.accountName || "N/A"}
                   </h3>
-                  <p className="text-xs text-sky-600 dark:text-sky-400 font-semibold pt-0.5">
+                  <p className="text-xs text-[#a3e635] font-semibold pt-0.5">
                     {fmt(data.accounts[0]?.currentSpend || 0)}
                   </p>
                 </div>
@@ -343,7 +343,7 @@ export function AzureSubscriptionsPage() {
                 <CardTitle className="text-lg font-semibold tracking-tight text-white">
                   Subscription Inventory
                 </CardTitle>
-                <p className="text-xs text-[#a0aec0] mt-0.5">
+                <p className="text-xs text-[#a1a1aa] mt-0.5">
                   Detailed billing, active governance status, and direct deep-dive analysis
                 </p>
               </div>
@@ -356,8 +356,8 @@ export function AzureSubscriptionsPage() {
                     onClick={() => { setStatusFilter("ALL"); setCurrentPage(1); }}
                     className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
                       statusFilter === "ALL"
-                        ? "bg-[#080d28]/90 text-white text-sky-600 dark:text-sky-400 shadow-xs font-semibold"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#141414]/90 text-white text-[#a3e635] shadow-xs font-semibold"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     All
@@ -366,8 +366,8 @@ export function AzureSubscriptionsPage() {
                     onClick={() => { setStatusFilter("ACTIVE"); setCurrentPage(1); }}
                     className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
                       statusFilter === "ACTIVE"
-                        ? "bg-[#080d28]/90 text-white text-emerald-600 dark:text-emerald-400 shadow-xs font-semibold"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#141414]/90 text-white text-emerald-600 dark:text-emerald-400 shadow-xs font-semibold"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Active
@@ -376,8 +376,8 @@ export function AzureSubscriptionsPage() {
                     onClick={() => { setStatusFilter("SUSPENDED"); setCurrentPage(1); }}
                     className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
                       statusFilter === "SUSPENDED"
-                        ? "bg-[#080d28]/90 text-white text-rose-600 dark:text-rose-400 shadow-xs font-semibold"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#141414]/90 text-white text-rose-600 dark:text-rose-400 shadow-xs font-semibold"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Suspended
@@ -390,8 +390,8 @@ export function AzureSubscriptionsPage() {
                     onClick={() => { setBudgetFilter("ALL"); setCurrentPage(1); }}
                     className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
                       budgetFilter === "ALL"
-                        ? "bg-[#080d28]/90 text-white text-sky-600 dark:text-sky-400 shadow-xs font-semibold"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#141414]/90 text-white text-[#a3e635] shadow-xs font-semibold"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     All
@@ -400,8 +400,8 @@ export function AzureSubscriptionsPage() {
                     onClick={() => { setBudgetFilter("BUDGETED"); setCurrentPage(1); }}
                     className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
                       budgetFilter === "BUDGETED"
-                        ? "bg-[#080d28]/90 text-white text-sky-600 dark:text-sky-400 shadow-xs font-semibold"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#141414]/90 text-white text-[#a3e635] shadow-xs font-semibold"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Budgeted
@@ -410,8 +410,8 @@ export function AzureSubscriptionsPage() {
                     onClick={() => { setBudgetFilter("UNBUDGETED"); setCurrentPage(1); }}
                     className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
                       budgetFilter === "UNBUDGETED"
-                        ? "bg-[#080d28]/90 text-white text-amber-600 dark:text-amber-400 shadow-xs font-semibold"
-                        : "text-[#a0aec0] hover:text-white"
+                        ? "bg-[#141414]/90 text-white text-amber-600 dark:text-amber-400 shadow-xs font-semibold"
+                        : "text-[#a1a1aa] hover:text-white"
                     }`}
                   >
                     Unbudgeted
@@ -422,7 +422,7 @@ export function AzureSubscriptionsPage() {
 
             {/* Search Input */}
             <div className="relative mt-3">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-[#a0aec0]" />
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-[#a1a1aa]" />
               <input
                 type="text"
                 placeholder="Search by subscription name, GUID, or service driver..."
@@ -431,7 +431,7 @@ export function AzureSubscriptionsPage() {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-[#080d28]/90 text-white pl-8 pr-3 py-1.5 text-xs rounded-md border border-white/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sky-500/50"
+                className="w-full bg-[#141414]/90 text-white pl-8 pr-3 py-1.5 text-xs rounded-md border border-white/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sky-500/50"
               />
             </div>
           </CardHeader>
@@ -439,8 +439,8 @@ export function AzureSubscriptionsPage() {
           <CardContent className="p-0">
             {loading ? (
               <div className="py-20 text-center space-y-3">
-                <RefreshCw className="w-6 h-6 text-sky-500 animate-spin mx-auto" />
-                <p className="text-xs font-medium text-[#a0aec0]">
+                <RefreshCw className="w-6 h-6 text-[#84cc16] animate-spin mx-auto" />
+                <p className="text-xs font-medium text-[#a1a1aa]">
                   Loading subscriptions from database...
                 </p>
               </div>
@@ -450,13 +450,13 @@ export function AzureSubscriptionsPage() {
                 <p className="text-xs font-semibold text-rose-600">{error}</p>
                 <button
                   onClick={fetchSubscriptions}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-md bg-sky-600 text-white hover:bg-sky-700 transition-colors"
+                  className="px-3 py-1.5 text-xs font-semibold rounded-md bg-[#84cc16] text-[#0a0a0a] font-bold hover:bg-[#a3e635] transition-colors"
                 >
                   Retry
                 </button>
               </div>
             ) : paginatedAccounts.length === 0 ? (
-              <div className="py-16 text-center text-[#a0aec0] text-xs space-y-2">
+              <div className="py-16 text-center text-[#a1a1aa] text-xs space-y-2">
                 <p>No subscriptions found matching your filters.</p>
                 <button
                   onClick={() => {
@@ -464,7 +464,7 @@ export function AzureSubscriptionsPage() {
                     setStatusFilter("ALL");
                     setBudgetFilter("ALL");
                   }}
-                  className="text-xs text-sky-600 dark:text-sky-400 underline font-medium cursor-pointer"
+                  className="text-xs text-[#a3e635] underline font-medium cursor-pointer"
                 >
                   Reset filters
                 </button>
@@ -473,28 +473,28 @@ export function AzureSubscriptionsPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-white/10 bg-transparent hover:bg-transparent">
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider">
                       Subscription Name & ID
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider w-[100px]">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider w-[100px]">
                       Status
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-right w-[120px]">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider text-right w-[120px]">
                       Current Spend
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-right w-[120px]">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider text-right w-[120px]">
                       Prior Spend
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-right w-[110px]">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider text-right w-[110px]">
                       MoM Variance
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider w-[120px]">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider w-[120px]">
                       Governance
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider">
                       Top Cost Driver
                     </TableHead>
-                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a0aec0] uppercase tracking-wider text-center w-[120px]">
+                    <TableHead className="py-3 px-4 text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider text-center w-[120px]">
                       Action
                     </TableHead>
                   </TableRow>
@@ -512,7 +512,7 @@ export function AzureSubscriptionsPage() {
                             <span className="font-semibold text-xs text-white">
                               {acc.accountName}
                             </span>
-                            <div className="flex items-center gap-1.5 mt-0.5 text-[#a0aec0] text-[11px] font-mono">
+                            <div className="flex items-center gap-1.5 mt-0.5 text-[#a1a1aa] text-[11px] font-mono">
                               <span>{acc.linkedAccountId}</span>
                               <button
                                 onClick={() => copyToClipboard(acc.linkedAccountId)}
@@ -554,7 +554,7 @@ export function AzureSubscriptionsPage() {
                         </TableCell>
 
                         {/* Previous Spend */}
-                        <TableCell className="py-3 px-4 text-right whitespace-nowrap text-[#a0aec0] text-xs font-medium font-mono">
+                        <TableCell className="py-3 px-4 text-right whitespace-nowrap text-[#a1a1aa] text-xs font-medium font-mono">
                           {fmt(acc.previousSpend)}
                         </TableCell>
 
@@ -567,7 +567,7 @@ export function AzureSubscriptionsPage() {
                                   ? "text-rose-600 dark:text-rose-400 font-semibold"
                                   : isNegativeMoM
                                   ? "text-emerald-600 dark:text-emerald-400 font-semibold"
-                                  : "text-[#a0aec0]"
+                                  : "text-[#a1a1aa]"
                               }`}
                             >
                               {isPositiveMoM && <TrendingUp className="w-3.5 h-3.5" />}
@@ -576,7 +576,7 @@ export function AzureSubscriptionsPage() {
                               {acc.momChangePercent}%
                             </span>
                           ) : (
-                            <span className="text-[#a0aec0]">—</span>
+                            <span className="text-[#a1a1aa]">—</span>
                           )}
                         </TableCell>
 
@@ -585,7 +585,7 @@ export function AzureSubscriptionsPage() {
                           {acc.hasBudget ? (
                             <Badge
                               variant="outline"
-                              className="bg-sky-50 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300 border-sky-300 dark:border-sky-800 text-[10px] font-semibold"
+                              className="bg-[#84cc16]/15 text-[#a3e635] border-[#84cc16]/30 text-[10px] font-semibold"
                             >
                               <ShieldCheck className="w-3 h-3 mr-1" />
                               Budgeted
@@ -602,7 +602,7 @@ export function AzureSubscriptionsPage() {
                         </TableCell>
 
                         {/* Top Cost Driver */}
-                        <TableCell className="py-3 px-4 text-[#a0aec0] text-xs font-medium truncate max-w-[160px]">
+                        <TableCell className="py-3 px-4 text-[#a1a1aa] text-xs font-medium truncate max-w-[160px]">
                           {acc.topCostDriver}
                         </TableCell>
 
@@ -610,10 +610,10 @@ export function AzureSubscriptionsPage() {
                         <TableCell className="py-3 px-4 text-center">
                           <Link
                             to={`/azure/subscriptions/${encodeURIComponent((acc.linkedAccountId || "").replace(/^\/?subscriptions\//i, ""))}${selectedMonth ? `?month=${encodeURIComponent(selectedMonth)}` : ""}${acc.accountName ? `${selectedMonth ? "&" : "?"}name=${encodeURIComponent(acc.accountName)}` : ""}`}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-md border border-white/10 bg-[#080d28]/90 text-white hover:bg-muted text-white transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-md border border-white/10 bg-[#141414]/90 text-white hover:bg-muted text-white transition-colors cursor-pointer"
                           >
                             <span>Open</span>
-                            <ArrowRight className="w-3 h-3 text-[#a0aec0]" />
+                            <ArrowRight className="w-3 h-3 text-[#a1a1aa]" />
                           </Link>
                         </TableCell>
                       </TableRow>
@@ -625,7 +625,7 @@ export function AzureSubscriptionsPage() {
 
             {/* Pagination Controls */}
             <div className="flex items-center justify-between p-4 border-t border-white/10">
-              <div className="text-xs text-[#a0aec0]">
+              <div className="text-xs text-[#a1a1aa]">
                 {filteredAccounts.length > 0 ? (
                   `Showing ${(currentPage - 1) * ITEMS_PER_PAGE + 1}-${Math.min(
                     currentPage * ITEMS_PER_PAGE,

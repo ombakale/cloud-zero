@@ -173,14 +173,14 @@ export function AzureGovernanceSection({
             <ShieldCheck className="h-5 w-5 text-blue-600" />
             Azure Budgets & Governance
           </h2>
-          <p className="text-xs text-[#a0aec0] mt-0.5">
+          <p className="text-xs text-[#a1a1aa] mt-0.5">
             Management-configured Azure budgets, spending thresholds, and RBAC permission checks
           </p>
         </div>
         <button
           onClick={handleSyncBudgets}
           disabled={syncing}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[#141414] border border-white/10 text-zinc-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${syncing ? "animate-spin text-blue-600" : ""}`} />
           {syncing ? "Syncing ARM..." : "Sync Azure Budgets"}
@@ -190,15 +190,15 @@ export function AzureGovernanceSection({
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Budget Coverage */}
-        <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+        <Card className="rounded-xl border border-white/10/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[#a0aec0]">Budget Coverage</span>
+              <span className="text-xs font-medium text-[#a1a1aa]">Budget Coverage</span>
               <PieChart className="h-4 w-4 text-blue-600" />
             </div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">{coveragePct}%</span>
-              <span className="text-xs text-[#a0aec0]">
+              <span className="text-xs text-[#a1a1aa]">
                 ({budgetedAccounts} of {totalAccounts} subs)
               </span>
             </div>
@@ -206,10 +206,10 @@ export function AzureGovernanceSection({
         </Card>
 
         {/* Card 2: Total Budget Allocation */}
-        <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+        <Card className="rounded-xl border border-white/10/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[#a0aec0]">Total Budget Allocated</span>
+              <span className="text-xs font-medium text-[#a1a1aa]">Total Budget Allocated</span>
               <Wallet className="h-4 w-4 text-emerald-600" />
             </div>
             <div className="mt-2">
@@ -221,11 +221,11 @@ export function AzureGovernanceSection({
         </Card>
 
         {/* Card 3: Active Spend */}
-        <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+        <Card className="rounded-xl border border-white/10/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[#a0aec0]">Active Month Spend</span>
-              <Building2 className="h-4 w-4 text-indigo-600" />
+              <span className="text-xs font-medium text-[#a1a1aa]">Active Month Spend</span>
+              <Building2 className="h-4 w-4 text-[#a3e635]" />
             </div>
             <div className="mt-2">
               <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
@@ -236,36 +236,36 @@ export function AzureGovernanceSection({
         </Card>
 
         {/* Card 4: Permission Denied / Access Restricted */}
-        <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+        <Card className="rounded-xl border border-white/10/80 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[#a0aec0]">Permission Restricted</span>
+              <span className="text-xs font-medium text-[#a1a1aa]">Permission Restricted</span>
               <Lock className="h-4 w-4 text-purple-600" />
             </div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className={`text-2xl font-bold tracking-tight ${permissionDeniedCount > 0 ? "text-purple-600" : "text-slate-900 dark:text-slate-100"}`}>
                 {permissionDeniedCount}
               </span>
-              <span className="text-xs text-[#a0aec0]">subs missing RBAC</span>
+              <span className="text-xs text-[#a1a1aa]">subs missing RBAC</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Table 1: Azure Budgets Overview */}
-      <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+      <Card className="rounded-xl border border-white/10/80 shadow-xs">
         <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800/60 p-4">
           <div>
             <CardTitle className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Wallet className="h-4 w-4 text-blue-600" />
               Azure Subscriptions Budget Tracking
             </CardTitle>
-            <p className="text-xs text-[#a0aec0] mt-0.5">
+            <p className="text-xs text-[#a1a1aa] mt-0.5">
               Live consumption against budgets configured in Azure Portal
             </p>
           </div>
           <div className="relative w-64">
-            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#a0aec0]" />
+            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#a1a1aa]" />
             <input
               type="text"
               placeholder="Search subscription or budget..."
@@ -274,7 +274,7 @@ export function AzureGovernanceSection({
                 setSearchBudgets(e.target.value);
                 setPageBudgets(1);
               }}
-              className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 pl-8 pr-3 text-xs outline-hidden focus:border-blue-500"
+              className="h-8 w-full rounded-lg border border-white/10 bg-[#141414] pl-8 pr-3 text-xs outline-hidden focus:border-blue-500"
             />
           </div>
         </CardHeader>
@@ -294,7 +294,7 @@ export function AzureGovernanceSection({
               <TableBody>
                 {paginatedBudgets.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="py-8 text-center text-xs text-[#a0aec0]">
+                    <TableCell colSpan={6} className="py-8 text-center text-xs text-[#a1a1aa]">
                       No budget entries found. Run "Sync Azure Budgets" to pull from Azure.
                     </TableCell>
                   </TableRow>
@@ -308,9 +308,9 @@ export function AzureGovernanceSection({
                       <TableRow key={idx} className="border-b border-slate-100/60 dark:border-slate-800/40 text-xs hover:bg-slate-50/50 dark:hover:bg-slate-900/30">
                         <TableCell className="font-medium">
                           <div>{b["Linked Account"]}</div>
-                          <div className="text-[10px] text-[#a0aec0] font-mono">{b["Account ID"]}</div>
+                          <div className="text-[10px] text-[#a1a1aa] font-mono">{b["Account ID"]}</div>
                         </TableCell>
-                        <TableCell className="text-[#a0aec0]">{b["Budget Name"]}</TableCell>
+                        <TableCell className="text-[#a1a1aa]">{b["Budget Name"]}</TableCell>
                         <TableCell className="text-right font-semibold">
                           {b["Budget Limit"] ? `₹${b["Budget Limit"].toLocaleString()}` : "—"}
                         </TableCell>
@@ -320,7 +320,7 @@ export function AzureGovernanceSection({
                         <TableCell>
                           {b["Budget Limit"] > 0 ? (
                             <div className="flex items-center gap-2">
-                              <div className="h-1.5 w-16 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                              <div className="h-1.5 w-16 bg-[#1c1c1e] rounded-full overflow-hidden">
                                 <div
                                   className={`h-full rounded-full ${
                                     isExceeded ? "bg-rose-500" : isWarning ? "bg-amber-500" : "bg-emerald-500"
@@ -331,7 +331,7 @@ export function AzureGovernanceSection({
                               <span className="text-[11px] font-medium">{b["% Utilized"]}%</span>
                             </div>
                           ) : (
-                            <span className="text-[#a0aec0]">—</span>
+                            <span className="text-[#a1a1aa]">—</span>
                           )}
                         </TableCell>
                         <TableCell className="text-center">
@@ -352,7 +352,7 @@ export function AzureGovernanceSection({
                               Warning
                             </Badge>
                           ) : b.Status === "Unbudgeted" ? (
-                            <Badge className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10px]">
+                            <Badge className="bg-[#1c1c1e] text-zinc-300 border border-slate-200 dark:border-slate-700 text-[10px]">
                               Unbudgeted
                             </Badge>
                           ) : (
@@ -371,7 +371,7 @@ export function AzureGovernanceSection({
 
           {/* Pagination */}
           {totalBudgetPages > 1 && (
-            <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-[#a0aec0]">
+            <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-[#a1a1aa]">
               <span>
                 Page {pageBudgets} of {totalBudgetPages}
               </span>
@@ -398,19 +398,19 @@ export function AzureGovernanceSection({
 
       {/* Table 2: Unbudgeted & Restricted Subscriptions */}
       {unbudgeted.length > 0 && (
-        <Card className="rounded-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+        <Card className="rounded-xl border border-white/10/80 shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800/60 p-4">
             <div>
               <CardTitle className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4 text-amber-500" />
                 Unbudgeted & Permission Restricted Subscriptions
               </CardTitle>
-              <p className="text-xs text-[#a0aec0] mt-0.5">
+              <p className="text-xs text-[#a1a1aa] mt-0.5">
                 Active spending subscriptions lacking an allocated budget or requiring Azure RBAC permissions
               </p>
             </div>
             <div className="relative w-64">
-              <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#a0aec0]" />
+              <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#a1a1aa]" />
               <input
                 type="text"
                 placeholder="Search..."
@@ -419,7 +419,7 @@ export function AzureGovernanceSection({
                   setSearchUnbudgeted(e.target.value);
                   setPageUnbudgeted(1);
                 }}
-                className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 pl-8 pr-3 text-xs outline-hidden focus:border-blue-500"
+                className="h-8 w-full rounded-lg border border-white/10 bg-[#141414] pl-8 pr-3 text-xs outline-hidden focus:border-blue-500"
               />
             </div>
           </CardHeader>
@@ -451,7 +451,7 @@ export function AzureGovernanceSection({
                           </Badge>
                         )}
                       </TableCell>
-                      <TableCell className="text-[#a0aec0] text-[11px]">
+                      <TableCell className="text-[#a1a1aa] text-[11px]">
                         {u["Error Message"] || "Configure budget in Azure Portal > Cost Management > Budgets."}
                       </TableCell>
                     </TableRow>
@@ -461,7 +461,7 @@ export function AzureGovernanceSection({
             </div>
 
             {totalUnbudgetedPages > 1 && (
-              <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-[#a0aec0]">
+              <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 p-3 text-xs text-[#a1a1aa]">
                 <span>
                   Page {pageUnbudgeted} of {totalUnbudgetedPages}
                 </span>

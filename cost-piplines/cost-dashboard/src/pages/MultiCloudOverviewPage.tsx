@@ -144,7 +144,7 @@ function CoverageGauge({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xs font-black text-slate-900 dark:text-white leading-none">
+        <span className="text-xs font-black text-white leading-none">
           {Math.round(clamped)}%
         </span>
       </div>
@@ -412,12 +412,12 @@ export function MultiCloudOverviewPage() {
         {/* ================================================================= */}
         {/* EXECUTIVE FINOPS HERO STRIP                                      */}
         {/* ================================================================= */}
-        <div className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 px-4 py-5 sm:px-6 lg:px-8 shadow-2xs">
+        <div className="border-b border-white/10/80 bg-[#141414] px-4 py-5 sm:px-6 lg:px-8 shadow-2xs">
           <div className="mx-auto max-w-[1720px]">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+                  <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white">
                     Multi-Cloud Executive Command Center
                   </h1>
                   <Badge
@@ -427,7 +427,7 @@ export function MultiCloudOverviewPage() {
                     Global FinOps
                   </Badge>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs text-zinc-400 mt-1">
                   Unified visibility, cross-cloud budget governance &amp; risk tracking for AWS &amp; Microsoft Azure
                 </p>
               </div>
@@ -445,7 +445,7 @@ export function MultiCloudOverviewPage() {
 
                 <Link
                   to="/azure"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-sky-500/10 text-sky-700 dark:text-sky-400 border border-sky-500/20 px-3 py-2 text-xs font-bold hover:bg-sky-500/20 transition-all shadow-2xs"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-[#84cc16]/15 text-sky-700 dark:text-sky-400 border border-sky-500/20 px-3 py-2 text-xs font-bold hover:bg-[#84cc16]/20 transition-all shadow-2xs"
                 >
                   <BarChart3 className="w-4 h-4 text-sky-600" />
                   <span>Azure Analytics</span>
@@ -455,7 +455,7 @@ export function MultiCloudOverviewPage() {
                 
                 <Link
                   to="/connect"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 text-xs font-bold shadow-xs transition-all"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-[#84cc16] hover:bg-indigo-700 text-white px-3.5 py-2 text-xs font-bold shadow-xs transition-all"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Connect Account</span>
@@ -467,7 +467,7 @@ export function MultiCloudOverviewPage() {
             {/* Top KPI Cards Ribbon */}
             <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Card 1: AWS Month Spend */}
-              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-amber-500/40">
+              <div className="rounded-2xl border border-white/10 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-amber-500/40">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     AWS {awsMonthLabel} Spend
@@ -476,7 +476,7 @@ export function MultiCloudOverviewPage() {
                     AWS
                   </div>
                 </div>
-                <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                <div className="text-2xl font-black text-white mt-1">
                   ${totalAwsSpend.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </div>
                 <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
@@ -489,20 +489,20 @@ export function MultiCloudOverviewPage() {
               </div>
 
               {/* Card 2: Azure Month Spend */}
-              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-sky-500/40">
+              <div className="rounded-2xl border border-white/10 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-sky-500/40">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     Azure {azureMonthLabel} Spend
                   </span>
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-500/10 text-sky-600 font-black text-xs">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#84cc16]/15 text-sky-600 font-black text-xs">
                     AZ
                   </div>
                 </div>
-                <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                <div className="text-2xl font-black text-white mt-1">
                   ₹{totalAzureSpend.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </div>
                 <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
-                  <span className="text-sky-600 dark:text-sky-400 font-semibold">
+                  <span className="text-[#a3e635] font-semibold">
                     {azureCoveragePct}% budgeted
                   </span>
                   <span>•</span>
@@ -511,7 +511,7 @@ export function MultiCloudOverviewPage() {
               </div>
 
               {/* Card 3: Governance & Unbudgeted Risk */}
-              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-rose-500/40">
+              <div className="rounded-2xl border border-white/10 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-rose-500/40">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     Unbudgeted Exposure
@@ -532,7 +532,7 @@ export function MultiCloudOverviewPage() {
               </div>
 
               {/* Card 4: Azure RBAC & Access Status */}
-              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-purple-500/40">
+              <div className="rounded-2xl border border-white/10 bg-slate-50/50 dark:bg-slate-800/40 p-4 transition-all hover:border-purple-500/40">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     Azure Access / RBAC
@@ -563,7 +563,7 @@ export function MultiCloudOverviewPage() {
             {/* ============================================================= */}
             {/* LEFT PORTAL: AWS GOVERNANCE & BUDGETS                         */}
             {/* ============================================================= */}
-            <div className="rounded-3xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden flex flex-col">
+            <div className="rounded-3xl border border-slate-200/90 dark:border-slate-800 bg-[#141414] shadow-sm overflow-hidden flex flex-col">
               {/* Card Header */}
               <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-amber-500/5 via-white to-transparent dark:from-amber-500/10 dark:via-slate-900 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -572,14 +572,14 @@ export function MultiCloudOverviewPage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+                      <h2 className="text-base font-extrabold text-white">
                         AWS Governance &amp; Budgets
                       </h2>
                       <Badge className="bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200/80 text-[10px] font-bold">
                         {awsMonthLabel}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-zinc-400">
                       Organizational inventory, active budget tracking &amp; unbudgeted spend
                     </p>
                   </div>
@@ -588,7 +588,7 @@ export function MultiCloudOverviewPage() {
                 <div className="flex items-center gap-2">
                   {/* Account Switcher */}
                   {awsAccounts.length > 1 && (
-                    <div className="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200/80 dark:border-slate-700">
+                    <div className="inline-flex items-center rounded-xl bg-[#1c1c1e] p-1 border border-slate-200/80 dark:border-slate-700">
                       {awsAccounts.map((acc, idx) => (
                         <button
                           key={acc.id}
@@ -596,7 +596,7 @@ export function MultiCloudOverviewPage() {
                           onClick={() => setSelectedAwsAccount(acc.id)}
                           className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                             acc.id === selectedAwsAccount
-                              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-2xs"
+                              ? "bg-[#141414] text-amber-600 dark:text-amber-400 shadow-2xs"
                               : "text-slate-500 hover:text-slate-900"
                           }`}
                         >
@@ -621,17 +621,17 @@ export function MultiCloudOverviewPage() {
                 {/* Stats & Donut Gauge Strip */}
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
                   {/* Gauge */}
-                  <div className="sm:col-span-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex items-center gap-4">
+                  <div className="sm:col-span-5 rounded-2xl border border-white/10 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex items-center gap-4">
                     <CoverageGauge
                       percentage={awsSummary?.budgetCoveragePct || 0}
                       colorClass="text-emerald-500"
                       size={64}
                     />
                     <div className="space-y-1">
-                      <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                      <div className="text-xs font-bold text-zinc-100">
                         Budget Coverage
                       </div>
-                      <div className="text-xs font-extrabold text-indigo-600 dark:text-indigo-400">
+                      <div className="text-xs font-extrabold text-[#a3e635]">
                         {awsSummary ? awsSummary.totalAccounts : "--"} Total Org Accounts
                       </div>
                       <div className="flex items-center gap-2 text-[11px] text-slate-500">
@@ -647,13 +647,13 @@ export function MultiCloudOverviewPage() {
                   </div>
 
                   {/* Spend Breakdown */}
-                  <div className="sm:col-span-7 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex flex-col justify-between">
+                  <div className="sm:col-span-7 rounded-2xl border border-white/10 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex flex-col justify-between">
                     <div className="grid grid-cols-3 gap-2">
                       <div>
                         <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                           Active Spend
                         </div>
-                        <div className="text-base font-black text-slate-900 dark:text-white mt-0.5">
+                        <div className="text-base font-black text-white mt-0.5">
                           ${awsSummary?.activeSpendTotal?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || "--"}
                         </div>
                       </div>
@@ -661,7 +661,7 @@ export function MultiCloudOverviewPage() {
                         <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                           Budget Limits
                         </div>
-                        <div className="text-base font-black text-slate-900 dark:text-white mt-0.5">
+                        <div className="text-base font-black text-white mt-0.5">
                           ${awsSummary?.sumBudgetLimits?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || "--"}
                         </div>
                       </div>
@@ -702,12 +702,12 @@ export function MultiCloudOverviewPage() {
                 {/* Side-by-Side Tables: Unbudgeted Accounts & Active Budgets */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Unbudgeted Accounts Card */}
-                  <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
+                  <div className="rounded-2xl border border-white/10 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-1.5">
                           <AlertCircle className="w-4 h-4 text-amber-500" />
-                          <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                          <span className="text-xs font-extrabold text-white">
                             Top Unbudgeted Accounts
                           </span>
                         </div>
@@ -716,12 +716,12 @@ export function MultiCloudOverviewPage() {
                         </span>
                       </div>
 
-                      <div className="divide-y divide-slate-200/60 dark:divide-slate-800">
+                      <div className="divide-y divide-white/10">
                         {paginatedAwsUnbudgeted.length > 0 ? (
                           paginatedAwsUnbudgeted.map((acc, i) => (
                             <div key={i} className="py-2 flex items-center justify-between gap-2">
                               <div className="min-w-0">
-                                <div className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                                <div className="text-xs font-bold text-zinc-100 truncate">
                                   {acc["Account Name"]}
                                 </div>
                                 <div className="text-[10px] text-slate-400 font-mono">
@@ -742,7 +742,7 @@ export function MultiCloudOverviewPage() {
                     </div>
 
                     {/* Pagination */}
-                    <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-500">
                       <span>
                         Page {pageAwsUnbudgeted} of {totalPagesAwsUnbudgeted}
                       </span>
@@ -766,21 +766,21 @@ export function MultiCloudOverviewPage() {
                   </div>
 
                   {/* Active Budgets Card */}
-                  <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
+                  <div className="rounded-2xl border border-white/10 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                          <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                          <span className="text-xs font-extrabold text-white">
                             AWS Budgets Tracking
                           </span>
                         </div>
-                        <span className="text-[11px] font-bold text-indigo-600">
+                        <span className="text-[11px] font-bold text-[#a3e635]">
                           {validAwsBudgets.length} active
                         </span>
                       </div>
 
-                      <div className="divide-y divide-slate-200/60 dark:divide-slate-800">
+                      <div className="divide-y divide-white/10">
                         {paginatedAwsBudgets.length > 0 ? (
                           paginatedAwsBudgets.map((b, i) => {
                             const limit = Number(b.Limit ?? b["Budget Limit"] ?? 0);
@@ -791,10 +791,10 @@ export function MultiCloudOverviewPage() {
                             return (
                               <div key={i} className="py-2 space-y-1">
                                 <div className="flex items-center justify-between text-xs">
-                                  <span className="font-bold text-slate-800 dark:text-slate-100 truncate max-w-[140px]">
+                                  <span className="font-bold text-zinc-100 truncate max-w-[140px]">
                                     {b["Budget Name"]}
                                   </span>
-                                  <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                                  <span className="text-[11px] font-bold text-zinc-300">
                                     ${used.toLocaleString(undefined, { maximumFractionDigits: 0 })} / ${limit.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                                   </span>
                                 </div>
@@ -827,7 +827,7 @@ export function MultiCloudOverviewPage() {
                     </div>
 
                     {/* Pagination */}
-                    <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-500">
                       <span>
                         Page {pageAwsBudgets} of {totalPagesAwsBudgets}
                       </span>
@@ -855,7 +855,7 @@ export function MultiCloudOverviewPage() {
                 <div className="pt-2 flex justify-end">
                   <Link
                     to="/linked-accounts"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#a3e635] hover:underline"
                   >
                     <span>View all AWS Linked Accounts</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -867,23 +867,23 @@ export function MultiCloudOverviewPage() {
             {/* ============================================================= */}
             {/* RIGHT PORTAL: AZURE BUDGETS & GOVERNANCE                      */}
             {/* ============================================================= */}
-            <div className="rounded-3xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden flex flex-col">
+            <div className="rounded-3xl border border-slate-200/90 dark:border-slate-800 bg-[#141414] shadow-sm overflow-hidden flex flex-col">
               {/* Card Header */}
               <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-sky-500/5 via-white to-transparent dark:from-sky-500/10 dark:via-slate-900 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 shrink-0 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-600 font-black text-sm shadow-2xs">
+                  <div className="h-10 w-10 shrink-0 rounded-2xl bg-[#84cc16]/15 border border-sky-500/20 flex items-center justify-center text-sky-600 font-black text-sm shadow-2xs">
                     AZ
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+                      <h2 className="text-base font-extrabold text-white">
                         Azure Budgets &amp; Subscriptions
                       </h2>
                       <Badge className="bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-400 border border-sky-200/80 text-[10px] font-bold">
                         {azureMonthLabel}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-zinc-400">
                       Management-configured limits, consumption &amp; RBAC compliance
                     </p>
                   </div>
@@ -893,7 +893,7 @@ export function MultiCloudOverviewPage() {
                   <button
                     onClick={handleSyncAzureBudgets}
                     disabled={syncingAzure}
-                    className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors shadow-2xs"
+                    className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-zinc-200 hover:bg-slate-50 transition-colors shadow-2xs"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${syncingAzure ? "animate-spin text-sky-600" : ""}`} />
                     <span>{syncingAzure ? "Syncing..." : "Sync Budgets"}</span>
@@ -914,17 +914,17 @@ export function MultiCloudOverviewPage() {
                 {/* Stats & Gauge */}
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
                   {/* Gauge */}
-                  <div className="sm:col-span-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex items-center gap-4">
+                  <div className="sm:col-span-5 rounded-2xl border border-white/10 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex items-center gap-4">
                     <CoverageGauge
                       percentage={azureCoveragePct}
-                      colorClass="text-sky-500"
+                      colorClass="text-[#84cc16]"
                       size={64}
                     />
                     <div className="space-y-1">
-                      <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                      <div className="text-xs font-bold text-zinc-100">
                         Azure Coverage
                       </div>
-                      <div className="text-xs font-extrabold text-sky-600 dark:text-sky-400">
+                      <div className="text-xs font-extrabold text-[#a3e635]">
                         {azureBudgetedAccounts} of {azureTotalAccounts} Subscriptions
                       </div>
                       <div className="flex items-center gap-1.5 text-[11px] text-purple-600 font-bold">
@@ -935,13 +935,13 @@ export function MultiCloudOverviewPage() {
                   </div>
 
                   {/* Allocation Card */}
-                  <div className="sm:col-span-7 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex flex-col justify-center">
+                  <div className="sm:col-span-7 rounded-2xl border border-white/10 bg-slate-50/60 dark:bg-slate-800/30 p-4 flex flex-col justify-center">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                           Total Budget Allocated
                         </div>
-                        <div className="text-xl font-black text-slate-900 dark:text-white mt-0.5">
+                        <div className="text-xl font-black text-white mt-0.5">
                           ₹{(azureSummary?.totalBudgetedSpend || 0).toLocaleString()}
                         </div>
                         <div className="text-[11px] text-emerald-600 font-bold mt-1">
@@ -953,7 +953,7 @@ export function MultiCloudOverviewPage() {
                         <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                           Active Month Spend
                         </div>
-                        <div className="text-xl font-black text-slate-900 dark:text-white mt-0.5">
+                        <div className="text-xl font-black text-white mt-0.5">
                           ₹{(azureSummary?.activeSpend || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
                         </div>
                         <div className="text-[11px] text-slate-500 font-medium mt-1">
@@ -965,12 +965,12 @@ export function MultiCloudOverviewPage() {
                 </div>
 
                 {/* Subscriptions Budget Tracking List */}
-                <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
+                <div className="rounded-2xl border border-white/10 bg-slate-50/40 dark:bg-slate-800/20 p-4 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-1.5">
                         <Wallet className="w-4 h-4 text-sky-600" />
-                        <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                        <span className="text-xs font-extrabold text-white">
                           Azure Subscriptions Budget Tracking
                         </span>
                       </div>
@@ -979,7 +979,7 @@ export function MultiCloudOverviewPage() {
                       </span>
                     </div>
 
-                    <div className="divide-y divide-slate-200/60 dark:divide-slate-800">
+                    <div className="divide-y divide-white/10">
                       {paginatedAzureBudgets.length > 0 ? (
                         paginatedAzureBudgets.map((b, idx) => {
                           const isExceeded = b.Status === "Exceeded";
@@ -989,7 +989,7 @@ export function MultiCloudOverviewPage() {
                             <div key={idx} className="py-2.5 flex items-center justify-between gap-4">
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-2">
-                                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                                  <span className="text-xs font-bold text-zinc-100 truncate">
                                     {b["Linked Account"]}
                                   </span>
                                   <span className="text-[10px] text-slate-400 truncate max-w-[120px]">
@@ -1002,7 +1002,7 @@ export function MultiCloudOverviewPage() {
                               </div>
 
                               <div className="text-right shrink-0 w-36">
-                                <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                                <div className="text-xs font-bold text-zinc-100">
                                   ₹{(b["Actual Spend"] || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}{" "}
                                   <span className="text-[10px] font-normal text-slate-400">
                                     / ₹{(b["Budget Limit"] || 0).toLocaleString()}
@@ -1052,7 +1052,7 @@ export function MultiCloudOverviewPage() {
                   </div>
 
                   {/* Pagination */}
-                  <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+                  <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-500">
                     <span>
                       Page {pageAzureBudgets} of {totalPagesAzureBudgets}
                     </span>
@@ -1079,7 +1079,7 @@ export function MultiCloudOverviewPage() {
                 <div className="pt-2 flex justify-end">
                   <Link
                     to="/azure/subscriptions"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#a3e635] hover:underline"
                   >
                     <span>View all Azure Subscriptions</span>
                     <ExternalLink className="w-3.5 h-3.5" />

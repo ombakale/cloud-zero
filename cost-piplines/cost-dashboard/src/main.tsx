@@ -11,6 +11,9 @@ import { LinkedAccountDetailPage } from './pages/LinkedAccountDetailPage.tsx'
 import { AzureSubscriptionsPage } from './pages/AzureSubscriptionsPage.tsx'
 import { AzureSubscriptionDetailPage } from './pages/AzureSubscriptionDetailPage.tsx'
 import { AuthProvider } from './lib/auth.tsx'
+import { applyTheme, getInitialTheme } from './components/ThemeToggle.tsx'
+
+applyTheme(getInitialTheme());
 
 // Global Uncaught Error Loggers
 if (typeof window !== "undefined") {

@@ -271,7 +271,7 @@ export function OrganizationGovernanceSection({
             <h2 className="text-lg font-bold tracking-tight text-white">
               AWS Organization & Budget Governance
             </h2>
-            <p className="text-xs text-[#a0aec0]">
+            <p className="text-xs text-[#a1a1aa]">
               Account inventory, budget enforcement, and unbudgeted financial exposure
             </p>
           </div>
@@ -289,7 +289,7 @@ export function OrganizationGovernanceSection({
         <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#a0aec0]">
+              <span className="text-xs font-semibold text-[#a1a1aa]">
                 Org Accounts
               </span>
               <div className="vision-icon-box h-8 w-8 text-white">
@@ -299,12 +299,12 @@ export function OrganizationGovernanceSection({
             <div className="mt-2 text-2xl font-bold text-white">
               {summary ? summary.totalAccounts : unbudgetedAccounts.length || "--"}
             </div>
-            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2 text-[#a0aec0]">
+            <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2 text-[#a1a1aa]">
               <span className="flex items-center gap-1.5 text-[#01b574] font-medium">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#01b574]" />
                 {summary ? `${summary.activeAccounts} active` : "Active accounts"}
               </span>
-              <span className="text-[#a0aec0]">
+              <span className="text-[#a1a1aa]">
                 {summary ? `${summary.suspendedAccounts} closed` : ""}
               </span>
             </div>
@@ -315,7 +315,7 @@ export function OrganizationGovernanceSection({
         <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#a0aec0]">
+              <span className="text-xs font-semibold text-[#a1a1aa]">
                 Budget Coverage
               </span>
               <div className="vision-icon-box h-8 w-8 text-white">
@@ -326,7 +326,7 @@ export function OrganizationGovernanceSection({
               <span className="text-2xl font-bold text-white">
                 {summary ? `${summary.budgetCoveragePct}%` : "--%"}
               </span>
-              <span className="text-xs text-[#a0aec0] font-medium">
+              <span className="text-xs text-[#a1a1aa] font-medium">
                 {summary ? `${summary.accountsWithBudget}/${summary.activeAccounts}` : "covered"}
               </span>
             </div>
@@ -345,7 +345,7 @@ export function OrganizationGovernanceSection({
         <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#a0aec0]">
+              <span className="text-xs font-semibold text-[#a1a1aa]">
                 {monthLabel} Active Spend
               </span>
               <div className="vision-icon-box h-8 w-8 text-white">
@@ -370,7 +370,7 @@ export function OrganizationGovernanceSection({
         <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#a0aec0]">
+              <span className="text-xs font-semibold text-[#a1a1aa]">
                 Budget Limits In Force
               </span>
               <div className="vision-icon-box h-8 w-8 text-white">
@@ -381,7 +381,7 @@ export function OrganizationGovernanceSection({
               ${summary ? Number(summary?.sumBudgetLimits ?? summary?.["Total Budget"] ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "--"}
             </div>
             <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2">
-              <span className="text-[#a0aec0]">
+              <span className="text-[#a1a1aa]">
                 Uncovered Share:
               </span>
               <span className="font-semibold text-[#e31a1a]">
@@ -395,7 +395,7 @@ export function OrganizationGovernanceSection({
         <Card className="vision-card border-none">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#a0aec0]">
+              <span className="text-xs font-semibold text-[#a1a1aa]">
                 Suspended Leakage
               </span>
               <div className="vision-icon-box h-8 w-8 text-white">
@@ -406,12 +406,12 @@ export function OrganizationGovernanceSection({
               <span className={`text-2xl font-bold ${summary && summary.suspendedAccountsChargingCount > 0 ? "text-[#e31a1a]" : "text-white"}`}>
                 {summary ? summary.suspendedAccountsChargingCount : 0}
               </span>
-              <span className="text-xs text-[#a0aec0] font-medium">
+              <span className="text-xs text-[#a1a1aa] font-medium">
                 still charging
               </span>
             </div>
             <div className="mt-2.5 flex items-center justify-between text-xs border-t border-white/10 pt-2">
-              <span className="text-[#a0aec0]">
+              <span className="text-[#a1a1aa]">
                 {summary?.suspendedPeriodLabel || "Jun-Sep Total"}:
               </span>
               <span className="font-bold text-[#e31a1a]">
@@ -430,10 +430,10 @@ export function OrganizationGovernanceSection({
             <div className="flex items-center justify-between gap-2">
               <div>
                 <CardTitle className="text-base font-bold text-white tracking-tight flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-[#0075ff]" />
+                  <TrendingUp className="h-4 w-4 text-[#84cc16]" />
                   Top 5 Spends
                 </CardTitle>
-                <p className="text-xs text-[#a0aec0] mt-0.5">
+                <p className="text-xs text-[#a1a1aa] mt-0.5">
                   Highest-spending member accounts in {monthLabel}
                 </p>
               </div>
@@ -444,8 +444,8 @@ export function OrganizationGovernanceSection({
           </CardHeader>
           <CardContent className="flex flex-col flex-1 pb-4">
             {/* Summary Strip */}
-            <div className="mb-3 flex items-center justify-between rounded-xl border border-white/10 bg-[#080d28]/70 px-3 py-2 text-xs">
-              <span className="text-[#a0aec0] font-medium">
+            <div className="mb-3 flex items-center justify-between rounded-xl border border-white/10 bg-[#141414]/70 px-3 py-2 text-xs">
+              <span className="text-[#a1a1aa] font-medium">
                 Top 5 Combined ({monthLabel}):
               </span>
               <span className="font-bold text-white">
@@ -461,10 +461,10 @@ export function OrganizationGovernanceSection({
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-white/10 hover:bg-transparent">
-                    <TableHead className="w-[36px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">#</TableHead>
-                    <TableHead className="max-w-[150px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Account</TableHead>
-                    <TableHead className="w-[95px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Share</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                    <TableHead className="w-[36px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">#</TableHead>
+                    <TableHead className="max-w-[150px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">Account</TableHead>
+                    <TableHead className="w-[95px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">Share</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                       {monthLabel} Spend
                     </TableHead>
                   </TableRow>
@@ -484,8 +484,8 @@ export function OrganizationGovernanceSection({
                             <span
                               className={`inline-flex h-5 w-5 items-center justify-center rounded-lg text-[10px] font-bold ${
                                 idx === 0
-                                  ? "bg-[#0075ff] text-white shadow-sm"
-                                  : "bg-white/10 text-[#a0aec0]"
+                                  ? "bg-[#84cc16] text-[#0a0a0a] font-bold shadow-sm"
+                                  : "bg-white/10 text-[#a1a1aa]"
                               }`}
                             >
                               {idx + 1}
@@ -496,7 +496,7 @@ export function OrganizationGovernanceSection({
                               {acc.name}
                             </div>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="text-[10px] text-[#a0aec0] font-mono">
+                              <span className="text-[10px] text-[#a1a1aa] font-mono">
                                 {acc.id}
                               </span>
                               <span
@@ -514,11 +514,11 @@ export function OrganizationGovernanceSection({
                             <div className="flex items-center gap-1.5">
                               <div className="flex-1 bg-white/10 rounded-full h-1.5 overflow-hidden">
                                 <div
-                                  className="h-full bg-gradient-to-r from-[#0075ff] to-[#00c5ff] rounded-full transition-all"
+                                  className="h-full bg-gradient-to-r from-[#84cc16] to-[#a3e635] rounded-full transition-all"
                                   style={{ width: `${Math.min(100, sharePct)}%` }}
                                 />
                               </div>
-                              <span className="text-[10px] font-mono font-medium text-[#a0aec0] min-w-[28px] text-right">
+                              <span className="text-[10px] font-mono font-medium text-[#a1a1aa] min-w-[28px] text-right">
                                 {sharePct}%
                               </span>
                             </div>
@@ -537,7 +537,7 @@ export function OrganizationGovernanceSection({
                                     ? "text-[#e31a1a]"
                                     : mom < 0
                                     ? "text-[#01b574]"
-                                    : "text-[#a0aec0]"
+                                    : "text-[#a1a1aa]"
                                 }`}
                               >
                                 {mom > 0 ? `+${mom}%` : `${mom}%`} MoM
@@ -549,7 +549,7 @@ export function OrganizationGovernanceSection({
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center text-[#a0aec0] py-8 text-xs">
+                      <TableCell colSpan={4} className="text-center text-[#a1a1aa] py-8 text-xs">
                         No account spend data found
                       </TableCell>
                     </TableRow>
@@ -559,7 +559,7 @@ export function OrganizationGovernanceSection({
             </div>
 
             {/* Footer Info */}
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10 text-xs text-[#a0aec0]">
+            <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10 text-xs text-[#a1a1aa]">
               <span>Top {top5Spends.length} of {accountsForMonth.length || top5Spends.length} accounts</span>
               <span className="font-bold text-white">
                 Org Total: ${Number(totalOrgMonthSpend || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -577,7 +577,7 @@ export function OrganizationGovernanceSection({
                   <AlertCircle className="h-4 w-4 text-[#e31a1a]" />
                   Unbudgeted Accounts
                 </CardTitle>
-                <p className="text-xs text-[#a0aec0] mt-0.5">
+                <p className="text-xs text-[#a1a1aa] mt-0.5">
                   High-spend active accounts without budget limits
                 </p>
               </div>
@@ -589,7 +589,7 @@ export function OrganizationGovernanceSection({
           <CardContent className="flex flex-col flex-1 pb-4">
             {/* Search Input */}
             <div className="relative mb-3">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a1a1aa]" />
               <input
                 type="text"
                 placeholder="Search unbudgeted accounts..."
@@ -598,7 +598,7 @@ export function OrganizationGovernanceSection({
                   setSearchUnbudgeted(e.target.value);
                   setPageUnbudgeted(1);
                 }}
-                className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
+                className="w-full bg-[#141414]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a1a1aa] focus:border-[#84cc16] focus:outline-none transition-all"
               />
             </div>
 
@@ -607,9 +607,9 @@ export function OrganizationGovernanceSection({
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-white/10 hover:bg-transparent">
-                    <TableHead className="max-w-[180px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Account</TableHead>
-                    <TableHead className="w-[100px] hidden sm:table-cell text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Top Driver</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                    <TableHead className="max-w-[180px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">Account</TableHead>
+                    <TableHead className="w-[100px] hidden sm:table-cell text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">Top Driver</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                       {monthLabel} Spend
                     </TableHead>
                   </TableRow>
@@ -622,12 +622,12 @@ export function OrganizationGovernanceSection({
                           <div className="font-semibold text-xs text-white truncate" title={a["Account Name"]}>
                             {a["Account Name"]}
                           </div>
-                          <div className="text-[10px] text-[#a0aec0] font-mono">
+                          <div className="text-[10px] text-[#a1a1aa] font-mono">
                             {a["Account ID"]}
                           </div>
                         </TableCell>
                         <TableCell className="py-2.5 w-[100px] hidden sm:table-cell">
-                          <span className="text-xs text-[#a0aec0] truncate block max-w-[120px]" title={a["Top Cost Driver"]}>
+                          <span className="text-xs text-[#a1a1aa] truncate block max-w-[120px]" title={a["Top Cost Driver"]}>
                             {a["Top Cost Driver"] || "Various"}
                           </span>
                         </TableCell>
@@ -641,7 +641,7 @@ export function OrganizationGovernanceSection({
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={3} className="text-center text-[#a0aec0] py-8 text-xs">
+                      <TableCell colSpan={3} className="text-center text-[#a1a1aa] py-8 text-xs">
                         No unbudgeted accounts found
                       </TableCell>
                     </TableRow>
@@ -652,7 +652,7 @@ export function OrganizationGovernanceSection({
 
             {/* Pagination Controls */}
             <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
-              <div className="text-xs text-[#a0aec0]">
+              <div className="text-xs text-[#a1a1aa]">
                 {filteredUnbudgeted.length > 0
                   ? `Showing ${(pageUnbudgeted - 1) * ITEMS_PER_PAGE + 1}-${Math.min(
                       pageUnbudgeted * ITEMS_PER_PAGE,
@@ -664,7 +664,7 @@ export function OrganizationGovernanceSection({
                 <button
                   onClick={() => setPageUnbudgeted((p) => Math.max(1, p - 1))}
                   disabled={pageUnbudgeted === 1}
-                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronLeft size={14} />
                 </button>
@@ -674,7 +674,7 @@ export function OrganizationGovernanceSection({
                 <button
                   onClick={() => setPageUnbudgeted((p) => Math.min(totalPagesUnbudgeted, p + 1))}
                   disabled={pageUnbudgeted === totalPagesUnbudgeted || totalPagesUnbudgeted === 0}
-                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronRight size={14} />
                 </button>
@@ -692,7 +692,7 @@ export function OrganizationGovernanceSection({
                   <CheckCircle2 className="h-4 w-4 text-[#01b574]" />
                   AWS Budgets Overview
                 </CardTitle>
-                <p className="text-xs text-[#a0aec0] mt-0.5">
+                <p className="text-xs text-[#a1a1aa] mt-0.5">
                   Live budget limits & actual consumption
                 </p>
               </div>
@@ -704,7 +704,7 @@ export function OrganizationGovernanceSection({
           <CardContent className="flex flex-col flex-1 pb-4">
             {/* Search Input */}
             <div className="relative mb-3">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a0aec0]" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a1a1aa]" />
               <input
                 type="text"
                 placeholder="Search budgets..."
@@ -713,7 +713,7 @@ export function OrganizationGovernanceSection({
                   setSearchBudgets(e.target.value);
                   setPageBudgets(1);
                 }}
-                className="w-full bg-[#080d28]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a0aec0] focus:border-[#0075ff] focus:outline-none transition-all"
+                className="w-full bg-[#141414]/90 pl-9 pr-3 py-2 text-xs rounded-xl border border-white/10 text-white placeholder-[#a1a1aa] focus:border-[#84cc16] focus:outline-none transition-all"
               />
             </div>
 
@@ -722,10 +722,10 @@ export function OrganizationGovernanceSection({
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-white/10 hover:bg-transparent">
-                    <TableHead className="max-w-[150px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Budget Name</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[70px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Limit</TableHead>
-                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">{monthLabel} Used</TableHead>
-                    <TableHead className="w-[110px] text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">Utilization</TableHead>
+                    <TableHead className="max-w-[150px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">Budget Name</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[70px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">Limit</TableHead>
+                    <TableHead className="text-right whitespace-nowrap w-[90px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">{monthLabel} Used</TableHead>
+                    <TableHead className="w-[110px] text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">Utilization</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -754,7 +754,7 @@ export function OrganizationGovernanceSection({
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell className="text-right font-medium whitespace-nowrap w-[70px] py-2.5 text-xs text-[#a0aec0]">
+                          <TableCell className="text-right font-medium whitespace-nowrap w-[70px] py-2.5 text-xs text-[#a1a1aa]">
                             ${Number(limit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </TableCell>
                           <TableCell className="text-right font-bold whitespace-nowrap w-[70px] py-2.5 text-xs text-white">
@@ -774,7 +774,7 @@ export function OrganizationGovernanceSection({
                                   style={{ width: `${Math.min(pct, 100)}%` }}
                                 />
                               </div>
-                              <span className="text-[11px] font-mono font-medium text-[#a0aec0] min-w-[28px] text-right">
+                              <span className="text-[11px] font-mono font-medium text-[#a1a1aa] min-w-[28px] text-right">
                                 {pct}%
                               </span>
                             </div>
@@ -784,7 +784,7 @@ export function OrganizationGovernanceSection({
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center text-[#a0aec0] py-8 text-xs">
+                      <TableCell colSpan={4} className="text-center text-[#a1a1aa] py-8 text-xs">
                         No budgets found
                       </TableCell>
                     </TableRow>
@@ -795,7 +795,7 @@ export function OrganizationGovernanceSection({
 
             {/* Pagination Controls */}
             <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
-              <div className="text-xs text-[#a0aec0]">
+              <div className="text-xs text-[#a1a1aa]">
                 {filteredBudgets.length > 0
                   ? `Showing ${(pageBudgets - 1) * ITEMS_PER_PAGE + 1}-${Math.min(
                       pageBudgets * ITEMS_PER_PAGE,
@@ -807,7 +807,7 @@ export function OrganizationGovernanceSection({
                 <button
                   onClick={() => setPageBudgets((p) => Math.max(1, p - 1))}
                   disabled={pageBudgets === 1}
-                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronLeft size={14} />
                 </button>
@@ -817,7 +817,7 @@ export function OrganizationGovernanceSection({
                 <button
                   onClick={() => setPageBudgets((p) => Math.min(totalPagesBudgets, p + 1))}
                   disabled={pageBudgets === totalPagesBudgets || totalPagesBudgets === 0}
-                  className="p-1.5 rounded-lg border border-white/10 bg-[#080d28] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-lg border border-white/10 bg-[#141414] text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronRight size={14} />
                 </button>

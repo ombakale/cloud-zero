@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams, Link } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   ArrowLeft,
   Building2,
@@ -101,9 +102,9 @@ const formatCompactCurrency = (value: unknown) => {
 };
 
 const VISION_COLORS = [
-  "#0075ff", // Electric Blue
-  "#00c5ff", // Cyan Neon
-  "#7928ca", // Purple
+  "#84cc16", // Electric Blue
+  "#a3e635", // Cyan Neon
+  "#4d7c0f", // Purple
   "#01b574", // Emerald Glow
   "#ffb547", // Amber
   "#e31a1a", // Red Coral
@@ -166,12 +167,12 @@ export function LinkedAccountDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#060b26] flex flex-col items-center justify-center space-y-3 font-sans text-white">
-        <RefreshCw className="w-8 h-8 text-[#0075ff] animate-spin" />
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center space-y-3 font-sans text-white">
+        <RefreshCw className="w-8 h-8 text-[#84cc16] animate-spin" />
         <p className="text-sm font-semibold text-white">
           Loading 360° Account Analytics & Live AWS Cost Explorer...
         </p>
-        <p className="text-xs text-[#a0aec0]">
+        <p className="text-xs text-[#a1a1aa]">
           Querying cloud store and AWS Organizations for account {linkedAccountId}
         </p>
       </div>
@@ -180,7 +181,7 @@ export function LinkedAccountDetailPage() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-[#060b26] flex flex-col items-center justify-center p-6 space-y-4 font-sans text-white">
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6 space-y-4 font-sans text-white">
         <AlertTriangle className="w-10 h-10 text-[#e31a1a]" />
         <h2 className="text-xl font-bold tracking-tight text-white">Failed to Load Account Profile</h2>
         <p className="text-xs text-[#e31a1a] max-w-md text-center">{error}</p>
@@ -193,7 +194,7 @@ export function LinkedAccountDetailPage() {
           </Link>
           <button
             onClick={fetchDetails}
-            className="vision-button-primary px-3 py-1.5 text-xs font-semibold rounded-xl text-white cursor-pointer"
+            className="vision-button-primary px-3 py-1.5 text-xs font-bold rounded-xl text-[#0a0a0a] cursor-pointer"
           >
             Retry
           </button>
@@ -212,13 +213,13 @@ export function LinkedAccountDetailPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased pb-12 selection:bg-[#0075ff] selection:text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans antialiased pb-12 selection:bg-[#84cc16] selection:text-white">
       {/* Top Breadcrumb Header Bar */}
-      <header className="sticky top-0 z-40 bg-[#060b26]/85 backdrop-blur-xl border-b border-white/10 px-6 py-3 shadow-sm flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#0a0a0a]/85 backdrop-blur-xl border-b border-white/10 px-6 py-3 shadow-sm flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link
             to={`/linked-accounts?account=${rootAccount}`}
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#a0aec0] hover:text-white px-3 py-1.5 rounded-xl border border-white/10 bg-[#080d28]/90 hover:bg-white/10 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#a1a1aa] hover:text-white px-3 py-1.5 rounded-xl border border-white/10 bg-[#141414]/90 hover:bg-white/10 transition-all cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Accounts Directory</span>
@@ -228,18 +229,19 @@ export function LinkedAccountDetailPage() {
             <span className="text-sm font-bold text-white">
               {account.accountName}
             </span>
-            <span className="font-mono text-xs text-[#a0aec0] bg-[#080d28] px-2 py-0.5 rounded-lg border border-white/10">
+            <span className="font-mono text-xs text-[#a1a1aa] bg-[#141414] px-2 py-0.5 rounded-lg border border-white/10">
               {account.linkedAccountId}
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <button
             onClick={fetchDetails}
             className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] text-white transition-all cursor-pointer"
           >
-            <RefreshCw className="w-3 h-3 text-[#0075ff]" />
+            <RefreshCw className="w-3 h-3 text-[#84cc16]" />
             <span>Refresh Live AWS</span>
           </button>
         </div>
@@ -276,10 +278,10 @@ export function LinkedAccountDetailPage() {
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-xs text-[#a0aec0] pt-1">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-[#a1a1aa] pt-1">
                 {/* 12-digit Account ID */}
-                <div className="flex items-center gap-1.5 font-mono bg-[#080d28] px-2.5 py-1 rounded-lg border border-white/10">
-                  <span className="text-[#a0aec0]">ID:</span>
+                <div className="flex items-center gap-1.5 font-mono bg-[#141414] px-2.5 py-1 rounded-lg border border-white/10">
+                  <span className="text-[#a1a1aa]">ID:</span>
                   <span className="font-semibold text-white">
                     {account.linkedAccountId}
                   </span>
@@ -298,7 +300,7 @@ export function LinkedAccountDetailPage() {
 
                 {/* Parent Root Payer */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[#a0aec0]">Payer Org:</span>
+                  <span className="text-[#a1a1aa]">Payer Org:</span>
                   <span className="font-semibold text-white">
                     {account.rootAccount.name}
                   </span>
@@ -307,8 +309,8 @@ export function LinkedAccountDetailPage() {
                 {/* Owner Email from Organizations */}
                 {liveAws?.orgDetails?.email && (
                   <div className="flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-[#0075ff]" />
-                    <span className="text-[#a0aec0]">Owner:</span>
+                    <Mail className="w-3.5 h-3.5 text-[#84cc16]" />
+                    <span className="text-[#a1a1aa]">Owner:</span>
                     <span className="font-medium text-white font-mono">
                       {liveAws.orgDetails.email}
                     </span>
@@ -318,8 +320,8 @@ export function LinkedAccountDetailPage() {
                 {/* Joined Date */}
                 {liveAws?.orgDetails?.joinedTimestamp && (
                   <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#a0aec0]" />
-                    <span className="text-[#a0aec0]">Created:</span>
+                    <Calendar className="w-3.5 h-3.5 text-[#a1a1aa]" />
+                    <span className="text-[#a1a1aa]">Created:</span>
                     <span className="font-medium text-white">
                       {new Date(liveAws.orgDetails.joinedTimestamp).toLocaleDateString(undefined, {
                         year: "numeric",
@@ -333,7 +335,7 @@ export function LinkedAccountDetailPage() {
             </div>
 
             {/* Live AWS Sync Status Pill */}
-            <div className="flex items-center gap-2 bg-[#080d28] px-3 py-1.5 rounded-xl border border-white/10 text-xs self-start">
+            <div className="flex items-center gap-2 bg-[#141414] px-3 py-1.5 rounded-xl border border-white/10 text-xs self-start">
               {liveAws?.available ? (
                 <>
                   <span className="relative flex h-2 w-2">
@@ -361,17 +363,17 @@ export function LinkedAccountDetailPage() {
           <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                   PERIOD SPEND ({formatMonthName(financials.currentMonth).toUpperCase()})
                 </p>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   {fmt(financials.currentSpend)}
                 </h3>
-                <p className="text-xs text-[#a0aec0] pt-0.5">
+                <p className="text-xs text-[#a1a1aa] pt-0.5">
                   Billed in active billing cycle
                 </p>
               </div>
-              <div className="vision-icon-box h-10 w-10 text-white">
+              <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                 <DollarSign className="h-5 w-5" />
               </div>
             </div>
@@ -380,7 +382,7 @@ export function LinkedAccountDetailPage() {
           <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                   PREVIOUS PERIOD SPEND
                 </p>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -394,7 +396,7 @@ export function LinkedAccountDetailPage() {
                           ? "text-[#e31a1a]"
                           : isNegativeMoM
                           ? "text-[#01b574]"
-                          : "text-[#a0aec0]"
+                          : "text-[#a1a1aa]"
                       }`}
                     >
                       {isPositiveMoM && <TrendingUp className="h-3.5 w-3.5" />}
@@ -403,11 +405,11 @@ export function LinkedAccountDetailPage() {
                       {financials.momChangePercent}% MoM
                     </span>
                   ) : (
-                    <span className="text-[#a0aec0]">Prior month total</span>
+                    <span className="text-[#a1a1aa]">Prior month total</span>
                   )}
                 </div>
               </div>
-              <div className="vision-icon-box h-10 w-10 text-white">
+              <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                 <TrendingUp className="h-5 w-5" />
               </div>
             </div>
@@ -416,20 +418,20 @@ export function LinkedAccountDetailPage() {
           <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                   6-MONTH AVERAGE SPEND
                 </p>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   {fmt(variance?.mean || financials.currentSpend)}
                 </h3>
-                <p className="text-xs text-[#a0aec0] pt-0.5">
+                <p className="text-xs text-[#a1a1aa] pt-0.5">
                   Volatility:{" "}
                   <span className="font-semibold text-white">
                     {variance?.volatilityCategory || "Stable"}
                   </span>
                 </p>
               </div>
-              <div className="vision-icon-box h-10 w-10 text-white">
+              <div className="vision-icon-box h-10 w-10 text-[#0a0a0a]">
                 <Building2 className="h-5 w-5" />
               </div>
             </div>
@@ -438,17 +440,17 @@ export function LinkedAccountDetailPage() {
           <Card className="vision-card border-none p-5">
             <div className="flex items-center justify-between">
               <div className="space-y-1 min-w-0 pr-2">
-                <p className="text-[11px] font-bold text-[#a0aec0] uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-[#a1a1aa] uppercase tracking-wider">
                   PRIMARY COST DRIVER
                 </p>
                 <h3 className="text-lg font-bold text-white tracking-tight truncate" title={governance.topCostDriver}>
                   {governance.topCostDriver}
                 </h3>
-                <p className="text-xs text-[#a0aec0] pt-0.5">
+                <p className="text-xs text-[#a1a1aa] pt-0.5">
                   Dominant service inside account
                 </p>
               </div>
-              <div className="vision-icon-box h-10 w-10 text-white shrink-0">
+              <div className="vision-icon-box h-10 w-10 text-[#0a0a0a] shrink-0">
                 <Sparkles className="h-5 w-5" />
               </div>
             </div>
@@ -465,7 +467,7 @@ export function LinkedAccountDetailPage() {
                   <CardTitle className="text-base font-bold tracking-tight text-white">
                     Historical Monthly Spend Trend
                   </CardTitle>
-                  <p className="text-xs text-[#a0aec0] mt-0.5">
+                  <p className="text-xs text-[#a1a1aa] mt-0.5">
                     6-month billing history
                   </p>
                 </div>
@@ -485,13 +487,13 @@ export function LinkedAccountDetailPage() {
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
                       <XAxis
                         dataKey="month"
-                        stroke="#a0aec0"
+                        stroke="#a1a1aa"
                         fontSize={11}
                         tickLine={false}
                         axisLine={false}
                       />
                       <YAxis
-                        stroke="#a0aec0"
+                        stroke="#a1a1aa"
                         fontSize={11}
                         tickLine={false}
                         axisLine={false}
@@ -504,7 +506,7 @@ export function LinkedAccountDetailPage() {
                           "Total Spend",
                         ]}
                         contentStyle={{
-                          backgroundColor: "rgba(6, 11, 40, 0.95)",
+                          backgroundColor: "rgba(20, 20, 20, 0.96)",
                           borderColor: "rgba(255, 255, 255, 0.12)",
                           borderRadius: "0.75rem",
                           color: "#fff",
@@ -512,12 +514,12 @@ export function LinkedAccountDetailPage() {
                           boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
                         }}
                       />
-                      <Bar dataKey="cost" fill="#0075ff" radius={[6, 6, 0, 0]} />
+                      <Bar dataKey="cost" fill="#84cc16" radius={[6, 6, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <div className="h-[280px] flex items-center justify-center text-[#a0aec0] text-xs">
+                <div className="h-[280px] flex items-center justify-center text-[#a1a1aa] text-xs">
                   No historical cost data recorded for this account.
                 </div>
               )}
@@ -530,10 +532,10 @@ export function LinkedAccountDetailPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-base font-bold tracking-tight text-white flex items-center gap-2">
-                    <Server className="w-4 h-4 text-[#0075ff]" />
+                    <Server className="w-4 h-4 text-[#84cc16]" />
                     Services Inside This Account
                   </CardTitle>
-                  <p className="text-xs text-[#a0aec0] mt-0.5">
+                  <p className="text-xs text-[#a1a1aa] mt-0.5">
                     Live AWS Cost Explorer breakdown ({financials.currentMonth})
                   </p>
                 </div>
@@ -573,7 +575,7 @@ export function LinkedAccountDetailPage() {
                             "Cost",
                           ]}
                           contentStyle={{
-                            backgroundColor: "rgba(6, 11, 40, 0.95)",
+                            backgroundColor: "rgba(20, 20, 20, 0.96)",
                             borderColor: "rgba(255, 255, 255, 0.12)",
                             borderRadius: "0.75rem",
                             color: "#fff",
@@ -609,7 +611,7 @@ export function LinkedAccountDetailPage() {
                   </div>
                 </div>
               ) : (
-                <div className="h-[280px] flex items-center justify-center text-[#a0aec0] text-xs">
+                <div className="h-[280px] flex items-center justify-center text-[#a1a1aa] text-xs">
                   {liveAws?.error ? `Live AWS Notice: ${liveAws.error}` : "No live service breakdown available."}
                 </div>
               )}
@@ -625,7 +627,7 @@ export function LinkedAccountDetailPage() {
               <CardTitle className="text-base font-bold tracking-tight text-white">
                 Granular Service Consumption
               </CardTitle>
-              <p className="text-xs text-[#a0aec0]">
+              <p className="text-xs text-[#a1a1aa]">
                 All AWS service charges billed to account {account.linkedAccountId}
               </p>
             </CardHeader>
@@ -634,13 +636,13 @@ export function LinkedAccountDetailPage() {
                 <Table>
                   <TableHeader>
                     <TableRow className="border-b border-white/10 hover:bg-transparent">
-                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                         AWS Service
                       </TableHead>
-                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[140px]">
+                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right w-[140px]">
                         Cost
                       </TableHead>
-                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a0aec0] text-right w-[110px]">
+                      <TableHead className="py-2.5 px-4 text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa] text-right w-[110px]">
                         Share %
                       </TableHead>
                     </TableRow>
@@ -654,7 +656,7 @@ export function LinkedAccountDetailPage() {
                         <TableCell className="py-2.5 px-4 text-right font-mono font-bold text-xs text-white">
                           {fmt(s.cost)}
                         </TableCell>
-                        <TableCell className="py-2.5 px-4 text-right font-bold text-xs text-[#00c5ff]">
+                        <TableCell className="py-2.5 px-4 text-right font-bold text-xs text-[#a3e635]">
                           {s.sharePct}%
                         </TableCell>
                       </TableRow>
@@ -662,7 +664,7 @@ export function LinkedAccountDetailPage() {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-xs text-[#a0aec0] py-8 text-center">
+                <p className="text-xs text-[#a1a1aa] py-8 text-center">
                   Service-level details could not be retrieved from AWS Cost Explorer.
                 </p>
               )}
@@ -673,12 +675,12 @@ export function LinkedAccountDetailPage() {
           <Card className="vision-card border-none">
             <CardHeader className="pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-[#0075ff]" />
+                <Globe className="w-4 h-4 text-[#84cc16]" />
                 <div>
                   <CardTitle className="text-base font-bold tracking-tight text-white">
                     Regional Footprint
                   </CardTitle>
-                  <p className="text-xs text-[#a0aec0]">
+                  <p className="text-xs text-[#a1a1aa]">
                     Geographic distribution of spend
                   </p>
                 </div>
@@ -693,13 +695,13 @@ export function LinkedAccountDetailPage() {
                         <span className="font-semibold text-white font-mono">
                           {r.region}
                         </span>
-                        <span className="font-mono text-[#a0aec0]">
+                        <span className="font-mono text-[#a1a1aa]">
                           {fmt(r.cost)} ({r.sharePct}%)
                         </span>
                       </div>
                       <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-[#0075ff] to-[#00c5ff] rounded-full"
+                          className="h-full bg-gradient-to-r from-[#84cc16] to-[#a3e635] rounded-full"
                           style={{ width: `${Math.min(r.sharePct, 100)}%` }}
                         />
                       </div>
@@ -707,7 +709,7 @@ export function LinkedAccountDetailPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-[#a0aec0] py-8 text-center">
+                <p className="text-xs text-[#a1a1aa] py-8 text-center">
                   No regional data available.
                 </p>
               )}

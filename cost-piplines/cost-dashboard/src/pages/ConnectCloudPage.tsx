@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   Cloud,
   ArrowRight,
@@ -182,42 +183,45 @@ export function ConnectCloudPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col justify-between selection:bg-[#84cc16] selection:text-[#0a0a0a]">
       {/* Background ambient decorative glow */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-indigo-500/10 blur-[130px] rounded-full" />
-        <div className="absolute top-1/3 -left-32 w-[500px] h-[300px] bg-amber-500/10 blur-[140px] rounded-full" />
-        <div className="absolute top-1/3 -right-32 w-[500px] h-[300px] bg-sky-500/10 blur-[140px] rounded-full" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#84cc16]/10 blur-[130px] rounded-full" />
+        <div className="absolute top-1/3 -left-32 w-[500px] h-[300px] bg-[#84cc16]/10 blur-[140px] rounded-full" />
+        <div className="absolute top-1/3 -right-32 w-[500px] h-[300px] bg-[#a3e635]/10 blur-[140px] rounded-full" />
       </div>
 
       {/* Top Header */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md px-6 py-4">
+      <header className="border-b border-white/10 bg-[#0a0a0a]/85 backdrop-blur-md px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white">
+            <div className="w-10 h-10 rounded-xl bg-[#84cc16] flex items-center justify-center shadow-[0_4px_16px_rgba(132,204,22,0.35)] text-[#0a0a0a]">
               <Cloud className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-bold text-base tracking-tight text-white">Cloud Cost Intelligence</span>
-                <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-indigo-500/30 text-indigo-400 bg-indigo-500/10">
+                <Badge variant="outline" className="text-[10px] px-2 py-0.5 border-[#84cc16]/30 text-[#a3e635] bg-[#84cc16]/10">
                   FinOps Engine
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">Live multi-cloud monitoring & analytics</p>
+              <p className="text-xs text-[#a1a1aa]">Live multi-cloud monitoring & analytics</p>
             </div>
           </div>
 
-          {status?.isConnected && (
-            <button
-              onClick={() => navigate(status.activeProvider === "azure" ? "/azure" : "/aws")}
-              className="flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-600 bg-slate-800/60 text-slate-300 hover:text-white transition-all cursor-pointer"
-            >
-              <Activity className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-              <span>Active: {status.accountName || status.activeProvider?.toUpperCase()}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            {status?.isConnected && (
+              <button
+                onClick={() => navigate(status.activeProvider === "azure" ? "/azure" : "/aws")}
+                className="flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-xl border border-white/10 hover:border-[#84cc16]/40 bg-[#141414] text-white transition-all cursor-pointer"
+              >
+                <Activity className="w-3.5 h-3.5 text-[#84cc16] animate-pulse" />
+                <span>Active: {status.accountName || status.activeProvider?.toUpperCase()}</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#a1a1aa]" />
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
@@ -227,14 +231,14 @@ export function ConnectCloudPage() {
         {step === "select-provider" && (
           <div className="space-y-8 animate-in fade-in zoom-in-95 duration-300">
             <div className="text-center max-w-2xl mx-auto space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 mb-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#84cc16]/15 border border-[#84cc16]/30 text-[#a3e635] mb-1">
                 <Sparkles className="w-3.5 h-3.5" />
                 Select Environment
               </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
                 Which Cloud Provider do you want to monitor?
               </h1>
-              <p className="text-sm sm:text-base text-slate-400">
+              <p className="text-sm sm:text-base text-[#a1a1aa]">
                 Choose your cloud provider to securely enter your credentials, fetch live cost data, and view real-time spend analytics.
               </p>
             </div>
@@ -243,25 +247,25 @@ export function ConnectCloudPage() {
               {/* AWS Option */}
               <div
                 onClick={() => handleSelectProvider("aws")}
-                className="group relative rounded-2xl border border-slate-800 hover:border-amber-500/50 bg-gradient-to-b from-slate-900/90 to-slate-900/40 p-7 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-200 cursor-pointer flex flex-col justify-between"
+                className="group relative wm-block p-7 cursor-pointer flex flex-col justify-between"
               >
                 <div className="space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-105 group-hover:bg-amber-500/20 transition-all">
+                  <div className="w-14 h-14 rounded-2xl bg-[#84cc16]/15 border border-[#84cc16]/30 flex items-center justify-center text-[#a3e635] group-hover:scale-105 group-hover:bg-[#84cc16] group-hover:text-[#0a0a0a] transition-all">
                     <Server className="w-7 h-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">
+                    <h3 className="text-xl font-bold text-white group-hover:text-[#a3e635] transition-colors">
                       Amazon Web Services (AWS)
                     </h3>
-                    <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                    <p className="text-xs text-[#a1a1aa] mt-2 leading-relaxed">
                       Connect via IAM Access Keys to pull AWS Cost Explorer metrics, Linked Accounts breakdown, MoM variance, and budget tracking.
                     </p>
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-slate-800/80 mt-6 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-mono">AWS_ACCESS_KEY_ID</span>
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-400 group-hover:translate-x-1 transition-transform">
+                <div className="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+                  <span className="text-xs text-[#a1a1aa] font-mono">AWS_ACCESS_KEY_ID</span>
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-[#a3e635] group-hover:translate-x-1 transition-transform">
                     <span>Connect AWS</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
@@ -271,25 +275,25 @@ export function ConnectCloudPage() {
               {/* Azure Option */}
               <div
                 onClick={() => handleSelectProvider("azure")}
-                className="group relative rounded-2xl border border-slate-800 hover:border-sky-500/50 bg-gradient-to-b from-slate-900/90 to-slate-900/40 p-7 hover:shadow-2xl hover:shadow-sky-500/10 transition-all duration-200 cursor-pointer flex flex-col justify-between"
+                className="group relative wm-block p-7 cursor-pointer flex flex-col justify-between"
               >
                 <div className="space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 group-hover:scale-105 group-hover:bg-sky-500/20 transition-all">
+                  <div className="w-14 h-14 rounded-2xl bg-[#84cc16]/15 border border-[#84cc16]/30 flex items-center justify-center text-[#a3e635] group-hover:scale-105 group-hover:bg-[#84cc16] group-hover:text-[#0a0a0a] transition-all">
                     <Globe className="w-7 h-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-sky-400 transition-colors">
+                    <h3 className="text-xl font-bold text-white group-hover:text-[#a3e635] transition-colors">
                       Microsoft Azure
                     </h3>
-                    <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                    <p className="text-xs text-[#a1a1aa] mt-2 leading-relaxed">
                       Connect via Azure Service Principal to pull Subscriptions, Resource Groups, Consumed Services, and 17 FinOps analytical reports.
                     </p>
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-slate-800/80 mt-6 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-mono">AZURE_TENANT_ID</span>
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-sky-400 group-hover:translate-x-1 transition-transform">
+                <div className="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+                  <span className="text-xs text-[#a1a1aa] font-mono">AZURE_TENANT_ID</span>
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-[#a3e635] group-hover:translate-x-1 transition-transform">
                     <span>Connect Azure</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
@@ -302,7 +306,7 @@ export function ConnectCloudPage() {
               <div className="text-center pt-2">
                 <button
                   onClick={() => navigate(status.activeProvider === "azure" ? "/azure" : "/aws")}
-                  className="text-xs text-slate-400 hover:text-white underline underline-offset-4 transition-colors cursor-pointer"
+                  className="text-xs text-[#a1a1aa] hover:text-white underline underline-offset-4 transition-colors cursor-pointer"
                 >
                   Skip to previously loaded dashboard &rarr;
                 </button>
@@ -316,20 +320,20 @@ export function ConnectCloudPage() {
           <div className="max-w-xl mx-auto w-full space-y-6 animate-in fade-in duration-200">
             <button
               onClick={handleBack}
-              className="inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white transition-colors cursor-pointer mb-2"
+              className="inline-flex items-center gap-2 text-xs font-medium text-[#a1a1aa] hover:text-white transition-colors cursor-pointer mb-2"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Back to Provider Selection
             </button>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl relative backdrop-blur-md">
+            <div className="wm-block p-8 relative">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <div className="w-10 h-10 rounded-xl bg-[#84cc16] flex items-center justify-center text-[#0a0a0a]">
                   <Server className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-white">AWS Account Credentials</h2>
-                  <p className="text-xs text-slate-400">Enter IAM user credentials with Cost Explorer read access</p>
+                  <p className="text-xs text-[#a1a1aa]">Enter IAM user credentials with Cost Explorer read access</p>
                 </div>
               </div>
 
@@ -345,40 +349,40 @@ export function ConnectCloudPage() {
 
               <form onSubmit={handleSubmitAws} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                     AWS_ACCESS_KEY_ID <span className="text-rose-400">*</span>
                   </label>
                   <div className="relative">
-                    <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                    <KeyRound className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-3" />
                     <input
                       type="text"
                       required
                       value={awsAccessKeyId}
                       onChange={(e) => setAwsAccessKeyId(e.target.value)}
                       placeholder="AKIAIOSFODNN7EXAMPLE"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 pl-10 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 pl-10 text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                     AWS_SECRET_ACCESS_KEY <span className="text-rose-400">*</span>
                   </label>
                   <div className="relative">
-                    <Shield className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                    <Shield className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-3" />
                     <input
                       type={showAwsSecret ? "text" : "password"}
                       required
                       value={awsSecretAccessKey}
                       onChange={(e) => setAwsSecretAccessKey(e.target.value)}
                       placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 pl-10 pr-10 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 pl-10 pr-10 text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowAwsSecret(!showAwsSecret)}
-                      className="absolute right-3.5 top-2.5 text-slate-500 hover:text-slate-300 cursor-pointer"
+                      className="absolute right-3.5 top-2.5 text-[#a1a1aa] hover:text-white cursor-pointer"
                     >
                       {showAwsSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -387,13 +391,13 @@ export function ConnectCloudPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                       AWS_REGION
                     </label>
                     <select
                       value={awsRegion}
                       onChange={(e) => setAwsRegion(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                     >
                       <option value="us-east-1">us-east-1 (N. Virginia)</option>
                       <option value="us-east-2">us-east-2 (Ohio)</option>
@@ -406,7 +410,7 @@ export function ConnectCloudPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                       Account Nickname (Optional)
                     </label>
                     <input
@@ -414,7 +418,7 @@ export function ConnectCloudPage() {
                       value={awsAccountName}
                       onChange={(e) => setAwsAccountName(e.target.value)}
                       placeholder="e.g. Primary Production"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                     />
                   </div>
                 </div>
@@ -422,7 +426,7 @@ export function ConnectCloudPage() {
                 <div className="pt-3">
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    className="vision-button-primary w-full py-3 px-4 rounded-xl font-bold text-xs text-[#0a0a0a] bg-[#84cc16] hover:bg-[#a3e635] flex items-center justify-center gap-2 transition-all cursor-pointer"
                   >
                     <span>Connect & Fetch Cost Explorer Data</span>
                     <ArrowRight className="w-4 h-4" />
@@ -438,20 +442,20 @@ export function ConnectCloudPage() {
           <div className="max-w-xl mx-auto w-full space-y-6 animate-in fade-in duration-200">
             <button
               onClick={handleBack}
-              className="inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white transition-colors cursor-pointer mb-2"
+              className="inline-flex items-center gap-2 text-xs font-medium text-[#a1a1aa] hover:text-white transition-colors cursor-pointer mb-2"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Back to Provider Selection
             </button>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl relative backdrop-blur-md">
+            <div className="wm-block p-8 relative">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                <div className="w-10 h-10 rounded-xl bg-[#84cc16] flex items-center justify-center text-[#0a0a0a]">
                   <Globe className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-white">Azure Service Principal</h2>
-                  <p className="text-xs text-slate-400">Enter your Azure App Registration credentials</p>
+                  <p className="text-xs text-[#a1a1aa]">Enter your Azure App Registration credentials</p>
                 </div>
               </div>
 
@@ -467,57 +471,57 @@ export function ConnectCloudPage() {
 
               <form onSubmit={handleSubmitAzure} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                     AZURE_TENANT_ID <span className="text-rose-400">*</span>
                   </label>
                   <div className="relative">
-                    <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                    <KeyRound className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-3" />
                     <input
                       type="text"
                       required
                       value={azureTenantId}
                       onChange={(e) => setAzureTenantId(e.target.value)}
                       placeholder="00000000-0000-0000-0000-000000000000"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 pl-10 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 pl-10 text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                     AZURE_CLIENT_ID <span className="text-rose-400">*</span>
                   </label>
                   <div className="relative">
-                    <Server className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                    <Server className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-3" />
                     <input
                       type="text"
                       required
                       value={azureClientId}
                       onChange={(e) => setAzureClientId(e.target.value)}
                       placeholder="00000000-0000-0000-0000-000000000000"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 pl-10 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 pl-10 text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                     AZURE_CLIENT_SECRET <span className="text-rose-400">*</span>
                   </label>
                   <div className="relative">
-                    <Shield className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                    <Shield className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-3" />
                     <input
                       type={showAzureSecret ? "text" : "password"}
                       required
                       value={azureClientSecret}
                       onChange={(e) => setAzureClientSecret(e.target.value)}
                       placeholder="Client secret value"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 pl-10 pr-10 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 pl-10 pr-10 text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowAzureSecret(!showAzureSecret)}
-                      className="absolute right-3.5 top-2.5 text-slate-500 hover:text-slate-300 cursor-pointer"
+                      className="absolute right-3.5 top-2.5 text-[#a1a1aa] hover:text-white cursor-pointer"
                     >
                       {showAzureSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -525,7 +529,7 @@ export function ConnectCloudPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a1a1aa] mb-1.5">
                     Subscription ID (Optional, auto-discovered if blank)
                   </label>
                   <input
@@ -533,14 +537,14 @@ export function ConnectCloudPage() {
                     value={azureSubscriptionId}
                     onChange={(e) => setAzureSubscriptionId(e.target.value)}
                     placeholder="Leave blank to auto-discover active subscription"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
+                    className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] transition-all"
                   />
                 </div>
 
                 <div className="pt-3">
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    className="vision-button-primary w-full py-3 px-4 rounded-xl font-bold text-xs text-[#0a0a0a] bg-[#84cc16] hover:bg-[#a3e635] flex items-center justify-center gap-2 transition-all cursor-pointer"
                   >
                     <span>Connect & Fetch Azure Cost Data</span>
                     <ArrowRight className="w-4 h-4" />
@@ -555,18 +559,18 @@ export function ConnectCloudPage() {
         {step === "fetching" && (
           <div className="max-w-md mx-auto text-center space-y-6 animate-in fade-in zoom-in-95 duration-300">
             <div className="relative w-20 h-20 mx-auto">
-              <div className="w-20 h-20 rounded-full border-4 border-indigo-500/20 border-t-indigo-500 animate-spin" />
-              <div className="absolute inset-0 flex items-center justify-center text-indigo-400">
+              <div className="w-20 h-20 rounded-full border-4 border-[#84cc16]/20 border-t-[#84cc16] animate-spin" />
+              <div className="absolute inset-0 flex items-center justify-center text-[#a3e635]">
                 <Cloud className="w-8 h-8 animate-pulse" />
               </div>
             </div>
 
             <div className="space-y-2">
               <h3 className="text-xl font-bold text-white">Fetching Cloud Cost Intelligence</h3>
-              <p className="text-sm text-indigo-300 font-medium animate-pulse">
+              <p className="text-sm text-[#a3e635] font-medium animate-pulse">
                 {fetchProgressStep || "Contacting cloud APIs..."}
               </p>
-              <p className="text-xs text-slate-500 max-w-xs mx-auto pt-2">
+              <p className="text-xs text-[#a1a1aa] max-w-xs mx-auto pt-2">
                 Aggregating multi-month historical spend, calculating service breakdowns, Pareto distributions, and budget alerts.
               </p>
             </div>
@@ -575,7 +579,7 @@ export function ConnectCloudPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800/60 py-4 px-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-white/10 py-4 px-6 text-center text-xs text-[#a1a1aa]">
         Cloud Cost Intelligence Platform &bull; Zero Server Footprint &bull; Direct Cloud SDK Ingestion
       </footer>
     </div>

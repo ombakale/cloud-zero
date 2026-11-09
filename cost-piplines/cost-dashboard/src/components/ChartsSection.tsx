@@ -37,14 +37,14 @@ const formatFullCurrency = (value: unknown) => {
 
 // Vision UI neon vibrant color palette
 const VISION_COLORS = [
-  "#0075ff", // Electric Blue
-  "#00c5ff", // Cyan
+  "#84cc16", // Electric Blue
+  "#a3e635", // Cyan
   "#7551ff", // Purple
   "#01b574", // Emerald
   "#ffb547", // Amber
   "#2cd9ff", // Ice
   "#e31a1a", // Red
-  "#a0aec0", // Slate
+  "#a1a1aa", // Slate
   "#38bdf8", // Sky
   "#c084fc", // Lavender
 ];
@@ -138,7 +138,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white tracking-tight">Monthly Spend Overview</h3>
-              <p className="text-xs text-[#a0aec0] mt-0.5">Historical trajectory over last 6 months</p>
+              <p className="text-xs text-[#a1a1aa] mt-0.5">Historical trajectory over last 6 months</p>
             </div>
             <span className="text-xs font-bold text-[#01b574] px-2 py-0.5 rounded-full bg-[#01b574]/15 border border-[#01b574]/30">
               Live
@@ -150,16 +150,16 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
             <AreaChart data={trendData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
               <defs>
                 <linearGradient id="visionAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0075ff" stopOpacity={0.7} />
-                  <stop offset="95%" stopColor="#0075ff" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#84cc16" stopOpacity={0.7} />
+                  <stop offset="95%" stopColor="#84cc16" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.08)" vertical={false} />
-              <XAxis dataKey="Month" stroke="#a0aec0" fontSize={11} tickLine={false} axisLine={false} dy={8} />
-              <YAxis stroke="#a0aec0" fontSize={11} tickLine={false} axisLine={false} tickFormatter={formatCompactCurrency} />
+              <XAxis dataKey="Month" stroke="#a1a1aa" fontSize={11} tickLine={false} axisLine={false} dy={8} />
+              <YAxis stroke="#a1a1aa" fontSize={11} tickLine={false} axisLine={false} tickFormatter={formatCompactCurrency} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(6, 11, 40, 0.95)",
+                  backgroundColor: "rgba(20, 20, 20, 0.96)",
                   border: "1px solid rgba(255, 255, 255, 0.15)",
                   borderRadius: "14px",
                   backdropFilter: "blur(20px)",
@@ -171,7 +171,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
               {isSelectedMonthInTrend && (
                 <ReferenceLine
                   x={selectedMonth}
-                  stroke="#00c5ff"
+                  stroke="#a3e635"
                   strokeDasharray="3 3"
                   strokeWidth={2}
                 />
@@ -179,10 +179,10 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
               <Area
                 type="monotone"
                 dataKey="Total Cost"
-                stroke="#0075ff"
+                stroke="#84cc16"
                 fill="url(#visionAreaGradient)"
                 strokeWidth={3}
-                activeDot={{ r: 6, strokeWidth: 0, fill: "#00c5ff" }}
+                activeDot={{ r: 6, strokeWidth: 0, fill: "#a3e635" }}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -193,7 +193,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
       <div className="vision-card p-6 flex flex-col justify-between">
         <div className="pb-4">
           <h3 className="text-base font-bold text-white tracking-tight">Top Services by Spend</h3>
-          <p className="text-xs text-[#a0aec0] mt-0.5">Highest cost drivers across accounts</p>
+          <p className="text-xs text-[#a1a1aa] mt-0.5">Highest cost drivers across accounts</p>
         </div>
         <div className="pt-2">
           <ResponsiveContainer width="100%" height={260}>
@@ -204,14 +204,14 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
             >
               <defs>
                 <linearGradient id="visionBarGradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#0075ff" stopOpacity={0.8} />
-                  <stop offset="100%" stopColor="#00c5ff" stopOpacity={1} />
+                  <stop offset="0%" stopColor="#84cc16" stopOpacity={0.8} />
+                  <stop offset="100%" stopColor="#a3e635" stopOpacity={1} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.08)" horizontal={false} />
               <XAxis
                 type="number"
-                stroke="#a0aec0"
+                stroke="#a1a1aa"
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
@@ -222,7 +222,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
                 type="category"
                 dataKey="Service"
                 width={110}
-                stroke="#a0aec0"
+                stroke="#a1a1aa"
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
@@ -231,7 +231,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(6, 11, 40, 0.95)",
+                  backgroundColor: "rgba(20, 20, 20, 0.96)",
                   border: "1px solid rgba(255, 255, 255, 0.15)",
                   borderRadius: "14px",
                   backdropFilter: "blur(20px)",
@@ -252,7 +252,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
           <h3 className="text-base font-bold text-white tracking-tight">
             Cost by Category ({activeCategoryMonthName})
           </h3>
-          <p className="text-xs text-[#a0aec0] mt-0.5">Distribution by service domain</p>
+          <p className="text-xs text-[#a1a1aa] mt-0.5">Distribution by service domain</p>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-3 flex-1">
           <div className="w-full sm:w-1/2 flex justify-center">
@@ -276,7 +276,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "rgba(6, 11, 40, 0.95)",
+                    backgroundColor: "rgba(20, 20, 20, 0.96)",
                     border: "1px solid rgba(255, 255, 255, 0.15)",
                     borderRadius: "14px",
                     backdropFilter: "blur(20px)",
@@ -309,7 +309,7 @@ export function ChartsSection({ selectedMonth, basePath = "/data" }: ChartsSecti
                       <span className="font-bold text-white text-[11px]">
                         {formatFullCurrency(c.Cost)}
                       </span>
-                      <span className="text-[10px] text-[#a0aec0] font-mono">
+                      <span className="text-[10px] text-[#a1a1aa] font-mono">
                         {pct.toFixed(0)}%
                       </span>
                     </div>

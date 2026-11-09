@@ -465,7 +465,7 @@ export function AzureAlertsSection({ selectedMonth }: { selectedMonth?: string }
                                     return (
                                         <div
                                             key={item.id || idx}
-                                            className="p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-card hover:bg-muted/20 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs"
+                                            className="p-3.5 rounded-lg border border-white/10 bg-card hover:bg-muted/20 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs"
                                         >
                                             <div className="space-y-1.5 flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 flex-wrap">
@@ -738,7 +738,7 @@ export function AzureAlertsSection({ selectedMonth }: { selectedMonth?: string }
                                     return (
                                         <div
                                             key={b.id}
-                                            className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-card hover:border-slate-300 transition-all space-y-3 text-xs"
+                                            className="p-4 rounded-xl border border-white/10 bg-card hover:border-slate-300 transition-all space-y-3 text-xs"
                                         >
                                             <div className="flex items-start justify-between gap-2">
                                                 <div className="space-y-0.5 min-w-0">

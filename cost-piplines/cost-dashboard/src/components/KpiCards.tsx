@@ -39,10 +39,10 @@ export function KpiCards({ selectedMonth, basePath = "/data" }: KpiCardsProps) {
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {/* 1. Current Month Spend */}
-      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#0075ff]/40 hover:shadow-xl hover:shadow-[#0075ff]/10">
+      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#84cc16]/40 hover:shadow-xl hover:shadow-[#84cc16]/10">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
               Current Month Spend
             </p>
             <div className="flex items-baseline gap-2 mt-1">
@@ -53,19 +53,19 @@ export function KpiCards({ selectedMonth, basePath = "/data" }: KpiCardsProps) {
                 {pctChange > 0 ? `+${pctChange.toFixed(0)}%` : `${pctChange.toFixed(0)}%`}
               </span>
             </div>
-            <p className="text-[11px] text-[#a0aec0] mt-1">Total spend pro-rated</p>
+            <p className="text-[11px] text-[#a1a1aa] mt-1">Total spend pro-rated</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-[#0075ff] shadow-lg shadow-[#0075ff]/45 flex items-center justify-center text-white shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[#84cc16] shadow-lg shadow-[#84cc16]/45 flex items-center justify-center text-white shrink-0">
             <Wallet className="h-5 w-5" />
           </div>
         </div>
       </div>
 
       {/* 2. Previous Month Spend */}
-      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#0075ff]/40 hover:shadow-xl hover:shadow-[#0075ff]/10">
+      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#84cc16]/40 hover:shadow-xl hover:shadow-[#84cc16]/10">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
               Previous Month Spend
             </p>
             <div className="flex items-baseline gap-2 mt-1">
@@ -73,19 +73,19 @@ export function KpiCards({ selectedMonth, basePath = "/data" }: KpiCardsProps) {
                 {fmt(prevTotal)}
               </h3>
             </div>
-            <p className="text-[11px] text-[#a0aec0] mt-1">Prior completed billing cycle</p>
+            <p className="text-[11px] text-[#a1a1aa] mt-1">Prior completed billing cycle</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-[#0075ff] shadow-lg shadow-[#0075ff]/45 flex items-center justify-center text-white shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[#84cc16] shadow-lg shadow-[#84cc16]/45 flex items-center justify-center text-white shrink-0">
             <Calendar className="h-5 w-5" />
           </div>
         </div>
       </div>
 
       {/* 3. MoM Variance */}
-      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#0075ff]/40 hover:shadow-xl hover:shadow-[#0075ff]/10">
+      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#84cc16]/40 hover:shadow-xl hover:shadow-[#84cc16]/10">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
               MoM Variance
             </p>
             <div className="flex items-baseline gap-2 mt-1">
@@ -97,19 +97,19 @@ export function KpiCards({ selectedMonth, basePath = "/data" }: KpiCardsProps) {
                 {Math.abs(pctChange).toFixed(1)}%
               </span>
             </div>
-            <p className="text-[11px] text-[#a0aec0] mt-1">Change vs previous month</p>
+            <p className="text-[11px] text-[#a1a1aa] mt-1">Change vs previous month</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-[#0075ff] shadow-lg shadow-[#0075ff]/45 flex items-center justify-center text-white shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[#84cc16] shadow-lg shadow-[#84cc16]/45 flex items-center justify-center text-white shrink-0">
             <TrendingUp className="h-5 w-5" />
           </div>
         </div>
       </div>
 
       {/* 4. Total Budget Limits */}
-      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#0075ff]/40 hover:shadow-xl hover:shadow-[#0075ff]/10">
+      <div className="vision-card p-5 relative overflow-hidden transition-all duration-300 hover:border-[#84cc16]/40 hover:shadow-xl hover:shadow-[#84cc16]/10">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a0aec0]">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#a1a1aa]">
               Total Budget
             </p>
             <div className="flex items-baseline gap-2 mt-1">
@@ -120,9 +120,9 @@ export function KpiCards({ selectedMonth, basePath = "/data" }: KpiCardsProps) {
                 In force
               </span>
             </div>
-            <p className="text-[11px] text-[#a0aec0] mt-1">Configured monthly limits</p>
+            <p className="text-[11px] text-[#a1a1aa] mt-1">Configured monthly limits</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-[#0075ff] shadow-lg shadow-[#0075ff]/45 flex items-center justify-center text-white shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[#84cc16] shadow-lg shadow-[#84cc16]/45 flex items-center justify-center text-white shrink-0">
             <Layers className="h-5 w-5" />
           </div>
         </div>

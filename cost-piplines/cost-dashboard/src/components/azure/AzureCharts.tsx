@@ -79,7 +79,7 @@ interface EmptyChartMessageProps {
  */
 
 const PRICING_MODEL_COLORS = [
-    "#0075ff",
+    "#84cc16",
     "#7c3aed",
     "#0d9488",
     "#f59e0b",
@@ -88,8 +88,8 @@ const PRICING_MODEL_COLORS = [
 ];
 
 const AZURE_CATEGORY_COLORS = [
-    "#4f46e5",
-    "#0284c7",
+    "#4d7c0f",
+    "#84cc16",
     "#0d9488",
     "#10b981",
     "#8b5cf6",
@@ -190,7 +190,7 @@ const truncateLabel = (
  */
 
 const tooltipStyle = {
-    backgroundColor: "rgba(6, 11, 40, 0.95)",
+    backgroundColor: "rgba(20, 20, 20, 0.96)",
     border: "1px solid rgba(255, 255, 255, 0.12)",
     borderRadius: "12px",
     boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
@@ -443,7 +443,7 @@ export function AzureCharts({
                         Monthly Cost Trend
                     </CardTitle>
 
-                    <p className="text-xs text-[#a0aec0]">
+                    <p className="text-xs text-[#a1a1aa]">
                         Total Azure usage cost across all
                         available months
                     </p>
@@ -474,13 +474,13 @@ export function AzureCharts({
                                     >
                                         <stop
                                             offset="5%"
-                                            stopColor="#0075ff"
+                                            stopColor="#84cc16"
                                             stopOpacity={0.3}
                                         />
 
                                         <stop
                                             offset="95%"
-                                            stopColor="#0075ff"
+                                            stopColor="#84cc16"
                                             stopOpacity={0}
                                         />
                                     </linearGradient>
@@ -530,12 +530,12 @@ export function AzureCharts({
                                 {effectiveMonth && (
                                     <ReferenceLine
                                         x={effectiveMonth}
-                                        stroke="#0075ff"
+                                        stroke="#84cc16"
                                         strokeDasharray="4 4"
                                         strokeWidth={2}
                                         label={{
                                             value: "Selected",
-                                            fill: "#0075ff",
+                                            fill: "#84cc16",
                                             fontSize: 10,
                                             fontWeight: 600,
                                             position: "top",
@@ -547,12 +547,12 @@ export function AzureCharts({
                                     type="monotone"
                                     dataKey="Cost"
                                     name="Total Cost"
-                                    stroke="#0075ff"
+                                    stroke="#84cc16"
                                     strokeWidth={2.5}
                                     fill="url(#azureCostGradient)"
                                     activeDot={{
                                         r: 6,
-                                        fill: "#0075ff",
+                                        fill: "#84cc16",
                                         strokeWidth: 0,
                                     }}
                                 />
@@ -572,7 +572,7 @@ export function AzureCharts({
                         Top Services
                     </CardTitle>
 
-                    <p className="text-xs text-[#a0aec0]">
+                    <p className="text-xs text-[#a1a1aa]">
                         Highest-cost services for{" "}
                         {activeMonthName}
                     </p>
@@ -643,7 +643,7 @@ export function AzureCharts({
                                 <Bar
                                     dataKey="cost"
                                     name="Cost"
-                                    fill="#0075ff"
+                                    fill="#84cc16"
                                     radius={[0, 6, 6, 0]}
                                     barSize={18}
                                 />
@@ -665,7 +665,7 @@ export function AzureCharts({
                         Cost by Subscription
                     </CardTitle>
 
-                    <p className="text-xs text-[#a0aec0]">
+                    <p className="text-xs text-[#a1a1aa]">
                         Highest-cost subscriptions for{" "}
                         {activeMonthName}
                     </p>
@@ -760,7 +760,7 @@ export function AzureCharts({
                         Cost by Pricing Model
                     </CardTitle>
 
-                    <p className="text-xs text-[#a0aec0]">
+                    <p className="text-xs text-[#a1a1aa]">
                         Cost distribution for{" "}
                         {activeMonthName}
                     </p>
@@ -834,7 +834,7 @@ export function AzureCharts({
                                 {/* Donut center value */}
 
                                 <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                                    <span className="text-xs text-[#a0aec0]">
+                                    <span className="text-xs text-[#a1a1aa]">
                                         Total Cost
                                     </span>
 
@@ -906,7 +906,7 @@ export function AzureCharts({
                                                         )}
                                                     </p>
 
-                                                    <p className="text-xs text-[#a0aec0]">
+                                                    <p className="text-xs text-[#a1a1aa]">
                                                         {percentage.toFixed(
                                                             1
                                                         )}
@@ -935,7 +935,7 @@ export function AzureCharts({
                         Top Individual Resource Groups
                     </CardTitle>
 
-                    <p className="text-xs text-[#a0aec0]">
+                    <p className="text-xs text-[#a1a1aa]">
                         Most expensive resources for{" "}
                         {activeMonthName}
                     </p>
@@ -1026,7 +1026,7 @@ export function AzureCharts({
                     <CardTitle className="text-lg font-semibold tracking-tight">
                         Cost by Service Category
                     </CardTitle>
-                    <p className="text-xs text-[#a0aec0]">
+                    <p className="text-xs text-[#a1a1aa]">
                         {activeMonthName} spend grouped by standard FinOps cloud categories
                     </p>
                 </CardHeader>
@@ -1061,7 +1061,7 @@ export function AzureCharts({
                                     </PieChart>
                                 </ResponsiveContainer>
                                 <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                                    <span className="text-xs text-[#a0aec0]">Total Cost</span>
+                                    <span className="text-xs text-[#a1a1aa]">Total Cost</span>
                                     <span className="mt-1 text-lg font-bold text-white">
                                         {formatCompactCurrency(totalCategoryCost)}
                                     </span>
@@ -1082,7 +1082,7 @@ export function AzureCharts({
                                             </div>
                                             <div className="text-right shrink-0">
                                                 <span className="text-xs font-semibold">{formatCompactCurrency(row.cost)}</span>
-                                                <span className="ml-1.5 text-[10px] text-[#a0aec0]">({percentage.toFixed(1)}%)</span>
+                                                <span className="ml-1.5 text-[10px] text-[#a1a1aa]">({percentage.toFixed(1)}%)</span>
                                             </div>
                                         </div>
                                     );
@@ -1102,7 +1102,7 @@ function EmptyChartMessage({
     message = "No cost data is available for this selection.",
 }: EmptyChartMessageProps) {
     return (
-        <div className="flex h-[320px] items-center justify-center px-4 text-center text-sm text-[#a0aec0]">
+        <div className="flex h-[320px] items-center justify-center px-4 text-center text-sm text-[#a1a1aa]">
             {message}
         </div>
     );

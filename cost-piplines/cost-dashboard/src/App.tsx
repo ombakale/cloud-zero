@@ -46,7 +46,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           <h2 className="text-base font-bold text-rose-400 mb-2">
             Something went wrong rendering this section
           </h2>
-          <p className="text-xs text-[#a0aec0] mb-4">
+          <p className="text-xs text-[#a1a1aa] mb-4">
             {this.state.error?.message || "An unexpected error occurred."}
           </p>
           <button
@@ -241,7 +241,7 @@ export default function App() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-[#060b26] text-white font-sans antialiased selection:bg-[#0075ff] selection:text-white">
+      <div className="min-h-screen bg-[#0a0a0a] text-white font-sans antialiased selection:bg-[#84cc16] selection:text-white">
         {/* Modern Top Navbar */}
         <Navbar
           activeProvider={activeProvider}
@@ -251,7 +251,7 @@ export default function App() {
         {/* ================================================================= */}
         {/* VISION UI CONTROL RIBBON (Account + Billing Period + Quick Actions) */}
         {/* ================================================================= */}
-        <div className="border-b border-white/10 bg-[#060b26]/75 backdrop-blur-md px-4 py-3 sm:px-6 lg:px-8">
+        <div className="border-b border-white/10 bg-[#141414]/90 backdrop-blur-md px-4 py-3 sm:px-6 lg:px-8">
           <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4">
             {/* Left: Active Provider Badge & Context Title */}
             <div className="flex items-center gap-3">
@@ -270,7 +270,7 @@ export default function App() {
                     Live Telemetry
                   </span>
                 </div>
-                <p className="text-xs text-[#a0aec0]">
+                <p className="text-xs text-[#a1a1aa]">
                   {activeProvider === "aws"
                     ? "Detailed cost breakdowns, utilization, MoM fluctuations & budgets"
                     : "Subscriptions, resource groups, meters & budget compliance"}
@@ -282,10 +282,10 @@ export default function App() {
             <div className="flex flex-wrap items-center gap-3">
               {/* Account Dropdown for AWS */}
               {activeProvider === "aws" && awsAccounts.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
-                  <Layers className="h-4 w-4 text-[#0075ff] shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#141414]/90 px-3 py-1.5 shadow-sm">
+                  <Layers className="h-4 w-4 text-[#84cc16] shrink-0" />
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                       Root Account
                     </span>
                     <div className="relative">
@@ -299,13 +299,13 @@ export default function App() {
                           <option
                             key={acc.id}
                             value={acc.id}
-                            className="bg-[#060b26] text-white font-medium"
+                            className="bg-[#0a0a0a] text-white font-medium"
                           >
                             {acc.accountName || acc.name}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a0aec0]" />
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a1a1aa]" />
                     </div>
                   </div>
                 </div>
@@ -313,10 +313,10 @@ export default function App() {
 
               {/* Account Dropdown for Azure */}
               {activeProvider === "azure" && azureAccounts.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
-                  <Layers className="h-4 w-4 text-[#00c5ff] shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#141414]/90 px-3 py-1.5 shadow-sm">
+                  <Layers className="h-4 w-4 text-[#a3e635] shrink-0" />
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                       Billing Account
                     </span>
                     <div className="relative">
@@ -330,13 +330,13 @@ export default function App() {
                           <option
                             key={acc.id}
                             value={acc.id}
-                            className="bg-[#060b26] text-white font-medium"
+                            className="bg-[#0a0a0a] text-white font-medium"
                           >
                             {acc.accountName || acc.name}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a0aec0]" />
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a1a1aa]" />
                     </div>
                   </div>
                 </div>
@@ -344,10 +344,10 @@ export default function App() {
 
               {/* Billing Period Selector */}
               {months.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#080d28]/90 px-3 py-1.5 shadow-sm">
-                  <CalendarDays className="h-4 w-4 text-[#0075ff] shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#141414]/90 px-3 py-1.5 shadow-sm">
+                  <CalendarDays className="h-4 w-4 text-[#84cc16] shrink-0" />
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a0aec0]">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#a1a1aa]">
                       Billing Period
                     </span>
                     <div className="relative">
@@ -361,13 +361,13 @@ export default function App() {
                           <option
                             key={m}
                             value={m}
-                            className="bg-[#060b26] text-white font-medium"
+                            className="bg-[#0a0a0a] text-white font-medium"
                           >
                             {formatMonthName(m)}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a0aec0]" />
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a1a1aa]" />
                     </div>
                   </div>
                 </div>
@@ -376,10 +376,10 @@ export default function App() {
               {/* Quick Jump Action Link */}
               <Link
                 to={activeProvider === "aws" ? "/linked-accounts" : "/azure/subscriptions"}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] hover:border-[#0075ff]/50 px-3 py-2 text-xs font-semibold text-white transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.1] hover:border-[#84cc16]/50 px-3 py-2 text-xs font-semibold text-white transition-all shadow-sm"
               >
                 <span>{activeProvider === "aws" ? "Linked Accounts" : "Subscriptions"}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-[#a0aec0]" />
+                <ArrowRight className="h-3.5 w-3.5 text-[#a1a1aa]" />
               </Link>
             </div>
           </div>
